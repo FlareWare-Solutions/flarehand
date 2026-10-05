@@ -1,0 +1,25 @@
+from	to	why	rank
+wf-01	wf-03	package the finding so the next team can act on it	1
+wf-01	wf-04	tell the customer what you found	2
+wf-01	wf-05	write the knowledge article or the postmortem, so the lesson is found instead of learned again	3
+wf-02	wf-01	work out the cause once the answers come back	1
+wf-02	wf-09	turn the answers into a piece of work	2
+wf-03	wf-05	turn it into a knowledge article so the fix is findable	1
+wf-03	wf-04	write the customer update	2
+wf-04	wf-12	fix the register if it is wrong for this reader	1
+wf-04	wf-10	have it reviewed before it goes to an executive	2
+wf-05	wf-12	fit the register to whoever reads it	1
+wf-05	wf-10	poke holes in it before someone else does	2
+wf-05	wf-09	turn the decision, brief or charter into an ordered plan	3
+wf-06	wf-05	write it up for the people who were not in the room	1
+wf-07	wf-01	work out why the two differ	1
+wf-07	wf-03	hand the difference over	2
+wf-08	wf-04	compress the themes for whoever decides	1
+wf-08	wf-05	write up the one that keeps coming back	2
+wf-09	wf-11	list what could go wrong at each step	1
+wf-09	wf-04	write the status update	2
+wf-10	wf-05	apply the findings to the next draft	1
+wf-10	wf-12	fix the register if that is the problem	2
+wf-11	wf-10	attack the coverage itself	1
+wf-11	wf-09	put the cases in the order you will run them	2
+wf-12	wf-10	check nothing factual moved	1

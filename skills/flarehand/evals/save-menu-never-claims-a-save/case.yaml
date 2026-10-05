@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: save-menu-never-claims-a-save
+context:
+  scaffold_script: seed.sh

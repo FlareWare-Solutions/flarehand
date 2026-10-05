@@ -1,0 +1,13 @@
+archetype	sections	markers
+wf-01	Reported cause (unverified)|What the evidence shows|Hypotheses|What is missing	Confirming|Disconfirming
+wf-02	What I already know|Questions|If you would rather not answer	Why it matters
+wf-03	Situation|Background|Evidence|Assessment|Recommendation|MISSING - you must supply	[verified:
+wf-04	The ask|What happened|Detail	[verified:
+wf-05	Draft|MISSING - you must supply	
+wf-06	In plain words|Terms you now need|What this means for you|What is missing	
+wf-07	Differences that matter|Noise|What explains your symptom	
+wf-08	Themes|What did not fit|Counts	
+wf-09	Steps|Riskiest step|Rollback|What is missing	Owner
+wf-10	Findings|Most likely to fail|What this review did not cover	Severity
+wf-11	Coverage dimensions|Cases|Negative and edge cases|Gaps you must fill	
+wf-12	Rewritten|What changed|Facts kept unchanged	

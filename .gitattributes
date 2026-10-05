@@ -1,0 +1,7 @@
+# Keep line endings stable on every platform. The hook launcher is read by both cmd.exe and sh,
+# and sh fails on CRLF, so it is always LF.
+* text=auto eol=lf
+hooks/run-hook.cmd text eol=lf
+*.png binary
+*.jpg binary
+*.pdf binary

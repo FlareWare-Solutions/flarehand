@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "path": ".claude-plugin/plugin.json",
+      "field": "version"
+    },
+    {
+      "path": ".codex-plugin/plugin.json",
+      "field": "version"
+    },
+    {
+      "path": ".cursor-plugin/plugin.json",
+      "field": "version"
+    },
+    {
+      "path": "gemini-extension.json",
+      "field": "version"
+    }
+  ],
+  "skill_metadata": {
+    "glob": "skills/*/SKILL.md",
+    "key": "flarehand.version"
+  }
+}

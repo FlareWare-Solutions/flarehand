@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": "./hooks/run-hook.cmd session-start"
+      }
+    ],
+    "beforeSubmitPrompt": [
+      {
+        "command": "./hooks/run-hook.cmd prompt-submit"
+      }
+    ],
+    "stop": [
+      {
+        "command": "./hooks/run-hook.cmd stop"
+      }
+    ],
+    "preCompact": [
+      {
+        "command": "./hooks/run-hook.cmd pre-compact"
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "./hooks/run-hook.cmd session-end"
+      }
+    ]
+  }
+}

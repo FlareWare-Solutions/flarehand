@@ -1,0 +1,19 @@
+{
+  "name": "flareware",
+  "owner": {
+    "name": "Flareware",
+    "url": "https://github.com/FlareWare-Solutions"
+  },
+  "metadata": {
+    "description": "Open-source agent plugins from Flareware."
+  },
+  "plugins": [
+    {
+      "name": "flarehand",
+      "source": "./",
+      "description": "Turns a vague ask into the right deliverable, grounded in real sources, and remembers only what you approve.",
+      "category": "productivity",
+      "homepage": "https://github.com/FlareWare-Solutions/flarehand"
+    }
+  ]
+}

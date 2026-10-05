@@ -1,0 +1,61 @@
+template	old_name	group	workflow	roles	trigger_words	audience	frequency
+contract-review		decide	wf-07	legal,sales,operations,finance	contract review, redline, compare contracts, clause question, msa review, nda review, terms review	team	per-event
+decision-record		decide	wf-05	engineering,product,leadership,any	decision record, adr, architecture decision record, decision log, record the decision, daci, decision doc	team	per-event
+exec-brief		decide	wf-04	leadership,any	exec brief, executive summary, board pre-read, decision brief, leadership summary, one-page brief	exec	per-event
+experiment-brief		decide	wf-05	product,data,marketing,engineering,design	experiment, a/b test, ab test plan, test readout, experiment readout, split test, hypothesis test plan	team	per-event
+pr-faq		decide	wf-05	product,leadership,marketing,founder	pr/faq, prfaq, pr faq, working backwards, press release faq, future press release	exec	per-event
+vendor-evaluation		decide	wf-05	operations,engineering,finance,leadership,any	vendor evaluation, vendor comparison, tool selection, rfp scoring, supplier evaluation, buy decision, tco	team	per-event
+design-doc		plan	wf-05	engineering,data,devops,security	design doc, technical design, rfc, architecture doc, system design, tech spec, engineering design	team	per-event
+functional-spec		plan	wf-05	product,engineering,consulting,qa	functional spec, functional specification, requirements spec, srs, business requirements, spec document	team	per-event
+okrs		plan	wf-05	leadership,product,engineering,any	okrs, okr, objectives and key results, quarterly goals, team goals, key results	team	quarterly
+product-brief		plan	wf-05	product,design,engineering,founder	product brief, prd, product requirements, one-pager, shape up pitch, feature brief	team	per-event
+project-charter		plan	wf-05	project,operations,leadership,engineering,any	project charter, kickoff, project kickoff, raci, project initiation document, pid, charter	team	per-event
+risk-register		plan	wf-11	project,consulting,engineering,operations,leadership	risk register, raid log, risk log, risks and issues, risk assessment, issues log	team	weekly
+user-story		plan	wf-05	product,engineering,qa	user story, epic, acceptance criteria, backlog item, jira story	team	per-event
+ci-triage		build-run	wf-01	engineering,qa,devops	failing build, failing test, flaky test, red build, ci failure, pipeline failed, broken pipeline, test triage	team	per-event
+code-review		build-run	wf-10	engineering,devops,qa,security	code review, review this pr, review my pull request, review the diff, pr review	team	daily
+data-migration	conversion	build-run	wf-09	data,engineering,consulting,project	data migration, data conversion, migrate data, import plan, mapping document, etl plan, legacy data load	team	per-event
+db-diagnostic		build-run	wf-01	data,engineering,devops,support	slow query, database slow, query plan, explain plan, deadlock, database diagnostic, lock contention, db performance	team	per-event
+docs-page	setup-guide	build-run	wf-05	engineering,devops,support,documentation	docs page, documentation, how-to guide, tutorial, readme, setup guide, getting started, reference page, install guide	external	per-event
+runbook		build-run	wf-09	devops,engineering,data,operations	runbook, deployment plan, ops procedure, on-call runbook, change procedure, alert response steps	team	per-event
+sop		build-run	wf-05	operations,support,quality,compliance,any	sop, standard operating procedure, operating procedure, work instruction, process document	team	per-event
+sql-build		build-run	wf-09	engineering,data,devops	migration script, database migration, schema change, ddl change, db change plan, sql build	team	per-event
+test-plan		build-run	wf-11	qa,engineering,product	test plan, test cases, qa plan, test strategy, regression plan, uat plan	team	per-event
+cutover		ship	wf-09	engineering,consulting,project,devops,data	cutover, go-live plan, go live checklist, cutover plan, switchover, hypercare plan	team	per-event
+launch-plan		ship	wf-09	product,marketing,engineering,sales,support	launch plan, go-to-market plan, gtm plan, product launch, launch checklist, launch tier	team	per-event
+project-closeout	ps-delivery	ship	wf-05	project,consulting,operations,leadership	project closeout, close-out report, wrap-up report, wrap up report, project completion report, handover report, end of project report	external	per-event
+release-notes		ship	wf-05	product,engineering,documentation,support	release notes, changelog, change log, what is new, patch notes, version notes, keep a changelog	external	per-event
+customer-reply		respond-support	wf-05	support,customer-success,sales,consulting	customer reply, reply to the customer, respond to the ticket, support reply, case update, answer the customer	external	daily
+escalation-packet		respond-support	wf-03	support,engineering	api escalation, escalate to engineering, api error escalation, endpoint failing escalation	team	per-event
+incident-comms		respond-support	wf-05	support,devops,engineering,operations,marketing	status page update, incident update, outage message, incident communication, customer outage notice, service status	external	per-event
+incident-report	itil-incident	respond-support	wf-03	support,devops,engineering,operations	incident report, incident record, ticket handoff, escalate the case, case handover, support escalation	team	per-event
+knowledge-article	kcs-article,known-error	respond-support	wf-05	support,engineering,documentation,qa	knowledge article, kb article, kcs article, known error, help article, faq entry, support article, workaround article	external	per-event
+postmortem		respond-support	wf-05	engineering,devops,support,operations	postmortem, post-mortem, incident review, outage writeup, post incident review, blameless review, pir	team	per-event
+rca		respond-support	wf-01	support,engineering,devops,data	root cause analysis, rca, root cause, why did it break, five whys, cause analysis	team	per-event
+repro-steps		respond-support	wf-03	support,qa,engineering	repro steps, reproduction steps, steps to reproduce, bug repro	team	per-event
+meeting-notes		communicate	wf-04	any	meeting notes, minutes, meeting minutes, meeting summary, action items from the meeting	team	per-event
+press-release		communicate	wf-05	marketing,leadership,founder	press release, news release, media release, announcement for press, press announcement	external	per-event
+status-report		communicate	wf-04	project,consulting,customer-success,leadership	status report, project status, rag report, steering update, project update, programme status	exec	weekly
+weekly-update		communicate	wf-05	any	weekly update, weekly status, snippets, weekly report, friday update, ppp, progress plans problems	team	weekly
+course-design	curriculum	learn	wf-09	education,support,consulting,hr,any	course, curriculum, training plan, course outline, lesson plan, workshop agenda, syllabus, training session	external	per-event
+research-proposal		learn	wf-05	research,education,data,product	research proposal, grant proposal, specific aims, literature review, systematic review, study protocol, research plan	external	per-event
+retrospective		learn	wf-05	engineering,project,product,any	retrospective, retro, sprint retro, lessons learned session, team retro, project retrospective	team	per-event
+themes-report		learn	wf-08	research,product,support,marketing,hr,customer-success	themes, theme analysis, research synthesis, feedback themes, ticket trends, survey analysis, affinity map, synthesis	team	per-event
+user-interview		learn	wf-05	product,design,research,founder,customer-success	interview snapshot, user interview notes, customer interview, interview synthesis, discovery interview	team	per-event
+hr-document		people	wf-05	hr,leadership	offer letter, hr letter, employee announcement, hr faq, warning letter, improvement plan, pip	team	per-event
+interview-scorecard		people	wf-05	hr,leadership,any	interview scorecard, interview guide, interview questions, interview kit, structured interview, hiring rubric	team	per-event
+job-description	hr-document	people	wf-05	hr,leadership,any	job description, job posting, job ad, role description, jd, hiring post	external	per-event
+onboarding-plan		people	wf-05	hr,leadership,any	onboarding plan, 30 60 90, 30-60-90 day plan, first 90 days, new hire plan, ramp plan	team	per-event
+one-on-one-notes	team-notes	people	wf-04	leadership,hr,any	one-on-one, 1:1 notes, 1-1 notes, one on one, team notes, manager notes, check-in notes	self	weekly
+performance-review		people	wf-05	any,hr,leadership	performance review, self review, self-assessment, peer feedback, brag doc, annual review, review cycle	team	quarterly
+policy		people	wf-05	hr,legal,security,operations,finance,compliance	policy, company policy, acceptable use policy, security policy, expense policy, remote work policy	team	per-event
+business-case		money	wf-05	leadership,finance,project,operations,any	business case, budget request, funding request, investment case, justify the spend, five case model, capex request	exec	per-event
+finance-memo		money	wf-07	finance	variance commentary, flux analysis, reconciliation memo, budget vs actual, month-end memo, variance explanation	team	per-event
+investor-update		money	wf-05	founder,leadership,finance	investor update, monthly update to investors, shareholder update, board update email, investor letter	external	per-event
+business-review	qbr	sell	wf-04	customer-success,sales,consulting	qbr, quarterly business review, ebr, executive business review, account review, success plan, customer review deck	external	quarterly
+case-study		sell	wf-05	marketing,sales,customer-success	case study, customer story, success story, customer win writeup, reference story	external	per-event
+client-proposal	bid-response	sell	wf-05	sales,consulting,founder,operations	proposal, rfp response, rfi response, rfq, tender response, bid, bid response, pitch proposal, quote proposal	external	per-event
+creative-brief	marketing-brief	sell	wf-05	marketing,design,product	creative brief, marketing brief, campaign brief, content brief, design brief, agency brief	team	per-event
+deal-summary	deal-artifact	sell	wf-05	sales,founder,customer-success	deal summary, close plan, mutual action plan, deal review, call recap, opportunity summary, meddpicc	team	per-event
+sales-enablement		sell	wf-05	sales,marketing,product	battlecard, objection handling, demo script, discovery guide, sales playbook, talk track	team	per-event
+statement-of-work	ps-delivery	sell	wf-05	consulting,project,sales,founder	statement of work, sow, change order, change request, scope document, work order	external	per-event

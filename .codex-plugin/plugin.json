@@ -1,0 +1,44 @@
+{
+  "name": "flarehand",
+  "version": "0.1.0",
+  "description": "Turns a vague ask into the right deliverable, grounded in real sources, and remembers only what you approve.",
+  "author": {
+    "name": "Flareware",
+    "url": "https://github.com/FlareWare-Solutions"
+  },
+  "homepage": "https://github.com/FlareWare-Solutions/flarehand",
+  "repository": "https://github.com/FlareWare-Solutions/flarehand",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "deliverables",
+    "memory",
+    "knowledge-base",
+    "grounding",
+    "citations",
+    "review",
+    "writing",
+    "templates",
+    "productivity"
+  ],
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "interface": {
+    "displayName": "flarehand",
+    "shortDescription": "The right deliverable from a vague ask, grounded and remembered",
+    "longDescription": "flarehand names the deliverable behind a vague request, asks only the questions that matter, grounds every specific in a source it can show, checks the draft, and keeps notes and answers only when you say yes.",
+    "developerName": "Flareware",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Turn these notes into a status update for my manager.",
+      "Review this pull request before I merge it.",
+      "What did we decide about the release date?"
+    ],
+    "websiteURL": "https://github.com/FlareWare-Solutions/flarehand"
+  }
+}

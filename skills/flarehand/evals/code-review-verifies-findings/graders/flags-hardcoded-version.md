@@ -1,0 +1,7 @@
+---
+type: llm
+weight: 2
+---
+
+The user asked for a review of a diff to billing/rates.py before merging, grading correctness, regressions and hardcoded values. PASS if this condition holds, FAIL if it does not:
+It flags that SUPPORTED_API is now the hardcoded string "2024.2" instead of get_supported_api_version(), so it will go stale.

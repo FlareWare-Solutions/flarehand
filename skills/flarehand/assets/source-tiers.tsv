@@ -1,0 +1,315 @@
+kind	key	selector	tier	note
+# Source kinds, in the order a tie is broken. selector is the tier a source of this kind gets by default.
+source	user	T0		what the person said or pasted this session
+source	kb	T0		their own knowledge base: notes, saved answers, kept evidence
+source	repo	T0		files in the repository they work in
+source	git	T0		the history of that repository: commits, diffs, blame
+source	playbook	T0		their team's written way of working: .flarehand playbooks, onboarding and runbooks
+source	mcp	T3		MCP servers this harness has configured, such as a ticket tracker. Pass --tier T0 for a system of record
+source	official	T2		official documentation, specs, changelogs and standards
+source	secondary	T3		reputable secondary sources: known publications, vendor blogs, books
+source	forum	T4		forums, Q&A sites and personal blogs
+# Roles. Rows give each role its preferred source kinds, in order. user and kb always come first.
+role	developer	repo	primary	the code in the folder you work in
+role	developer	git	primary	what changed and why
+role	developer	official	primary	the docs for the stack this project uses
+role	developer	playbook	primary	your team's conventions
+role	developer	mcp	secondary	tickets and pull requests
+role	developer	secondary	secondary	write-ups by people who know the stack
+role	developer	forum	secondary	error messages others hit
+role	database-developer	repo	primary	schema, migrations and queries
+role	database-developer	git	primary	when a schema changed
+role	database-developer	official	primary	the database's own manual
+role	database-developer	playbook	secondary	naming and migration conventions
+role	database-developer	mcp	secondary	tickets
+role	database-developer	forum	secondary	error codes others hit
+role	devops-sre	repo	primary	infrastructure code and pipelines
+role	devops-sre	playbook	primary	runbooks and on-call notes
+role	devops-sre	official	primary	cloud and tool docs
+role	devops-sre	git	primary	what changed before it broke
+role	devops-sre	mcp	secondary	incidents and tickets
+role	devops-sre	secondary	secondary	postmortems others published
+role	devops-sre	forum	secondary	error messages others hit
+role	security	official	primary	advisories, standards and vendor security docs
+role	security	repo	primary	the code under review
+role	security	git	primary	when a risky change landed
+role	security	playbook	primary	your team's security rules
+role	security	secondary	secondary	research write-ups
+role	qa	repo	primary	the code and tests under test
+role	qa	playbook	primary	test strategy and environments
+role	qa	mcp	primary	tickets and acceptance criteria
+role	qa	official	secondary	framework docs
+role	qa	git	secondary	what changed in this build
+role	qa	secondary	secondary	testing practice
+role	data	repo	primary	pipelines, models and queries
+role	data	official	primary	the platform's docs
+role	data	playbook	primary	metric definitions and data contracts
+role	data	git	secondary	when a definition changed
+role	data	mcp	secondary	tickets and dashboards
+role	data	forum	secondary	error messages others hit
+role	architect	repo	primary	the system as built
+role	architect	playbook	primary	standards and design records
+role	architect	official	primary	specs and vendor docs
+role	architect	git	secondary	how the design moved
+role	architect	secondary	secondary	published patterns
+role	ai-tooling	repo	primary	the agent, skill or tool you are building
+role	ai-tooling	official	primary	vendor and protocol docs
+role	ai-tooling	playbook	primary	your team's conventions
+role	ai-tooling	git	secondary	what changed
+role	ai-tooling	secondary	secondary	practitioner write-ups
+role	ai-tooling	forum	secondary	issues others hit
+role	support	playbook	primary	triage steps, known issues and reply templates
+role	support	mcp	primary	the case, ticket or incident
+role	support	official	primary	the product's published help
+role	support	repo	secondary	what the code actually does
+role	support	git	secondary	what changed in a release
+role	support	forum	secondary	what other users report
+role	implementation	playbook	primary	delivery method, checklists and templates
+role	implementation	official	primary	the product's configuration docs
+role	implementation	mcp	secondary	project tickets
+role	implementation	secondary	secondary	practice from other projects
+role	technical-writer	repo	primary	the docs and code as they are
+role	technical-writer	official	primary	the product's published docs
+role	technical-writer	playbook	primary	the style guide and templates
+role	technical-writer	git	secondary	what changed in a release
+role	product	playbook	primary	strategy, briefs and decision records
+role	product	mcp	primary	tickets and roadmap items
+role	product	official	secondary	how the product behaves today
+role	product	repo	secondary	what the code does
+role	product	secondary	secondary	market research
+role	trainer	playbook	primary	training material and job aids
+role	trainer	official	primary	the product's published help
+role	trainer	secondary	secondary	learning design practice
+role	release-management	git	primary	what went into the release
+role	release-management	playbook	primary	release and cut-off process
+role	release-management	mcp	primary	tickets in the release
+role	release-management	repo	secondary	version files and changelogs
+role	release-management	official	secondary	tool docs
+role	it-helpdesk	playbook	primary	access, provisioning and setup steps
+role	it-helpdesk	official	primary	vendor setup docs
+role	it-helpdesk	mcp	secondary	tickets
+role	it-helpdesk	forum	secondary	errors others hit
+role	general	playbook	primary	how your team does things
+role	general	official	primary	official docs for whatever this is about
+role	general	repo	secondary	files in the folder you work in
+role	general	secondary	secondary	reputable write-ups
+role	business	playbook	primary	your team's process and templates
+role	business	official	secondary	official guidance, such as a regulator or a vendor
+role	business	secondary	secondary	reputable write-ups
+role	finance	like:business		same sources as business, kept separate for its vocabulary
+role	hr	like:business		same sources as business, kept separate for its vocabulary
+role	legal	like:business		same sources as business, kept separate for its vocabulary
+role	sales	like:business		same sources as business, kept separate for its vocabulary
+role	marketing	like:business		same sources as business, kept separate for its vocabulary
+role	customer-success	like:business		same sources as business, kept separate for its vocabulary
+role	bid-proposal	like:business		same sources as business, kept separate for its vocabulary
+role	services-pm	like:implementation		same sources as implementation, kept separate for its vocabulary
+role	data-conversion	like:data		same sources as data, kept separate for its vocabulary
+# Preferred domains per role, on top of the ones the project's technology adds.
+domain	security	owasp.org	primary	OWASP standards and cheat sheets
+domain	security	nvd.nist.gov	primary	the National Vulnerability Database
+domain	security	cwe.mitre.org	secondary	weakness definitions
+domain	ai-tooling	modelcontextprotocol.io	primary	the MCP specification
+domain	ai-tooling	agentskills.io	primary	the Agent Skills specification
+domain	technical-writer	developers.google.com/style	secondary	the Google developer documentation style guide
+# Question words that put one source kind first for this question.
+signal	why did · why * changed · why is * written · why was * added · why was * removed · who changed · when did * change · what changed · introduced · regression · regressed · since when · used to work · broke after · blame · history of · git log	git	signal	the question asks what changed, which the history answers
+signal	stack trace · exception · traceback · error message · this file · this function · this class · in the code · in our code · the repo · repository · config file · failing test	repo	signal	the question is about code you can read
+signal	how do we · how does our team · our process · our convention · house rule · team standard · our standard · runbook · onboarding · playbook · checklist · who owns	playbook	signal	the question is about how your team works
+signal	which version · latest version · release notes · changelog · deprecated · breaking change · api reference · documentation for · official docs · spec · rfc · supported in	official	signal	the question is about what a product or standard says
+signal	ticket · issue · pull request · pr · incident · case · jira · github issue · linear	mcp	signal	the question is about an item a tracker holds
+signal	what did we decide · last time · my notes · i saved · we agreed · remember when	kb	signal	the question is about something they already kept
+# Words in what someone says they do, mapped to a role.
+roleword	ai tooling · ai tool · agent · skill · mcp · llm · ai platform · prompt	ai-tooling		
+roleword	architect · architecture · solution design · system design · technical design	architect		
+roleword	developer · software engineer · engineer · programmer · frontend · backend · full stack · mobile app · web app	developer		
+roleword	database developer · dba · sql developer · stored procedure · data modeller · plsql · pl sql	database-developer		
+roleword	devops · sre · site reliability · infrastructure · cloud ops · platform engineer · on call	devops-sre		
+roleword	security · appsec · penetration · pentest · threat model · vulnerability	security		
+roleword	qa · quality assurance · tester · test automation · test engineer	qa		
+roleword	data engineer · data analyst · data scientist · analytics · dashboard · etl · warehouse	data		
+roleword	support · case · helpdesk · customer issue · triage · escalation	support		
+roleword	implementation · consultant · go live · hypercare · professional services · onboarding customers	implementation		
+roleword	technical writer · documentation · docs writer	technical-writer		
+roleword	product manager · product owner · business analyst · ba · pm	product		
+roleword	business · back office · corporate · commercial · procurement · compliance · operations	business		
+roleword	data conversion · data migration · mock load · tie out · control totals · mapping document	data-conversion		
+roleword	trainer · curriculum · job aid · learning objective · facilitator · instructional design	trainer		
+roleword	release manager · release management · go or no go · cut-off · build decision	release-management		
+roleword	it helpdesk · service desk · provisioning · resolver group · access request	it-helpdesk		
+roleword	finance · controller · financial controller · finance manager · accountant · bookkeeper · month end close · accounts payable · accounts receivable · payroll analyst · variance commentary	finance		
+roleword	hr · human resources · hr business partner · recruiter · talent acquisition · job description · comp band	hr		
+roleword	legal · legal counsel · contracts manager · paralegal · redline · clause	legal		
+roleword	sales · sales rep · sales engineer · account executive · demo script · close plan	sales		
+roleword	marketing · marketing manager · demand generation · campaign · positioning	marketing		
+roleword	customer success · renewals · health score · account manager · true up	customer-success		
+roleword	bid · proposal · rfp response · compliance matrix · red team · bafo	bid-proposal		
+roleword	services project manager · raid log · utilisation · change order · statement of work · sow	services-pm		
+# Job titles a template serves, mapped to the role whose sources they use.
+serves	account-executive	sales		which role's sources this job title uses
+serves	account-management	sales		which role's sources this job title uses
+serves	account-manager	sales		which role's sources this job title uses
+serves	accountant	finance		which role's sources this job title uses
+serves	adf-developer	developer		which role's sources this job title uses
+serves	agency-lead	business		which role's sources this job title uses
+serves	agile-coach	general		which role's sources this job title uses
+serves	analyst	data		which role's sources this job title uses
+serves	analytics-engineer	data		which role's sources this job title uses
+serves	backend-developer	developer		which role's sources this job title uses
+serves	bid-and-proposal	bid-proposal		which role's sources this job title uses
+serves	bid-manager	bid-proposal		which role's sources this job title uses
+serves	bookkeeper	finance		which role's sources this job title uses
+serves	business-analyst	product		which role's sources this job title uses
+serves	ceo	general		which role's sources this job title uses
+serves	cfo	finance		which role's sources this job title uses
+serves	chief-of-staff	general		which role's sources this job title uses
+serves	communications	marketing		which role's sources this job title uses
+serves	compliance	business		which role's sources this job title uses
+serves	consultant	implementation		which role's sources this job title uses
+serves	content-marketing	marketing		which role's sources this job title uses
+serves	contracts-manager	legal		which role's sources this job title uses
+serves	controller	finance		which role's sources this job title uses
+serves	coo	business		which role's sources this job title uses
+serves	copywriter	marketing		which role's sources this job title uses
+serves	cto	architect		which role's sources this job title uses
+serves	customer-success-manager	customer-success		which role's sources this job title uses
+serves	customer-support	support		which role's sources this job title uses
+serves	data-analyst	data		which role's sources this job title uses
+serves	data-conversion-specialist	data-conversion		which role's sources this job title uses
+serves	data-engineer	data		which role's sources this job title uses
+serves	data-scientist	data		which role's sources this job title uses
+serves	data-steward	data		which role's sources this job title uses
+serves	dba	database-developer		which role's sources this job title uses
+serves	demand-generation	marketing		which role's sources this job title uses
+serves	designer	product		which role's sources this job title uses
+serves	developer	developer		which role's sources this job title uses
+serves	developer-advocate	technical-writer		which role's sources this job title uses
+serves	devops	devops-sre		which role's sources this job title uses
+serves	devops-dba	devops-sre		which role's sources this job title uses
+serves	director	general		which role's sources this job title uses
+serves	enablement-manager	sales		which role's sources this job title uses
+serves	engineer	developer		which role's sources this job title uses
+serves	engineering-manager	developer		which role's sources this job title uses
+serves	erp-developer	developer		which role's sources this job title uses
+serves	escalation-engineer	support		which role's sources this job title uses
+serves	executive	general		which role's sources this job title uses
+serves	finance-partner	finance		which role's sources this job title uses
+serves	flutter-developer	developer		which role's sources this job title uses
+serves	founder	general		which role's sources this job title uses
+serves	fp-and-a	finance		which role's sources this job title uses
+serves	freelancer	general		which role's sources this job title uses
+serves	frontend-developer	developer		which role's sources this job title uses
+serves	general-manager	general		which role's sources this job title uses
+serves	graduate-student	general		which role's sources this job title uses
+serves	growth-marketer	marketing		which role's sources this job title uses
+serves	hiring-manager	general		which role's sources this job title uses
+serves	hr-business-partner	hr		which role's sources this job title uses
+serves	implementation-consultant	implementation		which role's sources this job title uses
+serves	incident-commander	devops-sre		which role's sources this job title uses
+serves	individual-contributor	general		which role's sources this job title uses
+serves	instructional-designer	trainer		which role's sources this job title uses
+serves	integration-engineer	developer		which role's sources this job title uses
+serves	interviewer	hr		which role's sources this job title uses
+serves	it-manager	it-helpdesk		which role's sources this job title uses
+serves	it-operations	it-helpdesk		which role's sources this job title uses
+serves	jsp-developer	developer		which role's sources this job title uses
+serves	lab-manager	general		which role's sources this job title uses
+serves	legal-counsel	legal		which role's sources this job title uses
+serves	maintainer	developer		which role's sources this job title uses
+serves	manager	general		which role's sources this job title uses
+serves	marketing-manager	marketing		which role's sources this job title uses
+serves	mentor	general		which role's sources this job title uses
+serves	ml-engineer	developer		which role's sources this job title uses
+serves	mobile-developer	developer		which role's sources this job title uses
+serves	new-starter	general		which role's sources this job title uses
+serves	office-manager	business		which role's sources this job title uses
+serves	operations	business		which role's sources this job title uses
+serves	operations-manager	business		which role's sources this job title uses
+serves	paralegal	legal		which role's sources this job title uses
+serves	people-manager	general		which role's sources this job title uses
+serves	platform-engineer	devops-sre		which role's sources this job title uses
+serves	plsql-developer	database-developer		which role's sources this job title uses
+serves	pr-manager	marketing		which role's sources this job title uses
+serves	principal-investigator	general		which role's sources this job title uses
+serves	procurement	business		which role's sources this job title uses
+serves	product-designer	product		which role's sources this job title uses
+serves	product-manager	product		which role's sources this job title uses
+serves	product-marketing	marketing		which role's sources this job title uses
+serves	product-owner	product		which role's sources this job title uses
+serves	professor	trainer		which role's sources this job title uses
+serves	program-manager	general		which role's sources this job title uses
+serves	project-manager	services-pm		which role's sources this job title uses
+serves	public-sector-officer	business		which role's sources this job title uses
+serves	qa-automation	qa		which role's sources this job title uses
+serves	qa-engineer	qa		which role's sources this job title uses
+serves	qa-manual	qa		which role's sources this job title uses
+serves	quality-manager	qa		which role's sources this job title uses
+serves	recruiter	hr		which role's sources this job title uses
+serves	recruiting-coordinator	hr		which role's sources this job title uses
+serves	release-manager	release-management		which role's sources this job title uses
+serves	research-manager	general		which role's sources this job title uses
+serves	researcher	general		which role's sources this job title uses
+serves	rest-api-developer	developer		which role's sources this job title uses
+serves	sales-enablement	sales		which role's sources this job title uses
+serves	sales-engineer	sales		which role's sources this job title uses
+serves	sales-manager	sales		which role's sources this job title uses
+serves	scrum-master	general		which role's sources this job title uses
+serves	security-analyst	security		which role's sources this job title uses
+serves	security-engineer	security		which role's sources this job title uses
+serves	services-project-manager	services-pm		which role's sources this job title uses
+serves	site-reliability-engineer	devops-sre		which role's sources this job title uses
+serves	software-engineer	developer		which role's sources this job title uses
+serves	solution-architect	architect		which role's sources this job title uses
+serves	solutions-engineer	sales		which role's sources this job title uses
+serves	sponsor	general		which role's sources this job title uses
+serves	sre	devops-sre		which role's sources this job title uses
+serves	student	general		which role's sources this job title uses
+serves	support-analyst	support		which role's sources this job title uses
+serves	support-engineer	support		which role's sources this job title uses
+serves	support-lead	support		which role's sources this job title uses
+serves	support-manager	support		which role's sources this job title uses
+serves	teacher	trainer		which role's sources this job title uses
+serves	team-lead	general		which role's sources this job title uses
+serves	tech-lead	developer		which role's sources this job title uses
+serves	technical-writer	technical-writer		which role's sources this job title uses
+serves	test-lead	qa		which role's sources this job title uses
+serves	ux-researcher	product		which role's sources this job title uses
+serves	vp-engineering	developer		which role's sources this job title uses
+serves	writer	general		which role's sources this job title uses
+# Project markers. key is a file name (a * matches any characters), selector the technology, tier its official docs.
+project	package.json	javascript	nodejs.org · developer.mozilla.org · docs.npmjs.com	Node.js and the web platform
+project	tsconfig.json	typescript	typescriptlang.org	TypeScript
+project	pyproject.toml	python	docs.python.org · packaging.python.org · pypi.org	Python
+project	requirements.txt	python	docs.python.org · pypi.org	Python
+project	setup.py	python	docs.python.org · packaging.python.org	Python
+project	go.mod	go	go.dev · pkg.go.dev	Go
+project	Cargo.toml	rust	doc.rust-lang.org · docs.rs	Rust
+project	pom.xml	java	docs.oracle.com/en/java · maven.apache.org	Java with Maven
+project	build.gradle	jvm	docs.gradle.org · docs.oracle.com/en/java · kotlinlang.org	Java or Kotlin with Gradle
+project	build.gradle.kts	kotlin	docs.gradle.org · kotlinlang.org	Kotlin with Gradle
+project	pubspec.yaml	dart	dart.dev · docs.flutter.dev · pub.dev	Dart and Flutter
+project	*.csproj	dotnet	learn.microsoft.com/dotnet · nuget.org	.NET
+project	*.sln	dotnet	learn.microsoft.com/dotnet	.NET
+project	Gemfile	ruby	ruby-doc.org · rubygems.org · guides.rubyonrails.org	Ruby
+project	composer.json	php	php.net · getcomposer.org	PHP
+project	Package.swift	swift	swift.org · developer.apple.com/documentation	Swift
+project	Dockerfile	docker	docs.docker.com	containers
+project	*.tf	terraform	developer.hashicorp.com/terraform · registry.terraform.io	Terraform
+# Hosts whose tier is known without asking. Everything else on the web defaults to T3.
+host	stackoverflow.com	forum	T4	Q&A
+host	stackexchange.com	forum	T4	Q&A
+host	superuser.com	forum	T4	Q&A
+host	serverfault.com	forum	T4	Q&A
+host	reddit.com	forum	T4	forum
+host	news.ycombinator.com	forum	T4	forum
+host	quora.com	forum	T4	Q&A
+host	medium.com	forum	T4	personal blogs
+host	dev.to	forum	T4	personal blogs
+host	substack.com	forum	T4	newsletters
+host	wikipedia.org	secondary	T3	encyclopedia
+host	rfc-editor.org	official	T1	RFCs, the primary text
+host	datatracker.ietf.org	official	T1	IETF drafts and RFCs
+host	w3.org	official	T1	web standards
+host	whatwg.org	official	T1	web standards
+host	arxiv.org	secondary	T1	papers, the primary text
+host	doi.org	secondary	T1	papers, the primary text

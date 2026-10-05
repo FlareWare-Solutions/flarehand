@@ -1,0 +1,106 @@
+term	replacement	severity
+utilize	use	error
+utilise	use	error
+commence	start	error
+terminate	end or stop, but keep it in an on-screen label, or for employee, equipment or contract termination	warn
+ascertain	find out	error
+endeavour	try	error
+endeavor	try	error
+facilitate	help	error
+aforementioned	this	error
+herein	here	error
+whilst	while	error
+amongst	among	error
+numerous	many	error
+sufficient	enough	error
+demonstrate	show	error
+obtain	get	error
+possess	have	error
+transmit	send	error
+inquire	ask	error
+methodology	method	error
+operationalize	say what actually happens	error
+incentivize	encourage	error
+optimal	best	error
+prior to	before	error
+subsequent to	after	error
+in order to	to	error
+at this point in time	now	error
+due to the fact that	because	error
+in the event that	if	error
+for the purpose of	to	error
+with regard to	about	error
+with respect to	about	error
+pertaining to	about	error
+in a timely manner	on time, or quickly	error
+a number of	some, or give the number	error
+the vast majority of	most	error
+in the process of	cut it	error
+it is important to note that	delete this phrase	error
+it should be noted that	delete this phrase	error
+please note that	delete this phrase	error
+as previously mentioned	delete this phrase	error
+needless to say	delete this phrase	error
+at the end of the day	delete this phrase	error
+in conclusion	delete this phrase	error
+going forward	from now on	error
+touch base	talk	error
+circle back	follow up	error
+deep dive	look closely	error
+low-hanging fruit	easy wins	error
+synergy	say what actually happens	error
+seamless	say what actually happens	error
+cutting-edge	new	error
+state-of-the-art	new	error
+best-in-class	say what it does better	error
+delve	look	error
+realm	area	error
+ensure	make sure	warn
+additionally	also	warn
+furthermore	also	warn
+moreover	also	warn
+therefore	so	warn
+hence	so	warn
+thus	so	warn
+nevertheless	still	warn
+notwithstanding	despite	warn
+approximately	about	warn
+comprehensive	complete, or full	warn
+robust	strong, or reliable	warn
+holistic	whole	warn
+various	several	warn
+assist	help	warn
+initiate	start	warn
+modify	change	warn
+locate	find	warn
+perform	do or run	warn
+attempt	try	warn
+regarding	about	warn
+concerning	about	warn
+minimize	reduce	warn
+maximize	increase	warn
+leverage	use	warn
+# Added 2026-09 from the Google developer documentation style guide (https://developers.google.com/style),
+# whose word list is licensed CC BY 4.0. Paraphrased. Every entry here is a warning, so a product label
+# that uses one of these words, such as a screen named Whitelist, is never an error.
+allows you to	lets you	warn
+allow you to	let you	warn
+impacted	affected	warn
+impacting	affecting	warn
+simply	cut it, or say what the step is	warn
+e.g	for example, or such as	warn
+i.e	that is	warn
+click on	click	warn
+sanity	quick check, smoke test, or confidence check	warn
+whitelist	allowlist, or allowed list	warn
+whitelisted	allowed, or on the allowlist	warn
+blacklist	blocklist, or denylist	warn
+blacklisted	blocked, or on the blocklist	warn
+he or she	they	warn
+his or her	their	warn
+he/she	they	warn
+guys	everyone, or the team	warn
+grandfathered	legacy, or exempt	warn
+etc	cut it, or start the list with such as	warn
+and/or	and, or, or both	warn
+click here	link text that says where it goes	warn

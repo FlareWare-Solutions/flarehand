@@ -1,0 +1,24 @@
+{
+  "name": "flarehand",
+  "version": "0.1.0",
+  "description": "Turns a vague ask into the right deliverable, grounded in real sources, and remembers only what you approve.",
+  "author": {
+    "name": "Flareware",
+    "url": "https://github.com/FlareWare-Solutions"
+  },
+  "homepage": "https://github.com/FlareWare-Solutions/flarehand",
+  "repository": "https://github.com/FlareWare-Solutions/flarehand",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "deliverables",
+    "memory",
+    "knowledge-base",
+    "grounding",
+    "citations",
+    "review",
+    "writing",
+    "templates",
+    "productivity"
+  ]
+}

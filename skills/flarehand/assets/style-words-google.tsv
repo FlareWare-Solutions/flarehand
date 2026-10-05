@@ -1,0 +1,93 @@
+term	replacement	severity
+# The google profile. Opt-in: loaded only with check_output.py --style --profile google, on top of
+# style-words.tsv. Adapted from the Google developer documentation style guide word list
+# (https://developers.google.com/style/word-list), licensed CC BY 4.0 by Google. Paraphrased and
+# shortened. Words that clash with common product labels, such as manpower or master, are left out.
+just	cut it, or say only, exactly or recently	warn
+desire	want, or need	warn
+desired	wanted, or needed	warn
+if you wish	if you want	warn
+comprise	consist of, or include	warn
+comprised of	made up of, or includes	warn
+aka	also known as	warn
+and/or	and, or, or both	warn
+etc	cut it, or start the list with such as	warn
+via	through, by, or using	warn
+vice versa	say both directions	warn
+for instance	for example	warn
+more information on	more information about	warn
+functionality	features, or capabilities	warn
+actionable	useful, or that you can act on	warn
+performant	fast, or say how fast	warn
+timeframe	period, deadline, or when	warn
+time frame	period, deadline, or when	warn
+let's	cut it, or say who does it	warn
+tl;dr	Summary	warn
+ymmv	your results might vary	warn
+voila	cut it	warn
+execute	run	warn
+currently	cut it, or give the version or date	warn
+presently	cut it, or give the version or date	warn
+at present	cut it, or give the version or date	warn
+as of this writing	cut it, or give the version or date	warn
+eventually	give a version or a date, or cut it	warn
+in the future	give a version or a date, or cut it	warn
+does not yet	say what it does now	warn
+click here	link text that says where it goes	warn
+uncheck	clear	warn
+unselect	clear	warn
+grayed out	unavailable	warn
+greyed out	unavailable	warn
+grayed-out	unavailable	warn
+greyed-out	unavailable	warn
+drag and drop	drag	warn
+text box	field	warn
+unzip	extract	warn
+abort	stop, or cancel	warn
+hangs	stops responding	warn
+hung	stopped responding	warn
+nuke	remove, or delete	warn
+blast radius	affected area, or what it affects	warn
+war room	incident team, or situation room	warn
+brown bag	lunch and learn, or informal session	warn
+white glove	high-touch, or premium	warn
+white-glove	high-touch, or premium	warn
+housekeeping	maintenance, or cleanup	warn
+tribal knowledge	knowledge only some people have	warn
+guru	expert	warn
+ninja	expert	warn
+manned	staffed	warn
+dummy	placeholder, sample, or test	warn
+whitelisting	allowlisting	warn
+blacklisting	blocklisting	warn
+slave	replica, secondary, or worker	error
+crazy	unexpected, or complicated	warn
+insane	unexpected, or complicated	warn
+lame	weak, or say what is wrong	warn
+crippled	slowed, or say what broke	warn
+dumb down	simplify	warn
+e-mail	email	warn
+back-end	backend	warn
+check box	checkbox	warn
+code base	codebase	warn
+end point	endpoint	warn
+time stamp	timestamp	warn
+run book	runbook	warn
+walk-through	walkthrough	warn
+white paper	whitepaper	warn
+wild card	wildcard	warn
+on-premise	on-premises	warn
+on-prem	on-premises	warn
+on prem	on-premises	warn
+sign into	sign in to	warn
+3rd party	third party	warn
+3rd-party	third-party	warn
+U.S	US	warn
+repo	repository	warn
+regex	regular expression	warn
+should	must, can, or we recommend: say which	warn
+please	cut it in an instruction	warn
+Github	GitHub	warn	case
+Gitlab	GitLab	warn	case
+Javascript	JavaScript	warn	case
+Typescript	TypeScript	warn	case

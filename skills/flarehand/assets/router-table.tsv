@@ -1,0 +1,1631 @@
+kind	pattern	value	weight	extra
+verb	why is	wf-01	3	
+verb	why does	wf-01	3	
+verb	why did	wf-01	3	
+verb	why cant	wf-01	3	
+verb	why wont	wf-01	3	
+verb	whats causing	wf-01	3	
+verb	what is causing	wf-01	3	
+verb	whats wrong	wf-01	3	
+verb	not working	wf-01	3	
+verb	stopped working	wf-01	3	
+verb	worked before	wf-01	3	
+verb	broken	wf-01	3	
+verb	break	wf-01	3	
+verb	fail	wf-01	3	
+verb	error out	wf-01	3	
+verb	throw	wf-01	3	
+verb	crash	wf-01	3	
+verb	cant figure out	wf-01	3	
+verb	troubleshoot	wf-01	3	
+verb	root cause	wf-01	3	
+verb	debug	wf-01	3	
+verb	keeps happening	wf-01	3	
+verb	intermittent	wf-01	3	
+verb	no idea why	wf-01	3	
+verb	doesnt work	wf-01	3	
+verb	does not work	wf-01	3	
+verb	is down	wf-01	3	
+verb	time out	wf-01	3	
+verb	hang	wf-01	3	
+verb	is slow	wf-01	3	
+verb	slow	wf-01	3	
+verb	taking forever	wf-01	3	
+verb	does nothing	wf-01	3	
+verb	not load	wf-01	3	
+verb	wont load	wf-01	3	
+verb	not respond	wf-01	3	
+verb	not answering	wf-01	3	
+verb	isnt answering	wf-01	3	
+verb	cant see	wf-01	3	
+verb	cant connect	wf-01	3	
+verb	cannot connect	wf-01	3	
+verb	not connecting	wf-01	3	
+verb	cant access	wf-01	3	
+verb	cant log in	wf-01	3	
+verb	cant get on	wf-01	3	
+verb	not found	wf-01	3	
+verb	command not found	wf-01	3	
+verb	is blocked	wf-01	3	
+verb	went up	wf-01	3	
+verb	went down	wf-01	3	
+verb	spiked	wf-01	3	
+verb	dropped	wf-01	3	
+verb	wrong number	wf-01	3	
+verb	doesnt tie	wf-01	3	
+verb	is red	wf-01	3	
+verb	performance issue	wf-01	3	
+verb	performance problem	wf-01	3	
+verb	error message	wf-01	3	
+verb	not posting	wf-01	3	
+verb	wont post	wf-01	3	
+verb	not saving	wf-01	3	
+verb	wont save	wf-01	3	
+verb	not calculating	wf-01	3	
+verb	not showing	wf-01	3	
+verb	missing from	wf-01	3	
+verb	is missing	wf-01	3	
+verb	disappeared	wf-01	3	
+verb	not updating	wf-01	3	
+verb	stuck	wf-01	3	
+verb	what should i ask	wf-02	3	
+verb	what questions	wf-02	3	
+verb	what info do i need	wf-02	3	
+verb	what information do i need	wf-02	3	
+verb	need more info	wf-02	3	
+verb	how do i scope	wf-02	3	
+verb	discovery	wf-02	3	
+verb	intake	wf-02	3	
+verb	qualify	wf-02	3	
+verb	elicitation	wf-02	3	
+verb	kick off	wf-02	3	
+verb	kickoff	wf-02	3	
+verb	write it up for	wf-03	3	
+verb	file a	wf-03	3	
+verb	raise a	wf-03	3	
+verb	escalate	wf-03	3	
+verb	hand off	wf-03	3	
+verb	handoff	wf-03	3	
+verb	turn this into a ticket	wf-03	3	
+verb	so dev doesnt bounce it	wf-03	3	
+verb	log a bug	wf-03	3	
+verb	log a defect	wf-03	3	
+verb	submit	wf-03	3	
+verb	spec it out	wf-03	3	
+verb	pass it to	wf-03	3	
+verb	send to engineering	wf-03	3	
+verb	open a ticket	wf-03	3	
+verb	recap	wf-04	3	
+verb	tldr	wf-04	3	
+verb	tl dr	wf-04	3	
+verb	condense	wf-04	3	
+verb	catch me up	wf-04	3	
+verb	brief me	wf-04	3	
+verb	boil down	wf-04	3	
+verb	shorten this	wf-04	3	
+verb	what happened on	wf-04	3	
+verb	wrap up	wf-04	3	
+verb	draft	wf-05	3	
+verb	write me	wf-05	3	
+verb	put together	wf-05	3	
+verb	compose	wf-05	3	
+verb	reply to	wf-05	3	
+verb	respond to	wf-05	3	
+verb	need an email	wf-05	3	
+verb	need a deck	wf-05	3	
+verb	need a post	wf-05	3	
+verb	first pass	wf-05	3	
+verb	rough out	wf-05	3	
+verb	start me off	wf-05	3	
+verb	write a	wf-05	3	
+verb	create a document	wf-05	3	
+verb	follow up	wf-05	3	
+verb	walk me through	wf-06	3	
+verb	help me understand	wf-06	3	
+verb	decode	wf-06	3	
+verb	translate	wf-06	3	
+verb	eli5	wf-06	3	
+verb	for a non technical audience	wf-06	3	
+verb	what does this do	wf-06	3	
+verb	what does * do	wf-06	3	
+verb	difference between	wf-07	3	
+verb	what changed	wf-07	3	
+verb	diff	wf-07	3	
+verb	versus	wf-07	3	
+verb	vs	wf-07	3	
+verb	reconcile	wf-07	3	
+verb	doesnt match	wf-07	3	
+verb	does not match	wf-07	3	
+verb	against the template	wf-07	3	
+verb	before and after	wf-07	3	
+verb	why are they different	wf-07	3	
+verb	across all	wf-08	3	
+verb	trend	wf-08	3	
+verb	pattern	wf-08	3	
+verb	theme	wf-08	3	
+verb	what are people	wf-08	3	
+verb	top issue	wf-08	3	
+verb	most common	wf-08	3	
+verb	categorize	wf-08	3	
+verb	bucket these	wf-08	3	
+verb	group these	wf-08	3	
+verb	voice of the customer	wf-08	3	
+verb	sentiment	wf-08	3	
+verb	most requested	wf-08	3	
+verb	what are customers asking	wf-08	3	
+verb	asking for the most	wf-08	3	
+verb	plan	wf-09	3	
+verb	checklist	wf-09	3	
+verb	step	wf-09	3	
+verb	how do i	wf-09	3	
+verb	how do we	wf-09	3	
+verb	how to	wf-09	3	
+verb	break down	wf-09	3	
+verb	break this into	wf-09	3	
+verb	sequence	wf-09	3	
+verb	roadmap	wf-09	3	
+verb	timeline	wf-09	3	
+verb	outline	wf-09	3	
+verb	who does what	wf-09	3	
+verb	get started	wf-09	3	
+verb	whats the process	wf-09	3	
+verb	what is the process	wf-09	3	
+verb	get * working	wf-09	3	
+verb	set up	wf-09	3	
+verb	install	wf-09	3	
+verb	configure	wf-09	3	
+verb	review	wf-10	3	
+verb	feedback on	wf-10	3	
+verb	is this right	wf-10	3	
+verb	look over	wf-10	3	
+verb	look at	wf-10	3	
+verb	check this	wf-10	3	
+verb	check my	wf-10	3	
+verb	what am i missing	wf-10	3	
+verb	what could go wrong	wf-10	3	
+verb	edge case	wf-11	3	
+verb	negative case	wf-11	3	
+verb	scenario	wf-11	3	
+verb	list all	wf-11	3	
+verb	all the ways	wf-11	3	
+verb	permutation	wf-11	3	
+verb	coverage	wf-11	3	
+verb	what else could	wf-11	3	
+verb	test case	wf-11	3	
+verb	make it shorter	wf-12	3	
+verb	doesnt sound right	wf-12	3	
+verb	friendlier	wf-12	3	
+verb	more formal	wf-12	3	
+verb	too blunt	wf-12	3	
+verb	too harsh	wf-12	3	
+verb	cant repro	wf-01	7	
+verb	cannot reproduce	wf-01	7	
+verb	cant reproduce	wf-01	7	
+verb	root cause analysis	wf-01	7	
+verb	summarize	wf-04	7	
+verb	summary of	wf-04	7	
+verb	exec summary	wf-04	7	
+verb	executive summary	wf-04	7	
+verb	for the board	wf-04	7	
+verb	for the vp	wf-04	7	
+verb	one pager	wf-04	7	
+verb	turn this into one slide	wf-04	7	
+verb	status update	wf-04	7	
+verb	explain	wf-06	7	
+verb	in plain english	wf-06	7	
+verb	plain language	wf-06	7	
+verb	translate this	wf-06	7	
+verb	compare	wf-07	7	
+verb	gap analysis	wf-07	7	
+verb	redline against	wf-07	7	
+verb	poke hole	wf-10	7	
+verb	sanity check	wf-10	7	
+verb	stress test	wf-10	7	
+verb	pre mortem	wf-10	7	
+verb	premortem	wf-10	7	
+verb	devils advocate	wf-10	7	
+verb	tear apart	wf-10	7	
+verb	tear this apart	wf-10	7	
+verb	push back on	wf-10	7	
+verb	critique	wf-10	7	
+verb	review my	wf-10	7	
+verb	review this	wf-10	7	
+verb	what should i test	wf-11	7	
+verb	test cases for	wf-11	7	
+verb	list the edge case	wf-11	7	
+verb	what could break	wf-11	7	
+verb	punch up	wf-12	7	
+verb	tone down	wf-12	7	
+verb	make it sound	wf-12	7	
+verb	less corporate	wf-12	7	
+verb	soften	wf-12	7	
+verb	firm up	wf-12	7	
+verb	reword	wf-12	7	
+verb	rewrite this	wf-12	7	
+verb	rewrite it	wf-12	7	
+verb	make it not sound like	wf-12	7	
+verb	less defensive	wf-12	7	
+verb	more professional	wf-12	7	
+verb	make this friendlier	wf-12	7	
+verb	fact check	wf-10	7	
+verb	different perspective	wf-10	7	
+verb	verify * in full	wf-10	7	
+verb	review * in full	wf-10	7	
+verb	not loading	wf-01	3	
+verb	is wrong	wf-01	3	
+verb	are wrong	wf-01	3	
+verb	looks wrong	wf-01	3	
+verb	shows the wrong	wf-01	3	
+noun	ticket	wf-03	3	
+noun	case	wf-03	3	
+noun	incident	wf-03	5	incident-report
+noun	support case	wf-03	5	incident-report
+noun	service request	wf-03	5	incident-report
+noun	repro	wf-03	5	repro-steps
+noun	repro step	wf-03	5	repro-steps
+noun	steps to reproduce	wf-03	5	repro-steps
+noun	reproduction step	wf-03	5	repro-steps
+noun	bug report	wf-03	5	repro-steps
+noun	defect	wf-03	5	repro-steps
+noun	bug	wf-03	5	repro-steps
+noun	escalation package	wf-03	5	escalation-packet
+noun	escalation packet	wf-03	5	escalation-packet
+noun	brief for dev	wf-03	5	escalation-packet
+noun	dev handoff	wf-03	5	escalation-packet
+noun	known error	wf-05	5	knowledge-article
+noun	workaround	wf-05	5	knowledge-article
+noun	rca	wf-01	5	rca
+noun	postmortem	wf-05	5	postmortem
+noun	post mortem	wf-05	5	postmortem
+noun	five whys	wf-01	5	rca
+noun	5 whys	wf-01	5	rca
+noun	incident review	wf-05	5	postmortem
+noun	flaky	wf-01	5	ci-triage
+noun	flaky test	wf-01	5	ci-triage
+noun	locator	wf-01	5	ci-triage
+noun	nightly build	wf-01	4	ci-triage
+noun	jenkinsfile	wf-01	5	ci-triage
+noun	pipeline failure	wf-01	5	ci-triage
+noun	build failed	wf-01	5	ci-triage
+noun	build is broken	wf-01	5	ci-triage
+noun	failing test	wf-01	5	ci-triage
+noun	build fail	wf-01	5	ci-triage
+noun	explain plan	wf-01	5	db-diagnostic
+noun	awr	wf-01	5	db-diagnostic
+noun	ash report	wf-01	5	db-diagnostic
+noun	sql id	wf-01	5	db-diagnostic
+noun	tablespace	wf-01	5	db-diagnostic
+noun	slow query	wf-01	5	db-diagnostic
+noun	deadlock	wf-01	5	db-diagnostic
+noun	kb article	wf-05	5	knowledge-article
+noun	solution article	wf-05	5	knowledge-article
+noun	knowledge article	wf-05	5	knowledge-article
+noun	knowledge base article	wf-05	5	knowledge-article
+noun	reply to the customer	wf-05	5	customer-reply
+noun	reply to customer	wf-05	5	customer-reply
+noun	respond to the customer	wf-05	5	customer-reply
+noun	customer reply	wf-05	5	customer-reply
+noun	customer email	wf-05	5	customer-reply
+noun	update the customer	wf-05	5	customer-reply
+noun	customer * update	wf-05	5	customer-reply
+noun	email the customer	wf-05	5	customer-reply
+noun	send back to the customer	wf-05	5	customer-reply
+noun	angry customer	wf-05	5	customer-reply
+noun	customer is furious	wf-05	5	customer-reply
+noun	customer is angry	wf-05	5	customer-reply
+noun	customer is upset	wf-05	5	customer-reply
+noun	user story	wf-05	5	user-story
+noun	acceptance criteria	wf-05	5	user-story
+noun	prd	wf-05	5	product-brief
+noun	epic	wf-05	5	user-story
+noun	functional spec	wf-05	5	functional-spec
+noun	brd	wf-05	5	functional-spec
+noun	business requirement	wf-05	5	functional-spec
+noun	process map	wf-05	5	functional-spec
+noun	requirements doc	wf-05	5	functional-spec
+noun	requirements for	wf-05	5	functional-spec
+noun	technical spec	wf-05	5	functional-spec
+noun	test case	wf-11	5	test-plan
+noun	test plan	wf-11	5	test-plan
+noun	regression suite	wf-11	5	test-plan
+noun	smoke test	wf-11	5	test-plan
+noun	test script	wf-11	5	test-plan
+noun	uat script	wf-11	5	test-plan
+noun	test strategy	wf-11	5	test-plan
+noun	release note	wf-05	5	release-notes
+noun	known issues list	wf-05	5	release-notes
+noun	patch note	wf-05	5	release-notes
+noun	changelog	wf-05	5	release-notes
+noun	runbook	wf-09	5	runbook
+noun	playbook	wf-09	5	runbook
+noun	deployment plan	wf-09	5	runbook
+noun	deploy plan	wf-09	5	runbook
+noun	rollback plan	wf-09	5	runbook
+noun	sow	wf-05	5	statement-of-work
+noun	statement of work	wf-05	5	statement-of-work
+noun	change order request	wf-05	5	statement-of-work
+noun	wrap up report	wf-05	5	project-closeout
+noun	wrapup report	wf-05	5	project-closeout
+noun	project closure	wf-05	5	project-closeout
+noun	cutover	wf-09	5	cutover
+noun	cutover plan	wf-09	5	cutover
+noun	cutover checklist	wf-09	5	cutover
+noun	go live checklist	wf-09	5	cutover
+noun	go live plan	wf-09	5	cutover
+noun	go live	wf-09	4	cutover
+noun	golive	wf-09	4	cutover
+noun	hypercare	wf-09	5	cutover
+noun	readiness checklist	wf-09	5	cutover
+noun	mapping document	wf-09	5	data-migration
+noun	mock load	wf-09	5	data-migration
+noun	data conversion	wf-09	5	data-migration
+noun	data migration	wf-09	5	data-migration
+noun	master data	wf-09	5	data-migration
+noun	conversion plan	wf-09	5	data-migration
+noun	course outline	wf-09	5	course-design
+noun	curriculum	wf-09	5	course-design
+noun	job aid	wf-09	5	course-design
+noun	learning objective	wf-09	5	course-design
+noun	facilitator guide	wf-09	5	course-design
+noun	storyboard	wf-09	5	course-design
+noun	lab guide	wf-09	5	course-design
+noun	training material	wf-09	5	course-design
+noun	training outline	wf-09	5	course-design
+noun	training deck	wf-09	5	course-design
+noun	training plan	wf-09	5	course-design
+noun	training session	wf-09	5	course-design
+noun	course	wf-09	5	course-design
+noun	risk register	wf-11	5	risk-register
+noun	raid log	wf-11	5	risk-register
+noun	raid	wf-11	5	risk-register
+noun	risk log	wf-11	5	risk-register
+noun	threat model	wf-11	5	risk-register
+noun	coverage matrix	wf-11	5	risk-register
+noun	status report	wf-04	5	status-report
+noun	weekly report	wf-05	5	weekly-update
+noun	monthly report	wf-04	5	status-report
+noun	project update	wf-04	5	status-report
+noun	weekly update	wf-05	5	weekly-update
+noun	progress report	wf-04	5	status-report
+noun	steering committee update	wf-04	5	status-report
+noun	meeting note	wf-04	5	meeting-notes
+noun	meeting minute	wf-04	5	meeting-notes
+noun	minutes	wf-04	5	meeting-notes
+noun	meeting recap	wf-04	5	meeting-notes
+noun	action item	wf-04	5	meeting-notes
+noun	notes from the meeting	wf-04	5	meeting-notes
+noun	note from * meeting	wf-04	5	meeting-notes
+noun	1:1 note	wf-04	5	one-on-one-notes
+noun	1:1 with	wf-04	5	one-on-one-notes
+noun	1 on 1	wf-04	5	one-on-one-notes
+noun	one on one	wf-04	5	one-on-one-notes
+noun	note * direct report	wf-04	5	one-on-one-notes
+noun	note on my team	wf-04	5	one-on-one-notes
+noun	note about my team	wf-04	5	one-on-one-notes
+noun	working agreement	wf-05	5	
+noun	team charter	wf-05	5	
+noun	how * team work	wf-05	5	
+noun	qbr	wf-04	5	business-review
+noun	quarterly business review	wf-04	5	business-review
+noun	health score	wf-04	5	business-review
+noun	success plan	wf-04	5	business-review
+noun	churn risk	wf-04	5	business-review
+noun	renewal risk	wf-04	5	business-review
+noun	at risk of churn	wf-04	5	business-review
+noun	churn	wf-04	5	business-review
+noun	board deck	wf-04	5	exec-brief
+noun	board pre read	wf-04	5	exec-brief
+noun	okr	wf-05	5	okrs
+noun	headcount plan	wf-04	5	exec-brief
+noun	one slide	wf-04	5	exec-brief
+noun	pre read	wf-04	5	exec-brief
+noun	decision brief	wf-04	5	exec-brief
+noun	exec brief	wf-04	5	exec-brief
+noun	battlecard	wf-05	5	sales-enablement
+noun	battle card	wf-05	5	sales-enablement
+noun	objection handling	wf-05	5	sales-enablement
+noun	discovery call	wf-05	5	sales-enablement
+noun	demo script	wf-05	5	sales-enablement
+noun	talk track	wf-05	5	sales-enablement
+noun	leave behind	wf-05	5	sales-enablement
+noun	poc plan	wf-05	5	sales-enablement
+noun	call guide	wf-05	5	sales-enablement
+noun	close plan	wf-05	5	deal-summary
+noun	meddic	wf-05	5	deal-summary
+noun	meddicc	wf-05	5	deal-summary
+noun	mutual action plan	wf-05	5	deal-summary
+noun	deal review	wf-05	5	deal-summary
+noun	call recap	wf-05	5	deal-summary
+noun	deal plan	wf-05	5	deal-summary
+noun	rfp response	wf-05	5	client-proposal
+noun	proposal	wf-05	5	client-proposal
+noun	shred	wf-05	5	client-proposal
+noun	compliance matrix	wf-05	5	client-proposal
+noun	win theme	wf-05	5	client-proposal
+noun	bafo	wf-05	5	client-proposal
+noun	security questionnaire	wf-05	5	client-proposal
+noun	soc 2 questionnaire	wf-05	5	client-proposal
+noun	vpat	wf-05	5	client-proposal
+noun	sig questionnaire	wf-05	5	client-proposal
+noun	caiq	wf-05	5	client-proposal
+noun	case study	wf-05	5	case-study
+noun	campaign brief	wf-05	5	creative-brief
+noun	landing page	wf-05	5	creative-brief
+noun	persona	wf-05	5	creative-brief
+noun	blog post	wf-05	5	creative-brief
+noun	marketing brief	wf-05	5	creative-brief
+noun	launch plan	wf-09	5	launch-plan
+noun	press release	wf-05	5	press-release
+noun	variance	wf-07	5	finance-memo
+noun	accrual	wf-07	5	finance-memo
+noun	flux	wf-07	5	finance-memo
+noun	flux analysis	wf-07	5	finance-memo
+noun	forecast	wf-07	5	finance-memo
+noun	rev rec	wf-07	5	finance-memo
+noun	deferred revenue	wf-07	5	finance-memo
+noun	aging	wf-07	5	finance-memo
+noun	true up	wf-07	5	finance-memo
+noun	control total	wf-07	5	finance-memo
+noun	tie out	wf-07	5	finance-memo
+noun	dso	wf-07	5	finance-memo
+noun	variance commentary	wf-07	5	finance-memo
+noun	close package	wf-07	5	finance-memo
+noun	pbc	wf-07	5	finance-memo
+noun	job description	wf-05	5	job-description
+noun	jd	wf-05	5	job-description
+noun	job posting	wf-05	5	job-description
+noun	offer letter	wf-05	5	hr-document
+noun	performance review	wf-05	5	performance-review
+noun	onboarding plan	wf-05	5	onboarding-plan
+noun	comp band	wf-05	5	hr-document
+noun	policy	wf-05	5	policy
+noun	handbook	wf-05	5	hr-document
+noun	msa	wf-07	5	contract-review
+noun	dpa	wf-07	5	contract-review
+noun	nda	wf-07	5	contract-review
+noun	redline	wf-07	5	contract-review
+noun	clause	wf-07	5	contract-review
+noun	contract	wf-07	5	contract-review
+noun	terms and condition	wf-07	5	contract-review
+noun	indemnity clause	wf-07	5	contract-review
+noun	sla clause	wf-07	5	contract-review
+noun	sla	wf-07	5	contract-review
+noun	service level agreement	wf-07	5	contract-review
+noun	uptime commitment	wf-07	5	contract-review
+noun	trend report	wf-08	5	themes-report
+noun	ticket analysis	wf-08	5	themes-report
+noun	survey result	wf-08	5	themes-report
+noun	lost deal	wf-08	5	themes-report
+noun	feedback analysis	wf-08	5	themes-report
+noun	themes report	wf-08	5	themes-report
+noun	version script	wf-09	5	sql-build
+noun	install script	wf-09	5	sql-build
+noun	sql build	wf-09	5	sql-build
+noun	dev environment	wf-09	5	docs-page
+noun	development environment	wf-09	5	docs-page
+noun	new laptop	wf-09	5	docs-page
+noun	new hire	wf-09	5	docs-page
+noun	onboarding	wf-09	5	docs-page
+noun	workstation	wf-09	5	docs-page
+noun	access request	wf-09	5	docs-page
+noun	machine setup	wf-09	5	docs-page
+noun	set up guide	wf-05	5	docs-page
+noun	checklist	wf-09	5	
+noun	month end close	wf-09	5	
+noun	code review	wf-10	5	code-review
+noun	pr review	wf-10	5	code-review
+noun	pull request review	wf-10	5	code-review
+noun	review * pr	wf-10	5	code-review
+noun	review * pull request	wf-10	5	code-review
+noun	review * diff	wf-10	5	code-review
+noun	review * branch	wf-10	5	code-review
+noun	review * code	wf-10	5	code-review
+noun	review * commit	wf-10	5	code-review
+noun	review * revision	wf-10	5	code-review
+noun	review * merge request	wf-10	5	code-review
+noun	code quality	wf-10	5	code-review
+noun	review * skill	wf-10	5	code-review
+noun	verify * skill	wf-10	5	code-review
+noun	audit * skill	wf-10	5	code-review
+noun	audit * code	wf-10	5	code-review
+noun	audit * repo	wf-10	5	code-review
+noun	review * repo	wf-10	5	code-review
+noun	review * repository	wf-10	5	code-review
+noun	review * script	wf-10	5	code-review
+noun	review * sql	wf-10	5	code-review
+noun	review * pl sql	wf-10	5	code-review
+noun	review * plsql	wf-10	5	code-review
+noun	review * dart	wf-10	5	code-review
+noun	review * flutter	wf-10	5	code-review
+noun	review * java	wf-10	5	code-review
+noun	review * jsp	wf-10	5	code-review
+noun	review * python	wf-10	5	code-review
+noun	email	wf-05	5	
+noun	follow up email	wf-05	5	
+noun	memo	wf-05	5	
+noun	announcement	wf-05	5	
+noun	slack message	wf-05	5	
+noun	teams message	wf-05	5	
+noun	accrue	wf-07	5	finance-memo
+noun	tie to	wf-07	5	finance-memo
+noun	out of balance	wf-07	5	finance-memo
+noun	bid response	wf-05	5	client-proposal
+noun	respond to the rfp	wf-05	5	client-proposal
+noun	answer the rfp	wf-05	5	client-proposal
+noun	tender response	wf-05	5	client-proposal
+noun	renewal	wf-05	3	deal-summary
+noun	renewal recap	wf-05	5	deal-summary
+noun	renewal proposal	wf-05	5	deal-summary
+noun	renewal true up	wf-05	5	deal-summary
+noun	renewal * true up	wf-05	5	deal-summary
+noun	true up * renewal	wf-05	5	deal-summary
+noun	go no go	wf-04	5	exec-brief
+noun	go no go decision	wf-04	5	exec-brief
+noun	build cut off	wf-04	5	exec-brief
+noun	build cutoff	wf-04	5	exec-brief
+noun	provisioning	wf-09	5	docs-page
+noun	request access	wf-09	5	docs-page
+noun	access for a new starter	wf-09	5	docs-page
+noun	new starter	wf-09	5	docs-page
+noun	technical design	wf-05	5	design-doc
+noun	design doc	wf-05	5	design-doc
+noun	design document	wf-05	5	design-doc
+noun	solution design	wf-05	5	design-doc
+noun	help topic	wf-05	5	knowledge-article
+noun	user guide topic	wf-05	5	knowledge-article
+noun	review * endpoint	wf-10	5	code-review
+noun	change to * endpoint	wf-10	5	code-review
+noun	review * trigger	wf-10	5	code-review
+noun	review * procedure	wf-10	5	code-review
+noun	review * test script	wf-10	5	test-plan
+noun	review * uat script	wf-10	5	test-plan
+noun	review * demo script	wf-10	5	sales-enablement
+noun	review * version script	wf-10	5	sql-build
+noun	review * install script	wf-10	5	sql-build
+noun	review * cost code	wf-10	5	
+noun	review * phase code	wf-10	5	
+noun	review * account code	wf-10	5	
+noun	review * gl code	wf-10	5	
+noun	review * error code	wf-10	5	
+noun	review * vendor code	wf-10	5	
+noun	review * job code	wf-10	5	
+noun	audit * cost code	wf-10	5	
+noun	audit * phase code	wf-10	5	
+noun	audit * account code	wf-10	5	
+noun	audit * gl code	wf-10	5	
+noun	audit * error code	wf-10	5	
+noun	audit * vendor code	wf-10	5	
+noun	audit * job code	wf-10	5	
+noun	map 1:1 with	wf-07	5	
+noun	map * 1:1 with	wf-07	5	
+noun	1:1 mapping	wf-07	5	
+noun	1:1 relationship	wf-07	5	
+noun	one on one mapping	wf-07	5	
+noun	one to one mapping	wf-07	5	
+audience	for the customer	customer	1	
+audience	customer facing	customer	1	
+audience	send to the client	customer	1	
+audience	to the client	customer	1	
+audience	external	customer	1	
+audience	for the vp	executive	1	
+audience	for the board	executive	1	
+audience	for the exec	executive	1	
+audience	for leadership	executive	1	
+audience	one slide	executive	1	
+audience	for my director	executive	1	
+audience	for the ceo	executive	1	
+audience	for the cfo	executive	1	
+audience	for dev	engineering	1	
+audience	for engineering	engineering	1	
+audience	for the devs	engineering	1	
+audience	for the dev team	engineering	1	
+audience	for my team	team	1	
+audience	for the team	team	1	
+audience	internal only	team	1	
+audience	for a new hire	newcomer	1	
+audience	for someone new	newcomer	1	
+audience	non technical audience	newcomer	1	
+audience	for a beginner	newcomer	1	
+audience	for the auditor	auditor	1	
+audience	for compliance	auditor	1	
+audience	for legal	auditor	1	
+audience	for the regulator	auditor	1	
+audience	just for me	self	1	
+audience	rough	self	1	
+audience	scratch	self	1	
+audience	dont send	self	1	
+audience	do not send	self	1	
+risk	post it	outbound-gate	0	
+risk	send it	outbound-gate	0	
+risk	publish	outbound-gate	0	
+risk	tell the customer	outbound-gate	0	
+risk	email them	outbound-gate	0	
+risk	put it on the case	outbound-gate	0	
+risk	reply to the customer	outbound-gate	0	
+risk	send to the customer	outbound-gate	0	
+risk	post on the case	outbound-gate	0	
+risk	send this	outbound-gate	0	
+risk	they say	stated-cause	0	
+risk	they think	stated-cause	0	
+risk	customer says	stated-cause	0	
+risk	customer thinks	stated-cause	0	
+risk	they believe	stated-cause	0	
+risk	we already confirmed	stated-cause	0	
+risk	its a * issue	stated-cause	0	
+risk	it is a * issue	stated-cause	0	
+risk	must be the	stated-cause	0	
+risk	probably the	stated-cause	0	
+risk	i think its	stated-cause	0	
+risk	they claim	stated-cause	0	
+risk	customer claims	stated-cause	0	
+risk	user says	stated-cause	0	
+risk	is this legal	legal-advice	0	
+risk	can we say	legal-advice	0	
+risk	contractual	legal-advice	0	
+risk	our sla	legal-advice	0	
+risk	sla says	legal-advice	0	
+risk	indemnity	legal-advice	0	
+risk	indemnify	legal-advice	0	
+risk	are we liable	legal-advice	0	
+risk	liable	legal-advice	0	
+risk	liability	legal-advice	0	
+risk	breach	legal-advice	0	
+risk	is it a breach	legal-advice	0	
+risk	ok to sign	legal-advice	0	
+risk	okay to sign	legal-advice	0	
+risk	safe to sign	legal-advice	0	
+risk	penalty clause	legal-advice	0	
+risk	contractual penalty	legal-advice	0	
+risk	liquidated damages	legal-advice	0	
+risk	penalty under	legal-advice	0	
+risk	service credit	legal-advice	0	
+risk	lawsuit	legal-advice	0	
+risk	sue	legal-advice	0	
+risk	dollar amount	financial-figures	0	
+risk	invoice total	financial-figures	0	
+risk	tax	financial-figures	0	
+risk	revenue figure	financial-figures	0	
+risk	payroll	financial-figures	0	
+risk	how much do we owe	financial-figures	0	
+risk	owe them	financial-figures	0	
+risk	contract value	financial-figures	0	
+risk	refund amount	financial-figures	0	
+risk	credit amount	financial-figures	0	
+risk	what will it cost	financial-figures	0	
+risk	hiring decision	people-matter	0	
+risk	fire someone	people-matter	0	
+risk	fire him	people-matter	0	
+risk	fire her	people-matter	0	
+risk	fire them	people-matter	0	
+risk	fire an employee	people-matter	0	
+risk	fire a contractor	people-matter	0	
+risk	fire my	people-matter	0	
+risk	firing someone	people-matter	0	
+risk	let go	people-matter	0	
+risk	performance review	people-matter	0	
+risk	performance improvement plan	people-matter	0	
+risk	put on a pip	people-matter	0	
+risk	on a pip	people-matter	0	
+risk	accommodation	people-matter	0	
+risk	disciplin	people-matter	0	
+risk	terminate an employee	people-matter	0	
+risk	termination	people-matter	0	
+risk	harassment	people-matter	0	
+risk	complaint about	people-matter	0	
+risk	1:1 with	people-notes	0	
+risk	1:1 note	people-notes	0	
+risk	1 on 1	people-notes	0	
+risk	one on one	people-notes	0	
+risk	direct report	people-notes	0	
+risk	note on my team	people-notes	0	
+risk	note about my team	people-notes	0	
+risk	team performance	people-notes	0	
+risk	underperform	people-notes	0	
+risk	security questionnaire	security-claim	0	
+risk	soc 2	security-claim	0	
+risk	pen test	security-claim	0	
+risk	vulnerability	security-claim	0	
+risk	penetration test	security-claim	0	
+risk	cve	security-claim	0	
+risk	customer name	customer-identifiers	0	
+risk	client name	customer-identifiers	0	
+risk	account number	customer-identifiers	0	
+risk	sin number	customer-identifiers	0	
+risk	ssn	customer-identifiers	0	
+risk	update the table	production-write	0	
+risk	delete from	production-write	0	
+risk	drop table	production-write	0	
+risk	run in prod	production-write	0	
+risk	on production	production-write	0	
+risk	fix the data	production-write	0	
+risk	in production	production-write	0	
+risk	prod database	production-write	0	
+risk	truncate	production-write	0	
+risk	security questionnaire	outbound-gate	0	
+risk	soc 2 questionnaire	outbound-gate	0	
+risk	questionnaire	outbound-gate	0	
+risk	rfp response	outbound-gate	0	
+risk	respond to the rfp	outbound-gate	0	
+risk	answer the rfp	outbound-gate	0	
+risk	rfp from	outbound-gate	0	
+risk	bid response	outbound-gate	0	
+risk	proposal	outbound-gate	0	
+risk	customer reply	outbound-gate	0	
+risk	customer email	outbound-gate	0	
+risk	email the customer	outbound-gate	0	
+risk	update the customer	outbound-gate	0	
+risk	accrue	financial-figures	0	
+risk	accrual	financial-figures	0	
+risk	tie out	financial-figures	0	
+risk	tie to	financial-figures	0	
+risk	out of balance	financial-figures	0	
+risk	how much do we need	financial-figures	0	
+risk	how much should we	financial-figures	0	
+risk	how much to accrue	financial-figures	0	
+risk	post to the	production-write	0	
+risk	with a post	production-write	0	
+risk	post request	production-write	0	
+risk	put request	production-write	0	
+risk	delete request	production-write	0	
+risk	endpoint * post	production-write	0	
+risk	endpoint post	production-write	0	
+risk	call the endpoint	production-write	0	
+risk	call the * endpoint	production-write	0	
+risk	hit the endpoint	production-write	0	
+risk	hit the * endpoint	production-write	0	
+risk	via the api	production-write	0	
+risk	through the api	production-write	0	
+risk	create * via the api	production-write	0	
+route	remember that	memory	0	
+route	remember this	memory	0	
+route	save this	memory	0	
+route	save that	memory	0	
+route	note this	memory	0	
+route	note that	memory	0	
+route	add a note	memory	0	
+route	log my work	memory	0	log
+route	log this	memory	0	log
+route	log today	memory	0	log
+route	log what i	memory	0	log
+route	work log	memory	0	log
+route	worklog	memory	0	log
+route	what did i work on	memory	0	recall
+route	what did we decide	memory	0	recall
+route	have i dealt with	memory	0	
+route	what do i know about	memory	0	
+route	capture this	memory	0	
+route	jot this down	memory	0	
+route	my notes	memory	0	
+route	what have i learned	memory	0	recall
+route	save it to my	memory	0	
+route	what is	definition	0	
+route	whats	definition	0	
+route	what does * mean	definition	0	
+route	meaning of	definition	0	
+route	define	definition	0	
+route	stand for	definition	0	
+route	what is a	definition	0	
+route	whats a	definition	0	
+route	who owns	lookup	0	
+route	who is responsible	lookup	0	
+route	who do i ask	lookup	0	
+route	which environment	lookup	0	
+route	where is	lookup	0	
+route	where do i find	lookup	0	
+route	where can i find	lookup	0	
+route	is there a	lookup	0	
+route	how many	lookup	0	
+route	what version	lookup	0	
+route	which version	lookup	0	
+route	what is the format	lookup	0	
+route	who handles	lookup	0	
+route	what is the email	lookup	0	
+route	which team	lookup	0	
+route	which * controls	lookup	0	
+route	what controls	lookup	0	
+route	where does * live	lookup	0	
+route	new here	setup	0	
+route	im new	setup	0	
+route	just started	setup	0	
+route	just joined	setup	0	
+route	first day	setup	0	
+route	new laptop	setup	0	
+route	reset my password	setup	0	
+route	set up	setup-verb	0	
+route	install	setup-verb	0	
+route	configure	setup-verb	0	
+route	get * working	setup-verb	0	
+route	connect to	setup-verb	0	
+route	access to	setup-verb	0	
+route	sign in to	setup-verb	0	
+route	log in to	setup-verb	0	
+route	uninstall	setup-verb	0	
+route	reinstall	setup-verb	0	
+route	update to the latest	setup-verb	0	
+route	upgrade	setup-verb	0	
+route	python function	outside	0	
+route	javascript function	outside	0	
+route	write a function	outside	0	
+route	regex for	outside	0	
+route	exit vim	outside	0	
+route	git rebase	outside	0	
+route	capital of	outside	0	
+route	recipe for	outside	0	
+route	leetcode	outside	0	
+route	css for	outside	0	
+route	hello world	outside	0	
+route	log that	memory	0	log
+route	log the decision	memory	0	decision
+route	record that	memory	0	
+route	record the decision	memory	0	decision
+route	remember we	memory	0	
+route	we decided	memory	0	decision
+route	naming convention	lookup	0	
+route	naming rule	lookup	0	
+route	get started with	setup-verb	0	
+route	in python	outside	0	
+route	with python	outside	0	
+route	using python	outside	0	
+route	python code	outside	0	
+route	python script	outside	0	
+route	python class	outside	0	
+route	in flutter	outside	0	
+route	in dart	outside	0	
+route	flutter widget	outside	0	
+route	dart code	outside	0	
+route	save * as a chain	memory	0	chain
+route	save these steps	memory	0	chain
+route	remember these steps	memory	0	chain
+route	save this as a chain	memory	0	chain
+route	save this answer	memory	0	answer
+route	snapshot this	memory	0	snapshot
+route	save this verbatim	memory	0	snapshot
+route	word for word copy	memory	0	snapshot
+route	save this as my template	memory	0	template
+route	remember that * owns	memory	0	person
+route	remember that * reports to	memory	0	person
+route	these two notes are related	memory	0	link
+route	save the way we did it	memory	0	chain
+route	save this shape as my template	memory	0	template
+route	link these two notes	memory	0	link
+route	save a copy of this	memory	0	snapshot
+route	keep a verbatim copy	memory	0	snapshot
+route	save this answer for next time	memory	0	answer
+noun	workflow of my own	wf-09	9	workflow-authoring
+noun	my own workflow	wf-09	9	workflow-authoring
+noun	promote a chain	wf-09	9	workflow-authoring
+noun	promote this chain	wf-09	9	workflow-authoring
+noun	turn this chain into a workflow	wf-09	9	workflow-authoring
+noun	save this as a workflow	wf-09	9	workflow-authoring
+noun	make this a workflow of my own	wf-09	9	workflow-authoring
+risk	insist	stated-cause	0	
+risk	insists that	stated-cause	0	
+risk	is sure	stated-cause	0	
+risk	are sure	stated-cause	0	
+risk	am sure	stated-cause	0	
+risk	pretty sure	stated-cause	0	
+risk	quite sure	stated-cause	0	
+risk	is convinced	stated-cause	0	
+risk	are convinced	stated-cause	0	
+risk	convinced that	stated-cause	0	
+risk	is certain	stated-cause	0	
+risk	are certain	stated-cause	0	
+risk	blame	stated-cause	0	
+risk	swears it	stated-cause	0	
+risk	swear it	stated-cause	0	
+risk	according to the customer	stated-cause	0	
+risk	according to them	stated-cause	0	
+risk	client says	stated-cause	0	
+risk	client thinks	stated-cause	0	
+risk	client believes	stated-cause	0	
+risk	client claims	stated-cause	0	
+risk	customer believes	stated-cause	0	
+risk	customer suspects	stated-cause	0	
+risk	they suspect	stated-cause	0	
+risk	user thinks	stated-cause	0	
+risk	user believes	stated-cause	0	
+risk	support says	stated-cause	0	
+risk	has to be the	stated-cause	0	
+risk	i bet its	stated-cause	0	
+risk	paste on the case	outbound-gate	0	
+risk	paste into the case	outbound-gate	0	
+risk	paste it on the case	outbound-gate	0	
+risk	paste in the case	outbound-gate	0	
+risk	ready to send	outbound-gate	0	
+risk	ok to send	outbound-gate	0	
+risk	okay to send	outbound-gate	0	
+risk	good to send	outbound-gate	0	
+risk	before i send	outbound-gate	0	
+risk	email the client	outbound-gate	0	
+risk	email to the client	outbound-gate	0	
+risk	email the customer that	outbound-gate	0	
+risk	send to the client	outbound-gate	0	
+risk	send it to the client	outbound-gate	0	
+risk	send it to the customer	outbound-gate	0	
+risk	reply to the client	outbound-gate	0	
+risk	response to the customer	outbound-gate	0	
+risk	response to the client	outbound-gate	0	
+risk	client email	outbound-gate	0	
+risk	client reply	outbound-gate	0	
+risk	tell the client	outbound-gate	0	
+risk	update the client	outbound-gate	0	
+risk	message the customer	outbound-gate	0	
+risk	message to the customer	outbound-gate	0	
+risk	note to the customer	outbound-gate	0	
+route	birthday message	outside	0	
+route	birthday note	outside	0	
+route	birthday card	outside	0	
+route	wedding toast	outside	0	
+route	wedding speech	outside	0	
+route	best man speech	outside	0	
+route	maid of honour speech	outside	0	
+route	maid of honor speech	outside	0	
+route	thank you card	outside	0	
+route	for my sister	outside	0	
+route	for my brother	outside	0	
+route	for my mom	outside	0	
+route	for my mother	outside	0	
+route	for my dad	outside	0	
+route	for my father	outside	0	
+route	for my wife	outside	0	
+route	for my husband	outside	0	
+route	for my best friend	outside	0	
+route	for my friend	outside	0	
+route	for my neighbour	outside	0	
+route	for my neighbor	outside	0	
+route	for my son	outside	0	
+route	for my daughter	outside	0	
+route	for my partner	outside	0	
+route	for my girlfriend	outside	0	
+route	for my boyfriend	outside	0	
+route	for my kids	outside	0	
+route	in javascript	outside	0	
+route	in typescript	outside	0	
+route	in java	outside	0	
+route	in rust	outside	0	
+route	in golang	outside	0	
+route	in c sharp	outside	0	
+route	in react	outside	0	
+route	a regex	outside	0	
+route	regex that	outside	0	
+route	regular expression	outside	0	
+route	reverse a string	outside	0	
+route	fizzbuzz	outside	0	
+route	big o	outside	0	
+route	binary search	outside	0	
+route	linked list	outside	0	
+route	replay the answer	memory	0	answer
+route	saved answer	memory	0	answer
+route	answer you saved	memory	0	answer
+route	answer i saved	memory	0	answer
+route	what did you tell me last time	memory	0	answer
+route	what you told me last time	memory	0	answer
+route	same answer as last time	memory	0	answer
+verb	tidy up	wf-12	7	
+verb	tidy it up	wf-12	7	
+verb	tidy this	wf-12	7	
+verb	clean it up	wf-12	7	
+verb	clean up this	wf-12	7	
+verb	clean up my	wf-12	7	
+verb	proofread	wf-12	7	
+verb	polish this	wf-12	7	
+verb	polish my	wf-12	7	
+verb	less blunt	wf-12	7	
+verb	fix the wording	wf-12	7	
+verb	fix up the wording	wf-12	7	
+verb	make it read better	wf-12	7	
+noun	help article	wf-05	5	knowledge-article
+noun	support article	wf-05	5	knowledge-article
+noun	how to article	wf-05	5	knowledge-article
+noun	how-to article	wf-05	5	knowledge-article
+noun	troubleshooting article	wf-05	5	knowledge-article
+noun	before i merge	wf-10	5	code-review
+noun	before merging	wf-10	5	code-review
+noun	before we merge	wf-10	5	code-review
+noun	ok to merge	wf-10	5	code-review
+noun	safe to merge	wf-10	5	code-review
+noun	review my diff	wf-10	5	code-review
+noun	review this change	wf-10	5	code-review
+noun	look over this change	wf-10	5	code-review
+noun	look over my change	wf-10	5	code-review
+risk	im sure	stated-cause	0	
+risk	i am sure	stated-cause	0	
+noun	closeout report	wf-05	5	project-closeout
+noun	close out report	wf-05	5	project-closeout
+noun	project closeout	wf-05	5	project-closeout
+noun	wrap up for the client	wf-05	5	project-closeout
+noun	go live wrap up	wf-05	5	project-closeout
+noun	go live summary	wf-05	5	project-closeout
+noun	post go live summary	wf-05	5	project-closeout
+noun	post go live report	wf-05	5	project-closeout
+noun	project wrap up	wf-05	5	project-closeout
+route	what dollar amount	lookup	0	
+route	at what amount	lookup	0	
+route	what amount does	lookup	0	
+route	what is the limit	lookup	0	
+route	approval limit	lookup	0	
+route	approval threshold	lookup	0	
+verb	fails in	wf-01	3	
+verb	failing in	wf-01	3	
+verb	fails for	wf-01	3	
+verb	failing for	wf-01	3	
+style	google style	google	0	
+style	google developer style	google	0	
+style	google docs style	google	0	
+style	google developer documentation style	google	0	
+style	google style guide	google	0	
+style	google profile	google	0	
+route	store everything	memory	0	
+route	save everything	memory	0	
+route	store all of this	memory	0	
+route	save all of this	memory	0	
+route	save all this	memory	0	
+route	store all this	memory	0	
+route	to the knowledge base	memory	0	
+route	to my knowledge base	memory	0	
+route	in my knowledge base	memory	0	
+route	into my knowledge base	memory	0	
+route	into the knowledge base	memory	0	
+route	to my notes	memory	0	
+route	to notes	memory	0	
+route	into my notes	memory	0	
+route	keep a note of	memory	0	
+route	make a note of	memory	0	
+route	store this	memory	0	
+route	store that	memory	0	
+route	store it in	memory	0	
+system	claude code	claude	1	
+system	claude desktop	claude	1	
+system	claude ai	claude	1	
+system	claude	claude	1	
+system	install claude	claude	1	
+system	copilot	copilot	1	
+system	github copilot	copilot	1	
+system	codex	codex	1	
+system	openai codex	codex	1	
+system	codex cli	codex	1	
+system	cursor ide	cursor	1	
+system	cursor editor	cursor	1	
+system	cursor app	cursor	1	
+system	cursor agent	cursor	1	
+system	cursor rule	cursor	1	
+system	gemini cli	gemini	1	
+system	gemini	gemini	1	
+system	google gemini	gemini	1	
+system	mcp	mcp	1	
+system	mcp server	mcp	1	
+system	flarehand	flarehand	1	
+system	marketplace	flarehand	1	
+system	plugin	flarehand	1	
+system	plugin install	flarehand	1	
+system	python	python	1	
+system	python3	python	1	
+system	pip	python	1	
+system	py 3	python	1	
+system	venv	python	1	
+system	virtualenv	python	1	
+system	obsidian	obsidian	1	
+system	graph view	obsidian	1	
+system	git	git	1	
+system	git bash	git	1	
+system	git config	git	1	
+system	git credential	git	1	
+system	nodejs	node	1	
+system	node js	node	1	
+system	npm	node	1	
+system	nvm	node	1	
+system	yarn	node	1	
+system	pnpm	node	1	
+system	node version	node	1	
+system	ssh	ssh	1	
+system	ssh key	ssh	1	
+system	homebrew	homebrew	1	
+system	brew install	homebrew	1	
+system	wsl	wsl	1	
+system	windows subsystem for linux	wsl	1	
+system	vs code	editor	1	
+system	vscode	editor	1	
+system	visual studio code	editor	1	
+system	intellij	editor	1	
+system	pycharm	editor	1	
+system	winget	package-manager	1	
+system	scoop	package-manager	1	
+system	chocolatey	package-manager	1	
+system	apt get	package-manager	1	
+system	flutter	flutter	1	
+system	fvm	flutter	1	
+system	jdk	java	1	
+system	java sdk	java	1	
+system	jira	jira	1	
+system	jira mcp	jira	1	
+system	confluence	confluence	1	
+system	github	github	1	
+system	gh auth	github	1	
+system	gh cli	github	1	
+system	gitlab	gitlab	1	
+system	bitbucket	bitbucket	1	
+system	notion	notion	1	
+system	slack	slack	1	
+system	microsoft teams	m365	1	
+system	ms teams	m365	1	
+system	teams chat	m365	1	
+system	teams channel	m365	1	
+system	teams call	m365	1	
+system	outlook	m365	1	
+system	sharepoint	m365	1	
+system	onedrive	m365	1	
+system	excel	m365	1	
+system	microsoft 365	m365	1	
+system	office 365	m365	1	
+system	google docs	google-workspace	1	
+system	google doc	google-workspace	1	
+system	google drive	google-workspace	1	
+system	google sheets	google-workspace	1	
+system	gmail	google-workspace	1	
+system	google workspace	google-workspace	1	
+system	salesforce	salesforce	1	
+system	sfdc	salesforce	1	
+system	hubspot	hubspot	1	
+system	zendesk	zendesk	1	
+system	servicenow	servicenow	1	
+system	service now	servicenow	1	
+system	linear app	linear	1	
+system	linear issue	linear	1	
+system	linear ticket	linear	1	
+system	sso	sso	1	
+system	saml	sso	1	
+system	okta	sso	1	
+system	docker	docker	1	
+system	docker desktop	docker	1	
+system	docker compose	docker	1	
+system	kubernetes	kubernetes	1	
+system	kubectl	kubernetes	1	
+system	k8s	kubernetes	1	
+system	helm	kubernetes	1	
+system	aws	aws	1	
+system	aws cli	aws	1	
+system	azure	azure	1	
+system	az cli	azure	1	
+system	gcp	gcp	1	
+system	gcloud	gcp	1	
+system	google cloud	gcp	1	
+system	postgres	database	1	
+system	postgresql	database	1	
+system	psql	database	1	
+system	mysql	database	1	
+system	sql server	database	1	
+system	oracle	database	1	
+system	sqlplus	database	1	
+system	sql developer	database	1	
+system	dbeaver	database	1	
+system	database client	database	1	
+route	which permission	lookup	0	
+route	what permission	lookup	0	
+route	who approves	lookup	0	
+route	new machine	setup	0	
+route	new computer	setup	0	
+route	im locked out	setup	0	
+route	i am locked out	setup	0	
+route	set up flarehand	setup	0	
+route	install flarehand	setup	0	
+route	cover letter	outside	0	
+route	my resume	outside	0	
+route	my cv	outside	0	
+route	resume for	outside	0	
+route	personal statement	outside	0	
+route	sql query	outside	0	
+route	write a query	outside	0	
+route	a query that	outside	0	
+route	select statement	outside	0	
+route	useeffect	outside	0	
+route	usestate	outside	0	
+route	react component	outside	0	
+route	react hook	outside	0	
+route	in node	outside	0	
+route	in sql	outside	0	
+route	in go	outside	0	
+route	in kotlin	outside	0	
+route	in swift	outside	0	
+route	in ruby	outside	0	
+route	in php	outside	0	
+route	in bash	outside	0	
+route	in c	outside	0	
+route	refactor this	outside	0	
+route	refactor it	outside	0	
+route	refactor my function	outside	0	
+route	refactor * into	outside	0	
+route	refactor the function	outside	0	
+route	list comprehension	outside	0	
+route	love letter	outside	0	
+route	dating profile	outside	0	
+route	poem about	outside	0	
+route	travel itinerary	outside	0	
+route	workout plan	outside	0	
+route	meal plan	outside	0	
+route	grocery list	outside	0	
+route	to my glossary	memory	0	glossary
+route	to the glossary	memory	0	glossary
+route	save this term	memory	0	glossary
+route	when i say * i mean	memory	0	glossary
+route	by * we mean	memory	0	glossary
+route	house rule	memory	0	rule
+route	our rule is	memory	0	rule
+route	team rule	memory	0	rule
+route	save this as a rule	memory	0	rule
+risk	api key	credentials	0	
+risk	secret key	credentials	0	
+risk	access token	credentials	0	
+risk	private key	credentials	0	
+risk	credential	credentials	0	
+risk	client secret	credentials	0	
+risk	connection string	credentials	0	
+risk	the password	credentials	0	
+risk	bearer token	credentials	0	
+risk	invoke the	production-write	0	
+risk	force push	production-write	0	
+risk	deploy to prod	production-write	0	
+risk	deploy to production	production-write	0	
+risk	kubectl delete	production-write	0	
+risk	drop database	production-write	0	
+risk	gdpr compliant	legal-advice	0	
+risk	are we compliant	legal-advice	0	
+risk	copyright infringement	legal-advice	0	
+risk	terms of service	legal-advice	0	
+risk	layoff	people-matter	0	
+risk	lay off	people-matter	0	
+risk	laid off	people-matter	0	
+risk	redundancy	people-matter	0	
+risk	phone number	customer-identifiers	0	
+risk	home address	customer-identifiers	0	
+risk	date of birth	customer-identifiers	0	
+risk	passport number	customer-identifiers	0	
+audience	for my manager	executive	1	
+audience	for investors	executive	1	
+audience	for the investors	executive	1	
+audience	for the founder	executive	1	
+audience	for the client	customer	1	
+audience	for students	newcomer	1	
+audience	for a student	newcomer	1	
+route	how do i name	lookup	0	
+route	how should i name	lookup	0	
+route	how should we name	lookup	0	
+verb	write the	wf-05	3	
+verb	write an	wf-05	3	
+noun	migration script	wf-09	5	sql-build
+noun	schema migration	wf-09	5	sql-build
+noun	database migration	wf-09	5	sql-build
+noun	review * migration script	wf-10	5	sql-build
+system	to cursor	cursor	1	
+system	in cursor	cursor	1	
+system	cursor setting	cursor	1	
+route	connect * to	setup-verb	0	
+noun	contract review	wf-07	5	contract-review
+noun	compare contracts	wf-07	5	contract-review
+noun	clause question	wf-07	5	contract-review
+noun	msa review	wf-07	5	contract-review
+noun	nda review	wf-07	5	contract-review
+noun	terms review	wf-07	5	contract-review
+noun	decision record	wf-05	5	decision-record
+noun	adr	wf-05	5	decision-record
+noun	architecture decision record	wf-05	5	decision-record
+noun	decision log	wf-05	5	decision-record
+noun	record the decision	wf-05	5	decision-record
+noun	daci	wf-05	5	decision-record
+noun	decision doc	wf-05	5	decision-record
+noun	executive summary	wf-04	5	exec-brief
+noun	leadership summary	wf-04	5	exec-brief
+noun	one page brief	wf-04	5	exec-brief
+noun	experiment	wf-05	4	experiment-brief
+noun	a b test	wf-05	5	experiment-brief
+noun	ab test plan	wf-05	5	experiment-brief
+noun	test readout	wf-05	5	experiment-brief
+noun	experiment readout	wf-05	5	experiment-brief
+noun	split test	wf-05	5	experiment-brief
+noun	hypothesis test plan	wf-05	5	experiment-brief
+noun	pr faq	wf-05	5	pr-faq
+noun	prfaq	wf-05	5	pr-faq
+noun	working backwards	wf-05	5	pr-faq
+noun	press release faq	wf-05	5	pr-faq
+noun	future press release	wf-05	5	pr-faq
+noun	vendor evaluation	wf-05	5	vendor-evaluation
+noun	vendor comparison	wf-05	5	vendor-evaluation
+noun	tool selection	wf-05	5	vendor-evaluation
+noun	rfp scoring	wf-05	5	vendor-evaluation
+noun	supplier evaluation	wf-05	5	vendor-evaluation
+noun	buy decision	wf-05	5	vendor-evaluation
+noun	tco	wf-05	5	vendor-evaluation
+noun	rfc	wf-05	5	design-doc
+noun	architecture doc	wf-05	5	design-doc
+noun	system design	wf-05	5	design-doc
+noun	tech spec	wf-05	5	design-doc
+noun	engineering design	wf-05	5	design-doc
+noun	functional specification	wf-05	5	functional-spec
+noun	requirements spec	wf-05	5	functional-spec
+noun	srs	wf-05	5	functional-spec
+noun	spec document	wf-05	5	functional-spec
+noun	okrs	wf-05	5	okrs
+noun	objectives and key results	wf-05	5	okrs
+noun	quarterly goals	wf-05	5	okrs
+noun	team goals	wf-05	5	okrs
+noun	key results	wf-05	5	okrs
+noun	product brief	wf-05	5	product-brief
+noun	product requirements	wf-05	5	product-brief
+noun	shape up pitch	wf-05	5	product-brief
+noun	feature brief	wf-05	5	product-brief
+noun	project charter	wf-05	5	project-charter
+noun	project kickoff	wf-05	5	project-charter
+noun	raci	wf-05	5	project-charter
+noun	project initiation document	wf-05	5	project-charter
+noun	risks and issues	wf-11	5	risk-register
+noun	risk assessment	wf-11	5	risk-register
+noun	issues log	wf-11	5	risk-register
+noun	backlog item	wf-05	5	user-story
+noun	jira story	wf-05	5	user-story
+noun	failing build	wf-01	5	ci-triage
+noun	red build	wf-01	5	ci-triage
+noun	ci failure	wf-01	5	ci-triage
+noun	pipeline failed	wf-01	5	ci-triage
+noun	broken pipeline	wf-01	5	ci-triage
+noun	test triage	wf-01	5	ci-triage
+noun	review this pr	wf-10	5	code-review
+noun	review my pull request	wf-10	5	code-review
+noun	review the diff	wf-10	5	code-review
+noun	migrate data	wf-09	5	data-migration
+noun	import plan	wf-09	5	data-migration
+noun	etl plan	wf-09	5	data-migration
+noun	legacy data load	wf-09	5	data-migration
+noun	database slow	wf-01	5	db-diagnostic
+noun	query plan	wf-01	5	db-diagnostic
+noun	database diagnostic	wf-01	5	db-diagnostic
+noun	lock contention	wf-01	5	db-diagnostic
+noun	db performance	wf-01	5	db-diagnostic
+noun	docs page	wf-05	5	docs-page
+noun	documentation	wf-05	4	docs-page
+noun	how to guide	wf-05	5	docs-page
+noun	tutorial	wf-05	5	docs-page
+noun	readme	wf-05	5	docs-page
+noun	getting started	wf-05	5	docs-page
+noun	reference page	wf-05	5	docs-page
+noun	install guide	wf-05	5	docs-page
+noun	ops procedure	wf-09	5	runbook
+noun	on call runbook	wf-09	5	runbook
+noun	change procedure	wf-09	5	runbook
+noun	alert response steps	wf-09	5	runbook
+noun	sop	wf-05	5	sop
+noun	standard operating procedure	wf-05	5	sop
+noun	operating procedure	wf-05	5	sop
+noun	work instruction	wf-05	5	sop
+noun	process document	wf-05	5	sop
+noun	schema change	wf-09	5	sql-build
+noun	ddl change	wf-09	5	sql-build
+noun	db change plan	wf-09	5	sql-build
+noun	qa plan	wf-11	5	test-plan
+noun	regression plan	wf-11	5	test-plan
+noun	uat plan	wf-11	5	test-plan
+noun	switchover	wf-09	5	cutover
+noun	hypercare plan	wf-09	5	cutover
+noun	go to market plan	wf-09	5	launch-plan
+noun	gtm plan	wf-09	5	launch-plan
+noun	product launch	wf-09	5	launch-plan
+noun	launch checklist	wf-09	5	launch-plan
+noun	launch tier	wf-09	5	launch-plan
+noun	project completion report	wf-05	5	project-closeout
+noun	handover report	wf-05	5	project-closeout
+noun	end of project report	wf-05	5	project-closeout
+noun	change log	wf-05	5	release-notes
+noun	version notes	wf-05	5	release-notes
+noun	keep a changelog	wf-05	5	release-notes
+noun	respond to the ticket	wf-05	5	customer-reply
+noun	support reply	wf-05	5	customer-reply
+noun	case update	wf-05	5	customer-reply
+noun	answer the customer	wf-05	5	customer-reply
+noun	api escalation	wf-03	5	escalation-packet
+noun	escalate to engineering	wf-03	5	escalation-packet
+noun	api error escalation	wf-03	5	escalation-packet
+noun	endpoint failing escalation	wf-03	5	escalation-packet
+noun	status page update	wf-05	5	incident-comms
+noun	incident update	wf-05	5	incident-comms
+noun	outage message	wf-05	5	incident-comms
+noun	incident communication	wf-05	5	incident-comms
+noun	customer outage notice	wf-05	5	incident-comms
+noun	service status	wf-05	5	incident-comms
+noun	incident report	wf-03	5	incident-report
+noun	incident record	wf-03	5	incident-report
+noun	ticket handoff	wf-03	5	incident-report
+noun	escalate the case	wf-03	5	incident-report
+noun	case handover	wf-03	5	incident-report
+noun	support escalation	wf-03	5	incident-report
+noun	kcs article	wf-05	5	knowledge-article
+noun	faq entry	wf-05	5	knowledge-article
+noun	workaround article	wf-05	5	knowledge-article
+noun	outage writeup	wf-05	5	postmortem
+noun	post incident review	wf-05	5	postmortem
+noun	blameless review	wf-05	5	postmortem
+noun	pir	wf-05	5	postmortem
+noun	root cause analysis	wf-01	5	rca
+noun	cause analysis	wf-01	5	rca
+noun	bug repro	wf-03	5	repro-steps
+noun	meeting summary	wf-04	5	meeting-notes
+noun	action items from the meeting	wf-04	5	meeting-notes
+noun	news release	wf-05	5	press-release
+noun	media release	wf-05	5	press-release
+noun	announcement for press	wf-05	5	press-release
+noun	press announcement	wf-05	5	press-release
+noun	project status	wf-04	5	status-report
+noun	rag report	wf-04	5	status-report
+noun	steering update	wf-04	5	status-report
+noun	programme status	wf-04	5	status-report
+noun	weekly status	wf-05	5	weekly-update
+noun	friday update	wf-05	5	weekly-update
+noun	progress plans problems	wf-05	5	weekly-update
+noun	lesson plan	wf-09	5	course-design
+noun	workshop agenda	wf-09	5	course-design
+noun	syllabus	wf-09	5	course-design
+noun	research proposal	wf-05	5	research-proposal
+noun	grant proposal	wf-05	5	research-proposal
+noun	specific aims	wf-05	5	research-proposal
+noun	literature review	wf-05	5	research-proposal
+noun	systematic review	wf-05	5	research-proposal
+noun	study protocol	wf-05	5	research-proposal
+noun	research plan	wf-05	5	research-proposal
+noun	retrospective	wf-05	5	retrospective
+noun	retro	wf-05	5	retrospective
+noun	sprint retro	wf-05	5	retrospective
+noun	lessons learned session	wf-05	5	retrospective
+noun	team retro	wf-05	5	retrospective
+noun	project retrospective	wf-05	5	retrospective
+noun	theme analysis	wf-08	5	themes-report
+noun	research synthesis	wf-08	5	themes-report
+noun	feedback themes	wf-08	5	themes-report
+noun	ticket trends	wf-08	5	themes-report
+noun	survey analysis	wf-08	5	themes-report
+noun	affinity map	wf-08	5	themes-report
+noun	interview snapshot	wf-05	5	user-interview
+noun	user interview notes	wf-05	5	user-interview
+noun	customer interview	wf-05	5	user-interview
+noun	interview synthesis	wf-05	5	user-interview
+noun	discovery interview	wf-05	5	user-interview
+noun	hr letter	wf-05	5	hr-document
+noun	employee announcement	wf-05	5	hr-document
+noun	hr faq	wf-05	5	hr-document
+noun	warning letter	wf-05	5	hr-document
+noun	improvement plan	wf-05	5	hr-document
+noun	interview scorecard	wf-05	5	interview-scorecard
+noun	interview guide	wf-05	5	interview-scorecard
+noun	interview questions	wf-05	5	interview-scorecard
+noun	interview kit	wf-05	5	interview-scorecard
+noun	structured interview	wf-05	5	interview-scorecard
+noun	hiring rubric	wf-05	5	interview-scorecard
+noun	job ad	wf-05	5	job-description
+noun	role description	wf-05	5	job-description
+noun	hiring post	wf-05	5	job-description
+noun	30 60 90	wf-05	5	onboarding-plan
+noun	30 60 90 day plan	wf-05	5	onboarding-plan
+noun	first 90 days	wf-05	5	onboarding-plan
+noun	new hire plan	wf-05	5	onboarding-plan
+noun	ramp plan	wf-05	5	onboarding-plan
+noun	team notes	wf-04	5	one-on-one-notes
+noun	manager notes	wf-04	5	one-on-one-notes
+noun	check in notes	wf-04	5	one-on-one-notes
+noun	self review	wf-05	5	performance-review
+noun	self assessment	wf-05	5	performance-review
+noun	peer feedback	wf-05	5	performance-review
+noun	brag doc	wf-05	5	performance-review
+noun	annual review	wf-05	5	performance-review
+noun	review cycle	wf-05	5	performance-review
+noun	company policy	wf-05	5	policy
+noun	acceptable use policy	wf-05	5	policy
+noun	security policy	wf-05	5	policy
+noun	expense policy	wf-05	5	policy
+noun	remote work policy	wf-05	5	policy
+noun	business case	wf-05	5	business-case
+noun	budget request	wf-05	5	business-case
+noun	funding request	wf-05	5	business-case
+noun	investment case	wf-05	5	business-case
+noun	justify the spend	wf-05	5	business-case
+noun	five case model	wf-05	5	business-case
+noun	capex request	wf-05	5	business-case
+noun	reconciliation memo	wf-07	5	finance-memo
+noun	budget vs actual	wf-07	5	finance-memo
+noun	month end memo	wf-07	5	finance-memo
+noun	variance explanation	wf-07	5	finance-memo
+noun	investor update	wf-05	5	investor-update
+noun	monthly update to investors	wf-05	5	investor-update
+noun	shareholder update	wf-05	5	investor-update
+noun	board update email	wf-05	5	investor-update
+noun	investor letter	wf-05	5	investor-update
+noun	ebr	wf-04	5	business-review
+noun	executive business review	wf-04	5	business-review
+noun	account review	wf-04	5	business-review
+noun	customer review deck	wf-04	5	business-review
+noun	customer story	wf-05	5	case-study
+noun	success story	wf-05	5	case-study
+noun	customer win writeup	wf-05	5	case-study
+noun	reference story	wf-05	5	case-study
+noun	rfi response	wf-05	5	client-proposal
+noun	rfq	wf-05	5	client-proposal
+noun	bid	wf-05	5	client-proposal
+noun	pitch proposal	wf-05	5	client-proposal
+noun	quote proposal	wf-05	5	client-proposal
+noun	creative brief	wf-05	5	creative-brief
+noun	content brief	wf-05	5	creative-brief
+noun	design brief	wf-05	5	creative-brief
+noun	agency brief	wf-05	5	creative-brief
+noun	deal summary	wf-05	5	deal-summary
+noun	opportunity summary	wf-05	5	deal-summary
+noun	meddpicc	wf-05	5	deal-summary
+noun	discovery guide	wf-05	5	sales-enablement
+noun	sales playbook	wf-05	5	sales-enablement
+noun	change order	wf-05	5	statement-of-work
+noun	change request	wf-05	5	statement-of-work
+noun	scope document	wf-05	5	statement-of-work
+noun	work order	wf-05	5	statement-of-work
+noun	support ticket	wf-03	5	incident-report
+noun	customer ticket	wf-03	5	incident-report
+noun	on the case	wf-05	5	customer-reply
+noun	on the customer case	wf-05	5	customer-reply
+noun	draft reply	wf-05	5	customer-reply
+noun	write * reply	wf-05	5	customer-reply
+noun	draft * reply	wf-05	5	customer-reply
+noun	for my vp	wf-04	5	exec-brief
+noun	for the vp	wf-04	5	exec-brief
+noun	for my director	wf-04	5	exec-brief
+verb	grill me	wf-10	7	
+verb	grill this	wf-10	7	
+verb	grill my	wf-10	7	
+verb	grill the	wf-10	7	
+route	haiku	outside	0	
+route	a poem	outside	0	
+route	limerick	outside	0	
+route	short story	outside	0	
+route	song lyric	outside	0	
+route	python decorator	outside	0	
+route	explain python	outside	0	
+route	explain javascript	outside	0	
+route	python generator	outside	0	
+route	javascript closure	outside	0	
+risk	write * reply	outbound-gate	0	
+risk	draft * reply	outbound-gate	0	
+risk	a reply to	outbound-gate	0	
+audience	for my vp	executive	1	
+verb	my draft	wf-12	7	
+verb	here is my draft	wf-12	7	
+risk	before i send	check-before-send	0	
+risk	before sending	check-before-send	0	
+risk	before it goes out	check-before-send	0	
+risk	are the numbers right	check-before-send	0	
+risk	are these numbers right	check-before-send	0	
+risk	is the number right	check-before-send	0	
+risk	are the figures right	check-before-send	0	
+risk	check the numbers	check-before-send	0	
+risk	fact check	check-before-send	0	
+risk	is this accurate	check-before-send	0	
+risk	is it accurate	check-before-send	0	
+risk	is this correct	check-before-send	0	
+risk	does this add up	check-before-send	0	
+risk	does it add up	check-before-send	0	
+risk	verify these claims	check-before-send	0	
+risk	verify the claims	check-before-send	0	
+risk	check the claims	check-before-send	0	
+risk	can i send this	check-before-send	0	
+risk	ok to send	check-before-send	0	
+risk	okay to send	check-before-send	0	
+risk	good to send	check-before-send	0	
+risk	ready to send	check-before-send	0	
+risk	safe to send	check-before-send	0	
+verb	whats wrong with * plan	wf-10	7	
+verb	what is wrong with * plan	wf-10	7	
+verb	whats wrong with * proposal	wf-10	7	
+verb	what is wrong with * proposal	wf-10	7	
+verb	are the numbers right	wf-10	7	
+verb	are these numbers right	wf-10	7	
+verb	check the numbers	wf-10	7	
+verb	is this accurate	wf-10	7	
+verb	does this add up	wf-10	7	
+verb	verify these claims	wf-10	7	
+verb	verify the claims	wf-10	7	
+verb	check the claims	wf-10	7	
+verb	check this reply	wf-10	7	
+verb	check my reply	wf-10	7	
+verb	check this email	wf-10	7	
+verb	check this draft	wf-10	7	

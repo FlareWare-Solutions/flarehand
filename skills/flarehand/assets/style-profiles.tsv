@@ -1,0 +1,2 @@
+profile	applies_to	reference	words	means
+google	knowledge-article,runbook,docs-page,release-notes,functional-spec,test-plan,user-story,course-design,sql-build,rca,cutover,db-diagnostic,data-migration,ci-triage,repro-steps,escalation-packet,incident-report,statement-of-work,design-doc,decision-record,postmortem,sop,wf-09-plan	references/voice-google.md	assets/style-words-google.tsv	the Google developer documentation style, on top of the house voice, for documents and technical write-ups
