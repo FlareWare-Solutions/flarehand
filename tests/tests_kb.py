@@ -1368,6 +1368,14 @@ class TestLockHoldsUnderLoad(unittest.TestCase):
             self.lock.write_text("999999 someone else\n", encoding="utf-8")
         self.assertTrue(self.lock.exists())
 
+    def test_release_leaves_a_new_lock_that_reused_the_inode(self):
+        """Linux can hand a new file the inode number of one just deleted. Rewriting the lock
+        in place keeps the inode and changes the owner, which is that case exactly."""
+        with kb.kb_lock(self.tmp):
+            with open(self.lock, "w", encoding="utf-8") as f:
+                f.write("999999 2026-10-05T00:00:00 someoneelse\n")
+        self.assertTrue(self.lock.exists())
+
     def test_the_owner_keeps_its_lock_fresh(self):
         kb.kb_lock.HEARTBEAT_SECONDS = 0.05
         with kb.kb_lock(self.tmp):

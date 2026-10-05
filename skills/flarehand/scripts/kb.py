@@ -707,6 +707,7 @@ class kb_lock:
     def __init__(self, root: Path, lock_path: Path | None = None):
         self.path = lock_path or root / ".index" / ".lock"
         self.ident = None
+        self.token = ""
         self.key = (str(self.path), _thread_id())
         self.nested = False
         self._stop = None
@@ -750,9 +751,11 @@ class kb_lock:
                         die(f"cannot clear the old lock at {self.path}: {e}")
                     continue
                 if fd is not None:
+                    import secrets
+                    self.token = (f"{os.getpid()} {datetime.now().isoformat(timespec='seconds')} "
+                                  f"{secrets.token_hex(8)}")
                     try:
-                        os.write(fd, f"{os.getpid()} {datetime.now().isoformat(timespec='seconds')}\n"
-                                 .encode())
+                        os.write(fd, (self.token + "\n").encode())
                         st = os.fstat(fd)
                         self.ident = (st.st_dev, st.st_ino)
                     finally:
@@ -766,11 +769,15 @@ class kb_lock:
             time.sleep(0.02)
 
     def _mine(self) -> bool:
+        """True only for the lock this command created. The file system may give a new lock
+        the inode number of one just deleted (Linux often does), so the random token written
+        into the lock must match as well."""
         try:
             st = self.path.stat()
+            text = self.path.read_text(encoding="utf-8", errors="replace").strip()
         except OSError:
             return False
-        return (st.st_dev, st.st_ino) == self.ident
+        return (st.st_dev, st.st_ino) == self.ident and text == self.token
 
     def _start_heartbeat(self) -> None:
         import threading
