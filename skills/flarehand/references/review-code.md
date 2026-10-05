@@ -93,13 +93,34 @@ here. Say so, and ask, or read it through an MCP server when one is connected. F
 API change, check the public contract: what other systems read, and the published spec. Run the tests
 on the base and on the change when you can, and compare.
 
-**Perspectives come from the change, not from a fixed list.** Before reading as anyone, name who
-and what this change will meet. Take them from the diff, the ticket and the repository. Think of
-the people who use it, run it, support it, integrate with it, audit it or maintain it. Add where it
-runs: the operating system, browser or device, the locale and language, the scale, accessibility
-needs, and other AI tools. Pick the three to five that matter most, and say in one line why each
-matters here. A team can name standing perspectives in its house rules, under a heading such as
-`## Perspectives`, and every brief carries them.
+**Perspectives come from the change, not from a fixed list.** There is no set number. You judge
+which ones matter, and the person decides when the list is long.
+
+1. **Find them.** Read the diff, the ticket and the repository. Think of the people who use it, run
+   it, support it, integrate with it, audit it or maintain it. Add where it runs: the operating
+   system, browser or device, the language, the scale, accessibility needs, and other AI tools.
+2. **Keep only a real stake.** Write one sentence naming each perspective's concrete stake in this
+   change, such as "integrators: the response field `rate` is renamed". No sentence means it is out.
+3. **Rank them** by impact times likelihood. Impact is how bad and how reversible the harm is, and
+   how much the person depends on it. Likelihood is whether the change touches what they use.
+   Deadlines and compliance raise the urgency.
+4. **Required ones always stay.** A team names standing perspectives in its house rules, under a
+   heading such as `## Perspectives`. Every brief carries them, and they are never dropped.
+5. **Merge overlaps.** Two perspectives that would find the same problems are one perspective.
+6. **Decide the scope with the person when it is long.** Review every perspective with a real stake.
+   The list may be long: more than about five optional ones, or more than one pass can do well. Then
+   show the ranked list with your recommended picks, and let them choose. "Just go" accepts your picks.
+7. **Read it as each one, through a scenario.** "As the on-call engineer at 3 a.m., reading these
+   logs", not "think like an operator". When subagents are available, give each perspective its own
+   reader with the same change and its own scenario. Otherwise take one pass per perspective, plus one
+   plain pass, because a role can hide an ordinary bug.
+8. **Report what you skipped.** List the perspectives reviewed, and those considered but skipped,
+   each with a one-line reason.
+
+Every finding cites its evidence, a file and line or a quote, and names the consequence for that
+person. A role voicing a feeling is not a finding. A simulated user is not user evidence: say where
+real user, accessibility or locale testing is needed. Leave mechanism-level problems, such as a
+security flaw, to their own lens.
 
 | The change | Perspectives that usually matter |
 |---|---|

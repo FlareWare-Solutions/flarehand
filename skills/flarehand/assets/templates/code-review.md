@@ -73,6 +73,11 @@ learn:
 
 <!-- Problems in code the change did not touch. Not graded. Each one gets its own ticket, or goes to a team lead if it is big. -->
 
+## Perspectives considered
+<!-- optional -->
+
+<!-- When the perspectives lens ran: each perspective reviewed, with its one-line stake, and each one considered but skipped, with why (no stake, merged into another, or the person left it out). Mark the ones a house rule required. -->
+
 ## What this review did not cover
 
 <!-- Lenses not checked and why, files not read, and anything no tool could run. A reviewer can miss things, so say what was not looked at. -->

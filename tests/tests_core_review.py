@@ -233,13 +233,17 @@ class TestPerspectivesComeFromTheChange(unittest.TestCase):
     def test_the_brief_asks_who_this_change_will_meet(self):
         out = run("review.py", "brief", "perspectives").stdout
         self.assertIn("Who will meet this change", out)
-        self.assertIn("three to five", out)
-        self.assertIn("not a fixed list", out)
+        self.assertIn("There is no fixed number", out)
+        self.assertIn("let the person choose", out)
+        self.assertIn("which you skipped", out)
+        self.assertNotIn("three to five", out)
 
     def test_the_reference_shows_perspectives_vary_by_change(self):
         text = (SKILL / "references" / "review-code.md").read_text(encoding="utf-8")
         self.assertIn("Perspectives come from the change, not from a fixed list.", text)
         self.assertIn("## Perspectives", text)
+        self.assertIn("There is no set number.", text)
+        self.assertIn("\"Just go\" accepts your picks.", text)
 
 
 if __name__ == "__main__":

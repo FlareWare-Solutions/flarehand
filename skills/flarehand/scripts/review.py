@@ -372,6 +372,13 @@ def render(result: dict, findings: list[dict], lenses: list[dict], most_likely: 
     out += ["## Outside this change", "",
             "Problems in code this change did not touch. Not graded. Each one is worth its own ticket.", ""]
     out += (outside or ["None."]) + [""]
+    out += ["## Perspectives considered", ""]
+    persp = next((r for r in result["lenses"] if r["lens"] == "perspectives"), None)
+    if persp is None or persp["grade"] == "not checked":
+        out += ["The perspectives lens was not checked.", ""]
+    else:
+        out += ["[your input] <!-- Each perspective reviewed, with its one-line stake, and each one considered "
+                "but skipped, with why. Mark the ones a house rule required. -->", ""]
     out += ["## What this review did not cover", ""]
     gaps = [f"- {r['name']}: {r['reason']}" for r in result["lenses"] if r["grade"] == "not checked"]
     out += gaps or ["Every lens was checked. A review can still miss things, so say what you did not read."]
