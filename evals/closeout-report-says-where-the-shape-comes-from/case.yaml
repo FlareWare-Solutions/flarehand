@@ -1,0 +1,51 @@
+schema_version: "1.1"
+name: closeout-report-says-where-the-shape-comes-from
+tags: [trigger, services, pm]
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    I need to put together a wrap-up report for the client now that go-live is done. Where do I start?
+graders:
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: names-the-artifact
+    type: llm
+    weight: 1
+    criteria: |-
+      The user said they need a wrap-up report for the client now that go-live is done, and asked where to start. Nothing else about the project was given. PASS if this condition holds, FAIL if it does not:
+      It names the artifact as a project closeout or wrap-up report.
+  - name: no-invented-facts
+    type: llm
+    weight: 2
+    criteria: |-
+      The user said they need a wrap-up report for the client now that go-live is done, and asked where to start. Nothing else about the project was given. PASS if this condition holds, FAIL if it does not:
+      It invents no project facts such as dates, budget, scope, metrics, client names or outcomes. Placeholders are fine.
+  - name: no-job-title
+    type: llm
+    weight: 1
+    criteria: |-
+      The user said they need a wrap-up report for the client now that go-live is done, and asked where to start. Nothing else about the project was given. PASS if this condition holds, FAIL if it does not:
+      It does not ask the user for their own job title. Asking what they work on, or asking for a client contact's name or title, is fine.
+  - name: questions-or-skeleton
+    type: llm
+    weight: 2
+    criteria: |-
+      The user said they need a wrap-up report for the client now that go-live is done, and asked where to start. Nothing else about the project was given. PASS if this condition holds, FAIL if it does not:
+      It either asks a short round of questions, each with a recommended answer, or gives a skeleton with marked placeholders and offers to fill it.
+  - name: ran-classifier
+    type: tool_used
+    tool: Bash
+    input_match: 'classify\.py'
+    arm: with-only
+    weight: 1
+  - name: says-where-the-shape-comes-from
+    type: llm
+    weight: 1
+    criteria: |-
+      The user said they need a wrap-up report for the client now that go-live is done, and asked where to start. Nothing else about the project was given. PASS if this condition holds, FAIL if it does not:
+      It says the structure comes from a named public framework or from general practice, not from the user's company.

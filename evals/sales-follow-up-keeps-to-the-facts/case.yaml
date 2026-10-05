@@ -1,0 +1,52 @@
+schema_version: "1.1"
+name: sales-follow-up-keeps-to-the-facts
+tags: [trigger, sales, outbound]
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Draft a follow-up email to Jordan at Acme after today's demo. They liked SSO and the audit log. They asked about pricing for 200 seats and whether we support SCIM. Our list price is $12 per seat per month. I don't know the SCIM answer yet. They want a proposal by Friday.
+graders:
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: includes-the-facts
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a follow-up email to Jordan at Acme after a product demo. PASS if this condition holds, FAIL if it does not:
+      The email mentions that they liked SSO and the audit log, the list price of $12 per seat per month, the question about 200 seats, and the proposal by Friday.
+  - name: no-invented-terms
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a follow-up email to Jordan at Acme after a product demo. PASS if this condition holds, FAIL if it does not:
+      In the email itself (ignore notes to the user after it), it offers no discount, trial or contract terms, and gives no date other than Friday.
+  - name: no-invented-url
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: 'https?://|\bwww\.'
+  - name: ran-checks
+    type: tool_used
+    tool: Bash
+    input_match: 'redact\.py|ground\.py|check_output\.py|\bcheck\.py'
+    arm: with-only
+    weight: 1
+  - name: scim-to-confirm
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a follow-up email to Jordan at Acme after a product demo. PASS if this condition holds, FAIL if it does not:
+      It says SCIM support will be confirmed, without saying it is or is not supported.
+  - name: total-is-derived
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked for a follow-up email to Jordan at Acme after a product demo. PASS if this condition holds, FAIL if it does not:
+      If it gives a total for 200 seats, the total is $2,400 per month (200 x $12) and it is shown as worked out from the list price. Giving no total is fine.

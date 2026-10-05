@@ -4,8 +4,8 @@ description: "Check a reply, draft or claim before it goes out: are the facts an
 license: MIT
 compatibility: "Needs the flarehand skill installed beside it. Best with a local shell and Python 3. Without web access it grounds in files, git, MCP servers and what the person pastes, and marks the rest as assumptions."
 metadata:
-  flarehand.owner: "Flareware"
-  flarehand.version: "0.1.0"
+  flarehand.owner: "FlareWare Solutions"
+  flarehand.version: "1.0.0"
 ---
 
 # flarehand-ground

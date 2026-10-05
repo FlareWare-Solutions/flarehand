@@ -1,0 +1,47 @@
+schema_version: "1.1"
+name: writeup-offers-google-style
+tags: [trigger, google-style, writeup, sre]
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Write a runbook for rotating the TLS certificate on our public API load balancer.
+graders:
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: google-style-optional
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a runbook for rotating the TLS certificate on their public API load balancer. Nothing about their infrastructure was given. PASS if this condition holds, FAIL if it does not:
+      It offers the Google developer documentation style as an option the user can choose, not as something required or already applied.
+  - name: mentions-google
+    type: regex
+    target: last_message
+    match: contains
+    flags: i
+    weight: 1
+    pattern: 'google'
+  - name: names-the-runbook
+    type: regex
+    target: last_message
+    match: contains
+    flags: i
+    weight: 1
+    pattern: '\brunbook\b'
+  - name: no-invented-infrastructure
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a runbook for rotating the TLS certificate on their public API load balancer. Nothing about their infrastructure was given. PASS if this condition holds, FAIL if it does not:
+      It presents no host names, certificate paths, cloud provider, account ids or commands as the user's own. Generic placeholders are fine.
+  - name: questions-or-placeholders
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a runbook for rotating the TLS certificate on their public API load balancer. Nothing about their infrastructure was given. PASS if this condition holds, FAIL if it does not:
+      It either asks a small round of questions (about three), or gives a draft runbook with marked placeholders and a list of what is missing.

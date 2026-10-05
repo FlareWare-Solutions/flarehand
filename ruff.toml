@@ -1,0 +1,8 @@
+# Lint only: never a runtime dependency. Run with `pipx run ruff check .` or `uvx ruff check .`
+target-version = "py39"
+line-length = 120
+extend-exclude = ["internal", "dist"]
+
+[lint]
+select = ["E9", "F", "B", "UP"]
+ignore = ["B023", "UP006", "UP007", "UP035", "UP045"]

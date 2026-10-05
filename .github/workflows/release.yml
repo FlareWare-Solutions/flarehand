@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.x"
+      - name: Tag matches every manifest
+        run: |
+          python tools/bump_version.py check
+          want="${GITHUB_REF_NAME#v}"
+          have="$(python -c 'import json; print(json.load(open(".claude-plugin/plugin.json"))["version"])')"
+          [ "$want" = "$have" ] || { echo "::error::tag $GITHUB_REF_NAME but manifests say $have"; exit 1; }
+          grep -q "^## \[$want\] - " CHANGELOG.md || { echo "::error::CHANGELOG.md has no [$want] section"; exit 1; }
+      - name: Unit tests
+        run: python tests/test_scripts.py
+      - name: Build archives
+        run: |
+          python skills/flarehand/scripts/package.py --formats skill zip tar.gz --out dist
+          (cd dist && sha256sum * > SHA256SUMS.txt)
+      - name: Release notes from CHANGELOG
+        run: |
+          want="${GITHUB_REF_NAME#v}"
+          awk -v v="$want" 'index($0, "## [" v "]") == 1 {f=1; next} /^## \[/ {f=0} /^\[[^]]+\]: / {f=0} f' CHANGELOG.md > notes.md
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --title "flarehand ${GITHUB_REF_NAME#v}" --notes-file notes.md --verify-tag

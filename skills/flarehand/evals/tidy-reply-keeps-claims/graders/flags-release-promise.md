@@ -1,7 +1,0 @@
----
-type: llm
-weight: 2
----
-
-The user asked to tidy their own draft before posting it to a customer: "Hi Sam, our dev looked at it and confirmed it. The fix will be in the next release. Thanks". PASS if this condition holds, FAIL if it does not:
-It points out that "the fix will be in the next release" is a commitment, and asks whether it is confirmed before it goes to the customer.

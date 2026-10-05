@@ -1,0 +1,39 @@
+schema_version: "1.1"
+name: unclear-ask-offers-options
+tags: [trigger, router]
+execution:
+  max_turns: 15
+  timeout_seconds: 450
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Can you help me with the migration?
+graders:
+  - name: asks-or-offers
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked only "Can you help me with the migration?", with nothing saying what migration. PASS if this condition holds, FAIL if it does not:
+      It asks what the migration is, or offers a few concrete jobs it could do, such as a plan, a cutover runbook, a risk review or a data mapping.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: no-guess
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked only "Can you help me with the migration?", with nothing saying what migration. PASS if this condition holds, FAIL if it does not:
+      It does not pick one kind of migration and start the work, and invents no details about the user's systems.
+  - name: ran-classifier
+    type: tool_used
+    tool: Bash
+    input_match: 'classify\.py'
+    arm: with-only
+    weight: 1
+  - name: short
+    type: regex
+    target: last_message
+    match: contains
+    weight: 1
+    pattern: '^[\s\S]{1,1500}$'

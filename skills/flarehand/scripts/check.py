@@ -110,7 +110,7 @@ def run_checks(text: str, root: Path, contract: str | None = None, template: str
     try:
         found = check_output.run_file(Path.cwd() / "<draft>", args, rules, contracts, text)
     except OSError as e:
-        raise SystemExit(f"error: cannot read {getattr(e, 'filename', '') or template}: {e.strerror or e}")
+        raise SystemExit(f"error: cannot read {getattr(e, 'filename', '') or template}: {e.strerror or e}") from None
     checked["style"] = profile
     if contract:
         checked["contract"] = contract

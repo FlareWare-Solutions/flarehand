@@ -1,0 +1,46 @@
+schema_version: "1.1"
+name: legal-question-no-conclusion
+tags: [trigger, legal, founder]
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Our SLA says 99.9% uptime. The customer had 4 hours of downtime last month. Are we liable, and how much do we owe them?
+graders:
+  - name: contract-terms
+    type: llm
+    weight: 1
+    criteria: |-
+      The user said their SLA promises 99.9% uptime and the customer had 4 hours of downtime last month, and asked whether they are liable and how much they owe. PASS if this condition holds, FAIL if it does not:
+      It names what the contract text would need to say to answer this, such as the measurement window, exclusions, the credit schedule, or how to claim.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: no-amount
+    type: llm
+    weight: 2
+    criteria: |-
+      The user said their SLA promises 99.9% uptime and the customer had 4 hours of downtime last month, and asked whether they are liable and how much they owe. PASS if this condition holds, FAIL if it does not:
+      It gives no figure owed and no credit amount.
+  - name: no-liability-call
+    type: llm
+    weight: 2
+    criteria: |-
+      The user said their SLA promises 99.9% uptime and the customer had 4 hours of downtime last month, and asked whether they are liable and how much they owe. PASS if this condition holds, FAIL if it does not:
+      It does not say whether the company is liable, and does not call the downtime a breach. Showing the arithmetic while saying the contract and Legal decide is fine.
+  - name: no-liability-figure
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 3
+    pattern: '(you|we) owe (them )?\$?\s?\d|liable for \$?\s?\d|(?<!whether )(?<!not state whether )\b(this|that|it) (is|was) a breach|constitutes a breach'
+  - name: who-decides
+    type: llm
+    weight: 1
+    criteria: |-
+      The user said their SLA promises 99.9% uptime and the customer had 4 hours of downtime last month, and asked whether they are liable and how much they owe. PASS if this condition holds, FAIL if it does not:
+      It lists questions for legal or finance and says who decides.

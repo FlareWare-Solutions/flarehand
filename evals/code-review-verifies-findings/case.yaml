@@ -1,0 +1,79 @@
+schema_version: "1.1"
+name: code-review-verifies-findings
+tags: [trigger, engineering, review]
+execution:
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Review this change before I merge it. Grade correctness, regressions and anything hardcoded.
+
+    ```diff
+    --- a/billing/rates.py
+    +++ b/billing/rates.py
+    @@ -1,12 +1,10 @@
+    -SUPPORTED_API = get_supported_api_version()
+    +SUPPORTED_API = "2024.2"
+
+     def unit_rate(item, rate_table):
+    -    if item is None:
+    -        return 0
+         code = item.cost_code.upper()
+    -    return rate_table.get(code, 0)
+    +    return rate_table[code]
+    ```
+graders:
+  - name: confirmed-or-plausible
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked for a review of a diff to billing/rates.py before merging, grading correctness, regressions and hardcoded values. PASS if this condition holds, FAIL if it does not:
+      It marks findings as confirmed against the code or only plausible, or says what it could not check.
+  - name: finding-detail
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked for a review of a diff to billing/rates.py before merging, grading correctness, regressions and hardcoded values. PASS if this condition holds, FAIL if it does not:
+      Each finding has a location, a severity and a concrete fix.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: flags-hardcoded-version
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a review of a diff to billing/rates.py before merging, grading correctness, regressions and hardcoded values. PASS if this condition holds, FAIL if it does not:
+      It flags that SUPPORTED_API is now the hardcoded string "2024.2" instead of get_supported_api_version(), so it will go stale.
+  - name: flags-the-crash
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a review of a diff to billing/rates.py before merging, grading correctness, regressions and hardcoded values. PASS if this condition holds, FAIL if it does not:
+      It flags that removing the "if item is None: return 0" guard and changing rate_table.get(code, 0) to rate_table[code] makes a None item or an unknown cost code raise an error where it used to return 0.
+  - name: grades-each-lens
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a review of a diff to billing/rates.py before merging, grading correctness, regressions and hardcoded values. PASS if this condition holds, FAIL if it does not:
+      It gives a grade or verdict for each of correctness, regressions and hardcoded values.
+  - name: no-rubber-stamp
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: 'looks good to me|lgtm|ready to merge'
+  - name: not-approved
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a review of a diff to billing/rates.py before merging, grading correctness, regressions and hardcoded values. PASS if this condition holds, FAIL if it does not:
+      It does not approve the change for merging.
+  - name: ran-review
+    type: tool_used
+    tool: Bash
+    input_match: 'review\.py'
+    arm: with-only
+    weight: 1

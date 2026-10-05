@@ -100,7 +100,7 @@ KEEP_AS_IS = {
     # contractions lose their apostrophe first, so "what's" arrives as "whats". Stemming it
     # to "what" would make a pattern for "what's" match every sentence containing "what".
     "whats", "thats", "hows", "wheres", "whos", "whens", "whys", "theres", "heres", "lets",
-    "its", "ive", "youre", "were", "theyre", "shes", "hes", "im", "ill", "id", "youve",
+    "ive", "youre", "were", "theyre", "shes", "hes", "im", "ill", "id", "youve",
 }
 
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""release_check.py - refuse a release that still names the project this one grew from.
+"""release_check.py - scan every tracked file for terms that must not be published.
 
-The terms live in `.release-guard` at the repository root. That file is gitignored on purpose:
-a public list of the words to keep out would publish those words. Without the file, this check
-says so and passes, so a fresh clone still builds.
+The terms live in `.release-guard` at the repository root, one regular expression per line. The
+file is local and gitignored, so the list itself is never published. Without it, this check says
+so and passes, so a fresh clone and CI still build.
 
 Usage:
     python3 tools/release_check.py            # scan every tracked file

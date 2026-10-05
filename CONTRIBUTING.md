@@ -12,8 +12,10 @@ Thanks for helping. Open an issue before a large change, so we can agree on the 
 gemini-extension.json          Gemini CLI, with GEMINI.md as its context file
 AGENTS.md                      the bootstrap for tools with no hooks. Users read it, so keep it short
 hooks/                         hooks.json (Claude format), hooks-cursor.json, run-hook.cmd, hook.py
-skills/flarehand/              the router skill: SKILL.md, references, scripts, assets, evals
+skills/flarehand/              the router skill: SKILL.md, references, scripts, assets
 skills/flarehand-*/            entry points that hand over to the router with a fixed route
+tests/                         the unit tests: test_scripts.py runs every tests_*.py beside it
+evals/                         the live eval cases for `claude plugin eval`, and consistency.md
 tools/bump_version.py          keeps every manifest version in lockstep
 docs/                          user documentation
 ```
@@ -44,17 +46,18 @@ docs/                          user documentation
 Run all of these before you open a pull request:
 
 ```bash
-python3 skills/flarehand/evals/test_scripts.py          # every unit test, about four minutes
+python3 tests/test_scripts.py                          # every unit test, about four minutes
 python3 skills/flarehand/scripts/validate_skill.py     # every skill, manifest and hook
 claude plugin validate .                               # Claude Code's own check, if you have it
 python3 skills/flarehand/scripts/package.py --check    # will it package
 ```
 
-A new test file goes in `skills/flarehand/evals/` as `tests_<area>.py`. It must define
+A new test file goes in `tests/` as `tests_<area>.py`. It must define
 `unittest.TestCase` classes and end with an `if __name__ == "__main__":` block, or the suite skips it.
 
-Live evals run the skill against a model with `claude plugin eval`. Read
-`skills/flarehand/evals/consistency.md`.
+Live evals run the skill against a model with `claude plugin eval`. Each case is a folder in
+`evals/`. Read `evals/consistency.md` first. Nothing under `tests/` or `evals/` ships in a skill
+archive, and the plugin build copies only the eval cases.
 
 ## Versioning
 

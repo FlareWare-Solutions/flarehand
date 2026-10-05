@@ -28,10 +28,14 @@ skills/
   flarehand-remember/     entry point: save, recall, forget
   flarehand-grill/        entry point: questions before any work
 docs/                     these pages, and template-catalog.tsv
+tests/                    over 800 unit tests, standard library only
+evals/                    37 live eval cases for `claude plugin eval`
+assets/brand/             the icon, the marks and the social preview
+.github/                  CI, the release workflow, issue and pull request templates
 tools/
   bump_version.py         keeps every manifest version in step
   release_check.py        checks tracked files before a release
-CHANGELOG.md, CONTRIBUTING.md, LICENSE, README.md
+CHANGELOG.md, CODE_OF_CONDUCT.md, CONTRIBUTING.md, LICENSE, README.md, SECURITY.md, SUPPORT.md
 ```
 
 Inside the router skill:
@@ -42,8 +46,9 @@ skills/flarehand/
   references/     one file per workflow, plus grounding, sources, memory, privacy, setup and more
   scripts/        Python 3, standard library only
   assets/         the lookup tables and the 72 templates (60 artifacts plus 12 workflow shapes)
-  evals/          the unit tests and the live eval cases
 ```
+
+The tests and evals live outside the skill, so they never ship to people who install it.
 
 ## The five skills
 

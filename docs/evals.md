@@ -15,13 +15,13 @@ The first two run on every change. Live evals run before a release, and after an
 
 ## Tier 0: unit tests
 
-809 tests, standard library only, no model. A full run took about four minutes on a recent laptop.
+Over 800 tests, standard library only, no model. A full run took about four minutes on a recent laptop.
 
 ```bash
-HOME=$(mktemp -d) python3 skills/flarehand/evals/test_scripts.py
+HOME=$(mktemp -d) python3 tests/test_scripts.py
 ```
 
-The temporary `HOME` proves the suite passes on a machine with no knowledge base, which is what CI and every new user have. To run one module while you work, go to `skills/flarehand/` and run `python3 -m unittest evals.tests_core_kb -v`.
+The temporary `HOME` proves the suite passes on a machine with no knowledge base, which is what CI and every new user have. To run one module while you work, run `python3 tests/tests_core_kb.py -v` from the repository root.
 
 The routing tests include a table of real prompts, including every prompt a review ever found misrouted. A new routing pattern can steal a request from another workflow, and those tests are how you find out.
 
@@ -44,7 +44,7 @@ Live evals run the plugin against a real model with `claude plugin eval`. Each c
 
 ### The cases
 
-There are 37 cases. Each is a folder under `skills/flarehand/evals/` with a `prompt.md` and a `graders/` folder. They cover:
+There are 37 cases. Each is a folder under the repository's `evals/`. They cover:
 
 - **Behaviour** across roles: support, sales, finance, HR, legal, engineering, management, product, writers and students. For example, a postmortem from notes, a decision record from a discussion, a code review, a customer reply that keeps the facts.
 - **Grounding**: no invented rate limit, config value, URL or legal conclusion.
@@ -66,7 +66,7 @@ Three grader types only:
 
 Rules the suite follows:
 
-- **One condition per `llm` grader.** Each file gives a sentence of context, then "PASS if this condition holds, FAIL if it does not:" and exactly one condition. A combined rubric of must and must-not bullets failed a correct postmortem three times in three, with both a small and a large judge. Split into single conditions, the same reply passed.
+- **One condition per `llm` grader.** Each grader's `criteria` in `case.yaml` gives a sentence of context, then "PASS if this condition holds, FAIL if it does not:" and exactly one condition. A combined rubric of must and must-not bullets failed a correct postmortem three times in three, with both a small and a large judge. Split into single conditions, the same reply passed.
 - **A Sonnet judge.** Real runs use `--judge-model sonnet`. The default Haiku judge failed conditions the reply met word for word.
 - **Weights.** Core behaviour weighs 2, secondary checks weigh 1.
 - **Scripts that must run are graded with the plugin only.** Without the plugin the script does not exist, so scoring it in the baseline arm would only inflate the lift. A run that skips the script loses those points even when its prose reads well.
@@ -140,11 +140,11 @@ Things to know:
 
 ### Recording results
 
-Keep each run's `aggregate-result.json` and `report.html` under `dist/eval-results/<date>/`, which git ignores. Add one line per run to the table in `skills/flarehand/evals/consistency.md`. A case that failed one run in three is inconclusive, not a pass. Leave out a run that hit a cost, usage or rate limit, because it is not comparable.
+Keep each run's `aggregate-result.json` and `report.html` under `dist/eval-results/<date>/`, which git ignores. Add one line per run to the table in `evals/consistency.md`. A case that failed one run in three is inconclusive, not a pass. Leave out a run that hit a cost, usage or rate limit, because it is not comparable.
 
 ## Tier 3: by hand
 
-The eval sandbox cannot keep anything between runs, never compacts, and runs one tool. So some checks are done by hand, each in a fresh session with the plugin installed. The full list is in `skills/flarehand/evals/consistency.md`. Among them:
+The eval sandbox cannot keep anything between runs, never compacts, and runs one tool. So some checks are done by hand, each in a fresh session with the plugin installed. The full list is in `evals/consistency.md`. Among them:
 
 - **Reword** a case prompt three ways. The route should not move. `classify.py "<rewording>" --explain` checks this for free.
 - **First run, then the save menu.** Move the knowledge base aside, ask for a short artifact, and answer `a`. Check that only the lines you pick are saved, and that `kb.py log undo` removes the log line.

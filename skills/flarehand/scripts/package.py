@@ -61,9 +61,13 @@ FIXED_TIME = (1980, 1, 1, 0, 0, 0)
 
 # Tool and editor folders never ship, wherever they sit. Build output and eval results are
 # excluded only at the top level, so a future assets/results/ still ships.
-EXCLUDE_DIRS = {".git", "__pycache__", ".pytest_cache", ".idea", ".vscode"}
+EXCLUDE_DIRS = {".git", "__pycache__", ".pytest_cache", ".ruff_cache", ".mypy_cache", ".idea", ".vscode", ".venv", "venv"}
 EXCLUDE_TOP = {"dist", "results"}
 EXCLUDE_SUFFIXES = {".pyc", ".pyo", ".zip", ".skill", ".tar", ".gz", ".log", ".redacted", ".swp", ".orig", ".rej"}
+
+# Tests and eval cases live at the repository root (tests/, evals/), never inside a skill. If a copy
+# turns up in a skill folder anyway, it stays out of the skill archives and the plugin's skills/.
+SKILL_EXCLUDE_TOP = {"evals", "tests"}
 
 # What the plugin folder carries from the repository root, besides skills/. docs/, tools/ and the
 # contributor files stay in the repository.
@@ -154,7 +158,8 @@ def collect(out_dir: Path | None = None, base: Path = SKILL_DIR) -> list[Path]:
 
 def entries_for(skill: Path, out_dir: Path | None) -> list[tuple[str, Path]]:
     """(path inside the skill folder, source file). A skill shipped alone carries the licence."""
-    entries = [(rel.as_posix(), skill / rel) for rel in collect(out_dir, skill)]
+    entries = [(rel.as_posix(), skill / rel) for rel in collect(out_dir, skill)
+               if rel.parts[0] not in SKILL_EXCLUDE_TOP]
     names = {name for name, _ in entries}
     if REPO_ROOT is not None and (REPO_ROOT / "LICENSE").is_file() and "LICENSE" not in names:
         entries.append(("LICENSE", REPO_ROOT / "LICENSE"))
@@ -179,12 +184,19 @@ def sha256(path: Path) -> str:
 
 # Files a runner may execute directly: the scripts, the hook launcher (hooks/run-hook.cmd, which
 # Cursor runs by path), and eval scaffold scripts (seed.sh, which `claude plugin eval --scaffold` runs).
+# A .py or .sh file is executable only when it starts with a shebang, so a library module such as
+# _text.py ships 0644, the same as in git.
 EXECUTABLE_SUFFIXES = (".py", ".cmd", ".sh")
 
 
-def _mode(name: str) -> int:
+def _mode(name: str, src: Path | None = None) -> int:
     # keep the executable bit on scripts, drop every other mode difference
-    return 0o755 if name.endswith(EXECUTABLE_SUFFIXES) else 0o644
+    if not name.endswith(EXECUTABLE_SUFFIXES):
+        return 0o644
+    if src is None or name.endswith(".cmd"):
+        return 0o755
+    with src.open("rb") as fh:
+        return 0o755 if fh.read(2) == b"#!" else 0o644
 
 
 def build_zip(target: Path, entries: list[tuple[str, Path]], name: str = NAME) -> Path:
@@ -193,7 +205,7 @@ def build_zip(target: Path, entries: list[tuple[str, Path]], name: str = NAME) -
         for rel, src in entries:
             info = zipfile.ZipInfo(f"{name}/{rel}", date_time=FIXED_TIME)
             # regular-file type plus permissions, both in the high word where unzip reads them
-            info.external_attr = (stat.S_IFREG | _mode(rel)) << 16
+            info.external_attr = (stat.S_IFREG | _mode(rel, src)) << 16
             # record Unix as the creator on every platform, or a Windows build differs by one byte
             info.create_system = 3
             info.compress_type = zipfile.ZIP_DEFLATED
@@ -210,7 +222,7 @@ def build_tar(target: Path, entries: list[tuple[str, Path]], name: str = NAME) -
             info = tarfile.TarInfo(f"{name}/{rel}")
             info.size = len(data)
             info.mtime = 0
-            info.mode = _mode(rel)
+            info.mode = _mode(rel, src)
             info.uid = info.gid = 0
             info.uname = info.gname = ""
             tar.addfile(info, io.BytesIO(data))
@@ -223,7 +235,7 @@ def build_tar(target: Path, entries: list[tuple[str, Path]], name: str = NAME) -
 def _copy(src: Path, dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(src, dest)
-    dest.chmod(_mode(dest.name))
+    dest.chmod(_mode(dest.name, src))
 
 
 def skill_metadata(skill: Path = SKILL_DIR) -> dict:
@@ -270,15 +282,16 @@ def build_plugin(target: Path, out_dir: Path | None) -> Path:
         (target / ".claude-plugin").mkdir(parents=True)
         (target / ".claude-plugin" / "plugin.json").write_text(
             json.dumps(plugin_manifest(), indent=2) + "\n", encoding="utf-8")
-    repo_evals = REPO_ROOT is not None and (REPO_ROOT / "evals").is_dir()
-    if repo_evals:
+    # The eval cases sit at the plugin root, where `claude plugin eval` looks. They come from the
+    # repository's evals/ only, and never with a Python file: the unit tests stay in the repository.
+    if REPO_ROOT is not None and (REPO_ROOT / "evals").is_dir():
         for rel in collect(out_dir, REPO_ROOT / "evals"):
+            if rel.suffix.lower() == ".py":
+                continue
             _copy(REPO_ROOT / "evals" / rel, target / "evals" / rel)
     for skill in skill_dirs():
         for rel in collect(out_dir, skill):
-            if rel.parts[0] == "evals":
-                if not repo_evals and skill.name == NAME:
-                    _copy(skill / rel, target / rel)  # eval cases sit at the plugin root, where the runner looks
+            if rel.parts[0] in SKILL_EXCLUDE_TOP:
                 continue
             _copy(skill / rel, target / "skills" / skill.name / rel)
     return target
@@ -314,6 +327,10 @@ def verify_archive(path: Path, name: str = NAME) -> list[str]:
     if f"{name}/SKILL.md" not in names:
         problems.append(f"{path.name}: no {name}/SKILL.md at the archive root. "
                         f"Claude Desktop and claude.ai both need that exact shape.")
+    shipped_tests = sorted({n.split("/")[1] for n in names if n.count("/") >= 2 and n.split("/")[1] in SKILL_EXCLUDE_TOP})
+    if shipped_tests:
+        problems.append(f"{path.name}: {', '.join(d + '/' for d in shipped_tests)} got packaged. Tests and eval "
+                        f"cases stay in the repository.")
     roots = {n.split("/")[0] for n in names if n}
     if roots != {name}:
         problems.append(f"{path.name}: archive root should hold only `{name}/`, found {sorted(roots)}")

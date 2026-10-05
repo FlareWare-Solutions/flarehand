@@ -4,8 +4,8 @@ description: "Remember, save, recall or forget the person's own notes and answer
 license: MIT
 compatibility: "Needs the flarehand skill installed beside it, and Python 3 with a local shell for the knowledge base. Without a shell it gives the method and saves nothing."
 metadata:
-  flarehand.owner: "Flareware"
-  flarehand.version: "0.1.0"
+  flarehand.owner: "FlareWare Solutions"
+  flarehand.version: "1.0.0"
 ---
 
 # flarehand-remember

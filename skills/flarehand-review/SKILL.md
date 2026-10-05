@@ -4,8 +4,8 @@ description: "Review code, a pull request, a diff, a document or a plan, and say
 license: MIT
 compatibility: "Needs the flarehand skill installed beside it, and Python 3 for the grading script. Subagents make the finder and checker separate; without them the checker is a fresh prompt."
 metadata:
-  flarehand.owner: "Flareware"
-  flarehand.version: "0.1.0"
+  flarehand.owner: "FlareWare Solutions"
+  flarehand.version: "1.0.0"
 ---
 
 # flarehand-review

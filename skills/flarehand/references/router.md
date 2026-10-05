@@ -197,7 +197,7 @@ You edit `assets/router-table.tsv` by hand. It is the source of truth. There is 
 nothing writes to it. The old generator no longer exists.
 
 The table changes more behaviour than any other file, and it breaks quietly. After any edit, run the
-tier 0 tests: `python3 evals/test_scripts.py`. They are the guard. They include a routing table of real
+tier 0 tests, the repository's `tests/test_scripts.py`. They are the guard. They include a routing table of real
 prompts, including every prompt a review found misrouted. A new pattern can steal a request from
 another workflow, and those tests are how you find out.
 

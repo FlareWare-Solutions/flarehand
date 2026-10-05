@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: tests (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.9", "3.x"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Unit tests
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python tests/test_scripts.py
+
+  checks:
+    name: validate, lint, size limits
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.x"
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "lts/*"
+      - name: Skills, manifests and hooks
+        run: python skills/flarehand/scripts/validate_skill.py --strict
+      - name: Versions in lockstep
+        run: python tools/bump_version.py check
+      - name: Release guard (passes without the local .release-guard file)
+        run: python tools/release_check.py
+      - name: Packages cleanly
+        run: python skills/flarehand/scripts/package.py --check
+      - name: House style on docs
+        run: python skills/flarehand/scripts/check_output.py --style CONTRIBUTING.md CHANGELOG.md AGENTS.md GEMINI.md docs/*.md
+      - name: Plugin directory limits (non-image files under 256 KiB, at most 512 files)
+        run: |
+          python - <<'PY'
+          import os, subprocess, sys
+          files = [f for f in subprocess.run(["git", "ls-files"], capture_output=True, text=True, check=True).stdout.splitlines() if f]
+          media = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".woff", ".woff2", ".ttf", ".otf")
+          big = [(f, os.path.getsize(f)) for f in files if not f.lower().endswith(media) and os.path.getsize(f) > 256 * 1024]
+          for f, size in big:
+              print(f"::error file={f}::{size} bytes is over the 256 KiB plugin directory limit")
+          print(f"{len(files)} tracked files (limit 512)")
+          if len(files) > 512:
+              print("::error::more than 512 files ship in the plugin folder")
+          sys.exit(1 if big or len(files) > 512 else 0)
+          PY
+      - name: Lint (pyflakes rules, Python 3.9 target)
+        run: pipx run ruff==0.16.10 check --select E9,F --target-version py39 .
+      - name: Claude Code plugin validate
+        run: npx --yes @anthropic-ai/claude-code@2.1.289 plugin validate --strict .

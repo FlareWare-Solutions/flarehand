@@ -1,0 +1,52 @@
+schema_version: "1.1"
+name: stated-cause-is-quarantined
+tags: [trigger, support, diagnose]
+execution:
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Why are invoice payments failing for one of our customers? They say it's a permissions issue. Write me a short reply I can send them.
+graders:
+  - name: drafts-the-reply
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked why invoice payments fail for one customer, said the customer thinks it is a permissions issue, and asked for a short reply to send. Nothing proves the permissions theory. PASS if this condition holds, FAIL if it does not:
+      It includes a draft reply to the customer that thanks them and asks for evidence.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: no-false-certainty
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 3
+    pattern: 'we (have )?(found|identified|confirmed) the (root )?cause'
+  - name: no-invented-details
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked why invoice payments fail for one customer, said the customer thinks it is a permissions issue, and asked for a short reply to send. Nothing proves the permissions theory. PASS if this condition holds, FAIL if it does not:
+      It does not invent account details, error codes or log lines. Placeholders or questions for them are fine.
+  - name: reply-names-no-cause
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked why invoice payments fail for one customer, said the customer thinks it is a permissions issue, and asked for a short reply to send. Nothing proves the permissions theory. PASS if this condition holds, FAIL if it does not:
+      The draft customer reply does not say the cause is found, confirmed or certain.
+  - name: theory-marked-unverified
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked why invoice payments fail for one customer, said the customer thinks it is a permissions issue, and asked for a short reply to send. Nothing proves the permissions theory. PASS if this condition holds, FAIL if it does not:
+      It marks the permissions theory as unverified, with a label such as [stated, unverified] or plain words saying it is the customer's theory.
+  - name: three-causes
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked why invoice payments fail for one customer, said the customer thinks it is a permissions issue, and asked for a short reply to send. Nothing proves the permissions theory. PASS if this condition holds, FAIL if it does not:
+      It lists at least three candidate causes, permissions among them, and for each says what evidence would confirm or rule it out.

@@ -31,7 +31,8 @@ A longer phrase beats a shorter one inside it: "case study" is not a support
 for risk phrases too: "map 1:1 with" is not a manager's "1:1 with".
 
 The table in assets/router-table.tsv is edited by hand. There is no generator.
-After any edit, run evals/test_scripts.py: its routing table is the guard.
+After any edit, run the repository's tests/test_scripts.py: its routing table
+is the guard.
 
 Words with two meanings come from glossaries, not from the shipped table. Each
 term in the person's glossary.tsv, and in any team playbook's, becomes an

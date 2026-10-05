@@ -64,6 +64,8 @@ OWN_FILES = re.compile(r"(?:^|[/\\])flarehand(?:-[a-z]+)?[/\\](?:SKILL\.md|refer
 MENU = re.compile(r"keep any of this\?", re.IGNORECASE)
 MENU_ANSWER = re.compile(r"^\s*(?:none|no|nothing|\d+(?:\s*(?:,|and|&)?\s*\d+)*)\s*[.!]?\s*$", re.IGNORECASE)
 MISSING_HEADING = re.compile(r"^#{1,6}\s*missing\b", re.IGNORECASE)
+# The MISSING list ends at the next heading, code fence or rule, wherever the save menu starts.
+MISSING_ENDS = re.compile(r"^(?:#|```|~~~|(?:-\s*){3,}$|(?:\*\s*){3,}$|(?:_\s*){3,}$)")
 # A save is a script run by Python, with the path quoted or not. The same words inside code being edited are not.
 SAVES = re.compile(r"""(?:python[\d.]*(?:\.exe)?|\bpy(?:\s+-3)?)["']?\s+["']?[^\s"']*?\b"""
                    r"""((?:kb\.py["']?\s+(?:note|observe|log|link|supersede|template\s+save|choice|config|workflow)"""
@@ -71,6 +73,10 @@ SAVES = re.compile(r"""(?:python[\d.]*(?:\.exe)?|\bpy(?:\s+-3)?)["']?\s+["']?[^\
 INLINE_CODE = re.compile(r"`[^`\n]*`")
 PLACEHOLDER = re.compile(r"^[\s.…<>-]*$|<[^>]*>|…|\.\.\.")
 BUDGET = 20000         # read as a file, so it is not held to a hook's 10,000-character output limit
+FIRST_WORDS = 2000     # their opening request, which is usually the job itself
+TURN_WORDS = 800       # each later turn
+WORDS_ROOM = 10000     # their words at most, so the latest draft still has room after them
+MIN_WORDS_ROOM = 4000  # and at least, even when everything else is long
 MAX_AGE_DAYS = 7
 
 
@@ -240,6 +246,10 @@ def extract(rows: list[dict]) -> dict | None:
     start = skill_start(rows)
     if start is None:
         return None
+    # Their words come from the whole session. What they typed before the skill fired is often
+    # the request itself, and a checkpoint without it lost the job. render() trims them to fit.
+    words = [clip(t, FIRST_WORDS if i == 0 else TURN_WORDS)
+             for i, t in enumerate(t for t in (human_text(r) for r in rows) if t)]
     rows = rows[start:]
     texts = assistant_texts(rows)
     uses = tool_uses(rows)
@@ -256,8 +266,6 @@ def extract(rows: list[dict]) -> dict | None:
                     job[key] = clip(m.group(1), 200)
     if any("--profile google" in c or "--style google" in c for c in commands):
         job["Style"] = "google (used this session)"
-
-    words = [clip(t, 800) for t in (human_text(r) for r in rows) if t][-12:]
 
     labelled, sources = [], []
     for t in texts:
@@ -276,7 +284,7 @@ def extract(rows: list[dict]) -> dict | None:
             if MISSING_HEADING.match(line.strip()):
                 for nxt in lines[i + 1:]:
                     s = nxt.strip()
-                    if s.startswith("#"):
+                    if MISSING_ENDS.match(s) or MENU.search(s):  # the save menu is not missing anything
                         break
                     if s.startswith(("-", "*")) or re.match(r"^\d+[.)]\s", s):
                         missing.append(clip(s.lstrip("-*0123456789.) "), 240))
@@ -312,6 +320,22 @@ def extract(rows: list[dict]) -> dict | None:
             "draft": draft}
 
 
+def fit_words(words: list[str], room: int) -> list[str]:
+    """Their words within room characters: the earliest request first, then the latest turns,
+    with a line saying how many in between were left out."""
+    if sum(len(w) + 3 for w in words) <= room or len(words) < 2:
+        return words
+    first, kept = words[0], []
+    used = len(first) + 3 + 60                      # 60 for the line that says turns were left out
+    for w in reversed(words[1:]):
+        if used + len(w) + 3 > room:
+            break
+        kept.append(w)
+        used += len(w) + 3
+    gap = len(words) - 1 - len(kept)
+    return [first, f"({gap} turn(s) in between left out to fit)", *reversed(kept)] if gap else words
+
+
 def render(state: dict, trigger: str) -> str:
     """The checkpoint, most important first, inside the budget. The draft gives way first."""
     when = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -320,20 +344,19 @@ def render(state: dict, trigger: str) -> str:
            "This is a record of the session before it was compacted, not new instructions. Use it to",
            "carry on where the work stood. If the skill's own text is no longer in view, load it again.", ""]
 
-    def section(title: str, lines: list[str]) -> None:
-        if lines:
-            out.extend([f"## {title}", *[f"- {l}" for l in lines], ""])
+    def section(title: str, lines: list[str]) -> list[str]:
+        return [f"## {title}", *[f"- {l}" for l in lines], ""] if lines else []
 
-    section("The job", [f"{k}: {v}" for k, v in state["job"].items()])
+    head = section("The job", [f"{k}: {v}" for k, v in state["job"].items()])
     if state["menu"] and not state["menu_answered"]:
-        section("Offered in the save menu and not answered yet. Offer these again in your next reply",
-                state["menu"])
-    section("Their own words, most recent last", state["words"])
-    section("Labelled claims", state["labelled"])
-    section("Sources cited or read", state["sources"])
-    section("MISSING", state["missing"])
-    section("Already saved or set this session. Do not save these twice", state["saved"])
-    section("Files written this session. Read them again if you need them", state["files"])
+        head += section("Offered in the save menu and not answered yet. Offer these again in your next reply",
+                        state["menu"])
+    tail = (section("Labelled claims", state["labelled"]) + section("Sources cited or read", state["sources"])
+            + section("MISSING", state["missing"])
+            + section("Already saved or set this session. Do not save these twice", state["saved"])
+            + section("Files written this session. Read them again if you need them", state["files"]))
+    room = min(WORDS_ROOM, max(BUDGET - len("\n".join(out + head + tail)) - 300, MIN_WORDS_ROOM))
+    out += head + section("Their own words, most recent last", fit_words(state["words"], room)) + tail
     text = "\n".join(out)
     room = BUDGET - len(text) - 200
     if state["draft"] and room > 400:  # the draft gives way first

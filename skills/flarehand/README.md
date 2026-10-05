@@ -175,7 +175,6 @@ SKILL.md          the router. Decides what you need and where to look.
 references/       one file per workflow, plus grounding, sources, memory, privacy and setup
 scripts/          Python, standard library only, nothing to install
 assets/           the lookup tables, source tiers and the output templates
-evals/            the test suite and the live eval cases
 ```
 
 The scripts do the work that should never vary. They route a request, choose which sources to try
@@ -187,15 +186,17 @@ does not.
 
 ```bash
 python3 scripts/package.py             # build the archives for every skill, and the plugin folder
-python3 evals/test_scripts.py          # no model, about four minutes
 python3 scripts/validate_skill.py      # will it load in every tool
 python3 scripts/check_output.py --style SKILL.md references/*.md
 ```
 
-Live evals need the plugin folder, because `claude plugin eval` targets a plugin. The exact command,
-and how to check every case loads first, are in `evals/consistency.md`.
+The unit tests and the live eval cases live in the flarehand repository, not in this folder, so an
+install does not carry them. From a clone, run the repository's `tests/test_scripts.py` (no model,
+about four minutes). Live evals need the plugin folder, because `claude plugin eval` targets a
+plugin. The exact command, and how to check every case loads first, are in the repository's
+`evals/consistency.md`.
 
-Read `evals/consistency.md` before changing anything. Read `references/voice.md` before writing
+Read the repository's `evals/consistency.md` before changing anything. Read `references/voice.md` before writing
 anything, and run the style checker on it. The skill has to pass its own writing rules.
 
 Three packaging rules exist for reasons that are not obvious, and `validate_skill.py` enforces all

@@ -1,9 +1,9 @@
 {
   "name": "flarehand",
-  "version": "0.1.0",
-  "description": "Turns a vague ask into the right deliverable, grounded in real sources, and remembers only what you approve.",
+  "version": "1.0.0",
+  "description": "Turns a vague ask into the right deliverable, every fact sourced. Keeps a private knowledge base that saves only what you approve and re-checks it before reuse.",
   "author": {
-    "name": "Flareware",
+    "name": "FlareWare Solutions",
     "url": "https://github.com/FlareWare-Solutions"
   },
   "homepage": "https://github.com/FlareWare-Solutions/flarehand",
@@ -27,7 +27,7 @@
     "displayName": "flarehand",
     "shortDescription": "The right deliverable from a vague ask, grounded and remembered",
     "longDescription": "flarehand names the deliverable behind a vague request, asks only the questions that matter, grounds every specific in a source it can show, checks the draft, and keeps notes and answers only when you say yes.",
-    "developerName": "Flareware",
+    "developerName": "FlareWare Solutions",
     "category": "Productivity",
     "capabilities": [
       "Interactive",

@@ -14,6 +14,8 @@ What it checks, for each skill
   references    a Scope line at the top, and a table of contents once long
   packaging     no folder that makes a client load the skill as a plugin, no PowerShell, no
                 binaries, and no file so big it bloats every install
+  tests         a warning for evals/, tests/ or a test*.py inside a skill: they belong at the
+                repository root
 
 And, inside the repository (this skill at <root>/skills/<name>/, with .claude-plugin/plugin.json
 at the root), the plugin itself
@@ -22,6 +24,8 @@ at the root), the plugin itself
                 launcher, and the launcher and dispatcher exist
   repository    no top-level bin/, no .DS_Store, no binaries, a LICENSE, a README of 40 words
                 or more, and AGENTS.md
+  size          no file other than an image over 256 KiB, and a warning once the repository
+                holds more than 450 files (the plugin directory flags more than 512)
 
 Usage
   python3 scripts/validate_skill.py
@@ -37,6 +41,7 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -71,7 +76,15 @@ BAD_SUFFIXES = {".ps1", ".psm1", ".psd1", ".app", ".pkg", ".command", ".exe", ".
 BINARY_OK_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".pdf", ".woff", ".woff2", ".ttf"}
 SNIFF_BYTES = 8192
 BIG_FILE_BYTES = 3 * 1024 * 1024
-SKIP_DIRS = {".git", "__pycache__", ".pytest_cache", ".idea", ".vscode", "dist", "results"}
+# The plugin directory refuses a text file this big, so a source file has to be split before it gets
+# there. Images are exempt. It also flags a repository of more than FILE_COUNT_LIMIT files, so the
+# validator warns while there is still room.
+MAX_FILE_BYTES = 256 * 1024
+IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".svg", ".avif", ".bmp"}
+FILE_COUNT_WARN = 450
+FILE_COUNT_LIMIT = 512
+SKIP_DIRS = {".git", "__pycache__", ".pytest_cache", ".ruff_cache", ".mypy_cache", ".idea", ".vscode", ".venv", "venv",
+             "dist", "results"}
 SIBLING_PATH = re.compile(r"\.\./([a-z0-9-]+)/([A-Za-z0-9._/\-]*[A-Za-z0-9_\-])")
 
 # The plugin around the skills.
@@ -207,13 +220,45 @@ def _looks_binary(path: Path) -> bool:
         return False
 
 
-def _file_checks(base: Path, label: str, errors: list, warnings: list, skip_top: set = frozenset()) -> None:
-    """PowerShell, launchable files, binaries and big files, anywhere under base."""
+def git_visible(base: Path) -> tuple[Path, set] | None:
+    """When base sits in a git work tree: (the top level, every file git tracks or would add, as POSIX
+    paths relative to it). What git ignores, such as caches and build output, is left out, so it is
+    never reported. None outside git, or when git is missing, and the walks fall back to SKIP_DIRS."""
+    try:
+        top = subprocess.run(["git", "-C", str(base), "rev-parse", "--show-toplevel"],
+                             capture_output=True, text=True, timeout=30)
+        if top.returncode != 0 or not top.stdout.strip():
+            return None
+        root = Path(top.stdout.strip()).resolve()
+        r = subprocess.run(["git", "-C", str(root), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+                           capture_output=True, timeout=60)
+        if r.returncode != 0:
+            return None
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return root, {n for n in r.stdout.decode("utf-8", "replace").split("\0") if n}
+
+
+def _hidden_by_git(path: Path, visible: tuple[Path, set] | None) -> bool:
+    """True when git ignores path. Always False outside git."""
+    if visible is None:
+        return False
+    try:
+        return path.resolve().relative_to(visible[0]).as_posix() not in visible[1]
+    except ValueError:
+        return False
+
+
+def _file_checks(base: Path, label: str, errors: list, warnings: list, skip_top: set = frozenset(),
+                 size_limit: bool = False) -> None:
+    """PowerShell, launchable files, binaries and big files, anywhere under base. With size_limit, a
+    text file over MAX_FILE_BYTES is an error too (inside the repository, check_repo does that)."""
+    visible = git_visible(base)
     for path in base.rglob("*"):
         rel = path.relative_to(base)
         if is_stray(rel.as_posix()) or rel.parts[0] in SKIP_DIRS or rel.parts[0] in skip_top:
             continue
-        if any(part in SKIP_DIRS for part in rel.parts) or not path.is_file():
+        if any(part in SKIP_DIRS for part in rel.parts) or not path.is_file() or _hidden_by_git(path, visible):
             continue
         shown = f"{label}{rel.as_posix()}"
         suffix = path.suffix.lower()
@@ -230,6 +275,87 @@ def _file_checks(base: Path, label: str, errors: list, warnings: list, skip_top:
         if size > BIG_FILE_BYTES:
             warnings.append(f"{shown} is {size / 1024 / 1024:.1f} MB. Every install carries it, and Claude "
                             f"Desktop caps an archive at 30 MB. Shrink it or leave it out.")
+        if size_limit and size > MAX_FILE_BYTES and suffix not in IMAGE_SUFFIXES:
+            errors.append(_too_big(shown, size))
+
+
+def _too_big(shown: str, size: int) -> str:
+    return (f"{shown} is {size:,} bytes, over the {MAX_FILE_BYTES // 1024} KiB the plugin directory accepts for "
+            f"a file that is not an image. Split it into smaller files.")
+
+
+def repo_files(root: Path) -> list[Path]:
+    """Every file the repository would publish: what git tracks plus what it does not ignore, or, with
+    no git, a walk that skips tool folders, litter and the top-level folders .gitignore names."""
+    visible = git_visible(root)
+    if visible is not None and visible[0] == root.resolve():
+        return [root / n for n in sorted(visible[1]) if (root / n).is_file() and not is_stray(n)]
+    ignored = set()
+    gitignore = root / ".gitignore"
+    if gitignore.is_file():
+        for line in gitignore.read_text(encoding="utf-8", errors="replace").splitlines():
+            line = line.strip().strip("/")
+            if line and not line.startswith(("#", "!")) and not any(c in line for c in "*?[/"):
+                ignored.add(line)
+    out = []
+    for path in sorted(root.rglob("*")):
+        rel = path.relative_to(root)
+        if rel.parts[0] in ignored or any(part in SKIP_DIRS or part in ignored for part in rel.parts):
+            continue
+        if path.is_file() and not is_stray(rel.as_posix()):
+            out.append(path)
+    return out
+
+
+def repo_size_checks(root: Path, errors: list, warnings: list) -> dict:
+    """No text file over MAX_FILE_BYTES, and a warning well before the file count the plugin
+    directory flags."""
+    files = repo_files(root)
+    for path in files:
+        try:
+            size = path.stat().st_size
+        except OSError:
+            continue
+        if size > MAX_FILE_BYTES and path.suffix.lower() not in IMAGE_SUFFIXES:
+            errors.append(_too_big(path.relative_to(root).as_posix(), size))
+    if len(files) > FILE_COUNT_WARN:
+        warnings.append(f"the repository holds {len(files)} files. The plugin directory flags a repository "
+                        f"with more than {FILE_COUNT_LIMIT}, so keep it under {FILE_COUNT_WARN}: merge small "
+                        f"files, or move what does not ship out of the repository.")
+    return {"files": len(files)}
+
+
+# Tests and eval cases live at the repository root. Inside a skill they ship to every user, who
+# cannot run them and pays for them in install size.
+TEST_DIRS = {"evals", "tests"}
+TEST_FILE = re.compile(r"^tests?[^/]*\.py$")
+
+
+def _git_ignores_folder(folder: Path) -> bool:
+    """True when git ignores every file in folder (or the folder is empty)."""
+    visible = git_visible(folder)
+    if visible is None:
+        return False
+    files = [p for p in folder.rglob("*") if p.is_file()]
+    return all(_hidden_by_git(p, visible) for p in files)
+
+
+def _test_file_checks(skill_dir: Path, warnings: list) -> None:
+    """A warning for evals/, tests/ or a test*.py anywhere in a skill folder."""
+    for child in sorted(skill_dir.iterdir()):
+        if child.is_dir() and child.name in TEST_DIRS and not _git_ignores_folder(child):
+            warnings.append(f"folder `{child.name}/` is inside the skill, so every install carries it. Tests and "
+                            f"eval cases belong in the repository's tests/ and evals/.")
+    visible = git_visible(skill_dir)
+    for path in sorted(skill_dir.rglob("test*.py")):
+        rel = path.relative_to(skill_dir)
+        if rel.parts[0] in TEST_DIRS or any(part in SKIP_DIRS for part in rel.parts) or is_stray(rel.as_posix()):
+            continue
+        if _hidden_by_git(path, visible):
+            continue
+        if path.is_file() and TEST_FILE.match(path.name):
+            warnings.append(f"{rel.as_posix()} looks like a test module. Tests belong in the repository's tests/, "
+                            f"not in a skill that ships to users.")
 
 
 def _metadata_problems(block) -> list[str]:
@@ -370,7 +496,8 @@ def check_skill(skill_dir: Path, repo_root: Path | None = None, sibling_prose: s
         elif child.is_dir() and child.name in PLUGIN_COMPONENTS:
             errors.append(f"folder `{child.name}/` is a plugin component name. House rule: keep those out of a "
                           f"skill, so nobody mistakes it for a plugin. Rename it.")
-    _file_checks(skill_dir, "", errors, warnings)
+    _file_checks(skill_dir, "", errors, warnings, size_limit=repo_root is None)
+    _test_file_checks(skill_dir, warnings)
 
     # ---- every script must actually be invoked somewhere, not merely listed.
     # A script that appears only in a table is one the model never runs. That is
@@ -631,9 +758,10 @@ def check_repo(root: Path, errors: list, warnings: list) -> dict:
     if (root / "bin").exists():
         errors.append("a top-level bin/ folder blocks the claude.ai and Cowork plugin install. Remove it.")
     ignored = (root / ".gitignore").is_file() and ".DS_Store" in (root / ".gitignore").read_text(encoding="utf-8")
+    visible = git_visible(root)
     for path in root.rglob(".DS_Store"):
         rel = path.relative_to(root)
-        if rel.parts[0] in SKIP_DIRS:
+        if rel.parts[0] in SKIP_DIRS or _hidden_by_git(path, visible):
             continue
         (warnings if ignored else errors).append(
             f"{rel.as_posix()} is Finder litter. Delete it. The plugin directory rejects a repository that holds one.")
@@ -644,6 +772,7 @@ def check_repo(root: Path, errors: list, warnings: list) -> dict:
     if readme.is_file() and len(readme.read_text(encoding="utf-8").split()) < 40:
         errors.append("README.md has fewer than 40 words. The plugin directory needs a real description.")
     _file_checks(root, "", errors, warnings, skip_top={"skills", "docs"})
+    facts["files"] = repo_size_checks(root, errors, warnings)["files"]
     facts["hooks"] = check_hooks(root, errors, warnings)
     return facts
 

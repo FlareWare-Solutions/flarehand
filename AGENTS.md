@@ -20,3 +20,5 @@ not run its hooks.
   rules.
 - Run scripts with Python 3, as `python3 scripts/<name>.py` from the skill folder. On Windows try
   `py -3`, then `python`. Never rely on a script being executable.
+
+Working on the flarehand repository itself, rather than using it? Follow [CONTRIBUTING.md](CONTRIBUTING.md) instead of the lines above.

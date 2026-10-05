@@ -1,0 +1,58 @@
+schema_version: "1.1"
+name: setup-question-checks-the-machine-first
+tags: [trigger, setup, engineering, data]
+execution:
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    I just joined the data team. How do I set up my laptop to run our dbt project locally?
+graders:
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: fits-the-os
+    type: llm
+    weight: 1
+    criteria: |-
+      A new member of a data team asked how to set up their laptop to run the team's dbt project locally. No team documentation, repository or web access was available. PASS if this condition holds, FAIL if it does not:
+      It fits the steps to a specific operating system, or says which operating system the steps assume.
+  - name: no-invented-specifics
+    type: llm
+    weight: 2
+    criteria: |-
+      A new member of a data team asked how to set up their laptop to run the team's dbt project locally. No team documentation, repository or web access was available. PASS if this condition holds, FAIL if it does not:
+      It invents no repository URL, warehouse host, account name, database name or credential. Placeholders are fine.
+  - name: no-invented-url
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: 'https?://|\bwww\.'
+  - name: no-team-version
+    type: llm
+    weight: 1
+    criteria: |-
+      A new member of a data team asked how to set up their laptop to run the team's dbt project locally. No team documentation, repository or web access was available. PASS if this condition holds, FAIL if it does not:
+      It does not state a dbt or adapter version as the team's version.
+  - name: ran-doctor
+    type: tool_used
+    tool: Bash
+    input_match: 'doctor\.py'
+    arm: with-only
+    weight: 1
+  - name: steps-and-rollback
+    type: llm
+    weight: 1
+    criteria: |-
+      A new member of a data team asked how to set up their laptop to run the team's dbt project locally. No team documentation, repository or web access was available. PASS if this condition holds, FAIL if it does not:
+      It gives numbered steps, names the riskiest step, and says how to undo or roll back.
+  - name: team-specifics-asked
+    type: llm
+    weight: 2
+    criteria: |-
+      A new member of a data team asked how to set up their laptop to run the team's dbt project locally. No team documentation, repository or web access was available. PASS if this condition holds, FAIL if it does not:
+      It treats the team's own details (repository location, warehouse, profile values, credentials) as things to ask for or fill in, and says which steps it could not confirm.

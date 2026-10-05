@@ -1,17 +1,17 @@
 {
   "name": "flareware",
   "owner": {
-    "name": "Flareware",
+    "name": "FlareWare Solutions",
     "url": "https://github.com/FlareWare-Solutions"
   },
   "metadata": {
-    "description": "Open-source agent plugins from Flareware."
+    "description": "Vague ask to sourced deliverable: postmortems, replies, plans, reviews. A private Markdown knowledge base that saves only on your yes and re-checks answers before reuse."
   },
   "plugins": [
     {
       "name": "flarehand",
       "source": "./",
-      "description": "Turns a vague ask into the right deliverable, grounded in real sources, and remembers only what you approve.",
+      "description": "Turns a vague ask into the right deliverable, every fact sourced. Keeps a private knowledge base that saves only what you approve and re-checks it before reuse.",
       "category": "productivity",
       "homepage": "https://github.com/FlareWare-Solutions/flarehand"
     }

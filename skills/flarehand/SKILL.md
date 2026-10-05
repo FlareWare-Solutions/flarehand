@@ -1,11 +1,11 @@
 ---
 name: flarehand
-description: "Turns a one-line work request into the deliverable it needs, grounded in real sources, and remembers only what you approve. Use for any work task, even when it is vague: 'X is broken', 'write up these notes', 'make this reply less blunt', 'review this before I merge', 'plan the migration', 'write a postmortem / status update / test plan / decision record / PRD / runbook / job description / release notes', 'are we liable under the SLA', 'what did we decide about...'. Covers diagnosis, handoffs and escalations, customer replies, summaries for a specific reader, reconciling two things that should match, themes across many items, plans, critiques, rewrites, code and document review, setup and access. Always use it to save, log, recall or forget something in the user's knowledge base, glossary or house rules, even mid-task. To check a draft's facts or numbers before it goes out, use flarehand-ground. Not for general coding questions or personal writing with no work deliverable."
+description: "Turns a one-line work request into the right deliverable, grounded in real sources, and keeps a private knowledge base of what you approve. Use for any work task, even a vague one: 'X is broken', 'write up these notes', 'make this reply less blunt', 'review this before I merge', 'plan the migration', 'write a postmortem / RCA / status update / test plan / decision record / PRD / runbook / job description / release notes', 'are we liable under the SLA'. Covers diagnosis, handoffs, escalations, customer replies, summaries for a specific reader, reconciling two things, themes across many items, plans, critiques, rewrites, code and document review, setup and access. Always use it to remember, save, log, recall or forget: 'remember this', 'what did we decide about X', 'forget that', glossary terms, house rules, even mid-task. Saved answers replay word for word after a source re-check. To fact-check a draft, use flarehand-ground. Not for general coding questions or personal writing with no work deliverable."
 license: MIT
 compatibility: "Full behaviour where the agent has a shell and Python 3: Claude Code, Codex, Copilot, Cursor, Gemini CLI and others. Plugin hooks add a session nudge, a voice reminder and a compaction checkpoint. In claude.ai chat it runs the checking scripts in the sandbox and gives the method for the rest."
 metadata:
-  flarehand.owner: "Flareware"
-  flarehand.version: "0.1.0"
+  flarehand.owner: "FlareWare Solutions"
+  flarehand.version: "1.0.0"
 ---
 
 # flarehand - get the work done, grounded and remembered

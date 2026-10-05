@@ -20,8 +20,8 @@ Internal domains
   union of: prefs.internal_domains in the knowledge base config.json, every "- <domain>"
   line under "## Internal domains" in house-rules.md in any layer (your knowledge base and
   each team playbook), and each --domain. Always on, with no list: host names ending in
-  .internal, .corp, .local, .lan or .intranet, intranet. sites, and private (RFC 1918)
-  IP addresses.
+  .internal, .corp, .local, .lan, .intranet or .home.arpa, bare (build01.corp) or in a URL,
+  intranet. sites, and private (RFC 1918) IP addresses.
 
 Exit codes: 0 nothing found, 1 something found, 2 usage or file error.
 """
@@ -232,16 +232,18 @@ def apply_redactions(text: str, patterns: list[dict], min_sev: str) -> tuple[str
         if p["replacement"] == KEEP:
             continue
 
+        # sub() reads the loop's p, and only runs inside this iteration (re.sub below), so it always
+        # sees the pattern it was made for. B023 cannot tell, hence the noqa.
         def sub(m):
             nonlocal count
-            if p["name"] == "card" and not luhn_ok(m.group(0)):
+            if p["name"] == "card" and not luhn_ok(m.group(0)):  # noqa: B023  used in this iteration only
                 return m.group(0)
-            if reserved(p["name"], m.group(0)):
+            if reserved(p["name"], m.group(0)):  # noqa: B023  used in this iteration only
                 return m.group(0)
-            if p["name"] == "ipv4" and PRIVATE_IP.match(m.group(0)):
+            if p["name"] == "ipv4" and PRIVATE_IP.match(m.group(0)):  # noqa: B023  used in this iteration only
                 return m.group(0)
             count += 1
-            return p["replacement"]
+            return p["replacement"]  # noqa: B023  used in this iteration only
 
         # line by line, so the same version-line rule the report uses applies here
         for i, line in enumerate(lines):

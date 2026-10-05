@@ -69,9 +69,10 @@ It reports where each finding is and what it is. It looks for:
 - email addresses and phone numbers
 - common English words for health and reasons for absence
 - dollar amounts
-- IP addresses and internal URLs
+- IP addresses, internal URLs, and bare internal host names such as build01.corp
 - company names with a corporate suffix such as Inc, Ltd or LLC, and tenant ids
-- customer, contract and invoice numbers
+- customer, account, contract, order and invoice numbers, written out (invoice no. 20931) or with a
+  known prefix (INV-20931, PO-4471, CUST-00912, CTR-2026-17). A ticket key such as ABC-123 is not one
 - file paths with a username in them
 - `[opinion]` lines
 

@@ -1,0 +1,46 @@
+name: Bug report
+description: Something flarehand did wrong, or a script that failed.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Remove anything private (names, customer data, credentials) before you post.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you asked, what flarehand did, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. ...\n2. ..."
+    validations:
+      required: true
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Tool
+      options: [Claude Code, Claude Desktop, claude.ai, Codex, Cursor, Gemini CLI, Copilot, Other]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: flarehand version
+      placeholder: "1.0.0"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS and Python version
+      placeholder: "macOS 15, Python 3.12"
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of doctor.py
+      description: "Run python3 skills/flarehand/scripts/doctor.py from the plugin folder and paste the result."
+      render: text

@@ -1,0 +1,48 @@
+schema_version: "1.1"
+name: tidy-reply-keeps-claims
+tags: [trigger, support, outbound, retone]
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Tidy this up before I paste it on the case:
+
+    Hi Sam, our dev looked at it and confirmed it. The fix will be in the next release. Thanks
+graders:
+  - name: confirmed-kept
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked to tidy their own draft before posting it to a customer: "Hi Sam, our dev looked at it and confirmed it. The fix will be in the next release. Thanks". PASS if this condition holds, FAIL if it does not:
+      It keeps "confirmed it" no stronger than written, or asks what exactly was confirmed. It does not change it to "reproduced the issue", "found the cause" or "identified the problem".
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: flags-release-promise
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked to tidy their own draft before posting it to a customer: "Hi Sam, our dev looked at it and confirmed it. The fix will be in the next release. Thanks". PASS if this condition holds, FAIL if it does not:
+      It points out that "the fix will be in the next release" is a commitment, and asks whether it is confirmed before it goes to the customer.
+  - name: no-added-specifics
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked to tidy their own draft before posting it to a customer: "Hi Sam, our dev looked at it and confirmed it. The fix will be in the next release. Thanks". PASS if this condition holds, FAIL if it does not:
+      It does not add a version number, a release date or any other detail the draft did not contain.
+  - name: no-stronger-claim
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 3
+    pattern: '(we|our (dev|developer|developers|team)) (have |has )?(reproduced|found the (root )?cause|identified the (root )?cause|identified the (issue|problem))'
+  - name: user-decides
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked to tidy their own draft before posting it to a customer: "Hi Sam, our dev looked at it and confirmed it. The fix will be in the next release. Thanks". PASS if this condition holds, FAIL if it does not:
+      It leaves the decision to send with the user.

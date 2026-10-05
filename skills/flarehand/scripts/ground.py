@@ -37,7 +37,6 @@ import argparse
 import difflib
 import email.utils
 import json
-import os
 import re
 import subprocess
 import sys
@@ -142,7 +141,7 @@ def next_id(rows: list[dict], prefix: str) -> str:
 QUOTE_MAP = {ord(c): "'" for c in "‘’‚‛′‵´`"}
 QUOTE_MAP.update({ord(c): '"' for c in "“”„‟″‶«»"})
 QUOTE_MAP.update({ord(c): "-" for c in "‐‑‒–—―−﹘﹣－"})
-QUOTE_MAP.update({ord(c): None for c in "​‌‍⁠﻿­"})
+QUOTE_MAP.update({ord(c): None for c in "\u200b\u200c\u200d\u2060\ufeff\u00ad"})
 
 
 def normalize(text: str) -> str:
@@ -1865,7 +1864,28 @@ def main(argv=None) -> int:
         args.json = False
     if args.cmd == "pins":
         args.intent_list = [args.intent] if args.intent else []
+        if args.action in ("add", "remove") and not args.playbook:
+            return _pins_write(args)
     return args.func(args)
+
+
+def _pins_write(args) -> int:
+    """A pin in your own sources.tsv is a knowledge base write: it takes the lock, honours
+    session-only, and lands in the history like every other write."""
+    from kb import record_write, session_only_refusal, start_history
+    root = kb_root(args)
+    if not (root / "config.json").is_file():
+        return args.func(args)          # it says there is no knowledge base, in its own words
+    with kb_lock(root):
+        reason = session_only_refusal(root)
+        if reason:
+            print(reason, file=sys.stderr)
+            return 1
+        start_history(root)
+        rc = args.func(args)
+        if rc == 0:
+            record_write(root, f"pins {args.action}: {' '.join(str(args.intent or '').split())}")
+        return rc
 
 
 if __name__ == "__main__":

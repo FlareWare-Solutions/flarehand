@@ -4,8 +4,8 @@ description: "Stress-test a plan, a design or a vague ask with sharp questions b
 license: MIT
 compatibility: "Needs the flarehand skill installed beside it. Works in any agent. A local shell and Python 3 add the request classifier and the person's saved templates."
 metadata:
-  flarehand.owner: "Flareware"
-  flarehand.version: "0.1.0"
+  flarehand.owner: "FlareWare Solutions"
+  flarehand.version: "1.0.0"
 ---
 
 # flarehand-grill

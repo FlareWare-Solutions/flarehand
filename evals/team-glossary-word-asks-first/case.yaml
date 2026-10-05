@@ -1,0 +1,48 @@
+schema_version: "1.1"
+name: team-glossary-word-asks-first
+tags: [trigger, router, playbook, scaffold]
+context:
+  scaffold_script: seed.sh
+execution:
+  max_turns: 15
+  timeout_seconds: 450
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Can you help me with the migration?
+graders:
+  - name: asks-the-glossary-question
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked "Can you help me with the migration?" in a repository whose team playbook (northwind-platform) has a glossary saying "migration" means a customer data import, a database schema change, or the cloud platform move. PASS if this condition holds, FAIL if it does not:
+      Before any work, it asks which migration is meant and offers these three meanings: customer data import, database schema change, cloud platform move.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: names-glossary-meaning
+    type: regex
+    target: last_message
+    match: contains
+    flags: i
+    weight: 1
+    pattern: 'schema change'
+  - name: names-the-glossary
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked "Can you help me with the migration?" in a repository whose team playbook (northwind-platform) has a glossary saying "migration" means a customer data import, a database schema change, or the cloud platform move. PASS if this condition holds, FAIL if it does not:
+      It says the question or the meanings come from the team's playbook or glossary.
+  - name: no-guess
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked "Can you help me with the migration?" in a repository whose team playbook (northwind-platform) has a glossary saying "migration" means a customer data import, a database schema change, or the cloud platform move. PASS if this condition holds, FAIL if it does not:
+      It does not pick one meaning and start the work.
+  - name: ran-classifier
+    type: tool_used
+    tool: Bash
+    input_match: 'classify\.py'
+    arm: with-only
+    weight: 1

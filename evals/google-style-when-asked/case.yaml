@@ -1,0 +1,63 @@
+schema_version: "1.1"
+name: google-style-when-asked
+tags: [trigger, google-style, writeup, voice]
+execution:
+  max_turns: 25
+  timeout_seconds: 750
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Write a help center article in the Google developer documentation style on restoring a deleted project in Northwind Studio. The steps: open Settings, select Trash, select the project, then click Restore. Deleted projects stay in Trash for 30 days. Only project owners can restore a project.
+graders:
+  - name: bold-labels
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked for a help center article in the Google developer documentation style on restoring a deleted project in Northwind Studio, and gave every step. PASS if this condition holds, FAIL if it does not:
+      On-screen labels such as Settings, Trash and Restore are in bold.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: keeps-the-facts
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a help center article in the Google developer documentation style on restoring a deleted project in Northwind Studio, and gave every step. PASS if this condition holds, FAIL if it does not:
+      It says deleted projects stay in Trash for 30 days and that only project owners can restore a project.
+  - name: no-em-dash
+    type: regex
+    target: last_message
+    match: not_contains
+    weight: 1
+    pattern: '—'
+  - name: no-invented-ui
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a help center article in the Google developer documentation style on restoring a deleted project in Northwind Studio, and gave every step. PASS if this condition holds, FAIL if it does not:
+      It adds no screen, role, menu, retention period or keyboard shortcut beyond those named above.
+  - name: numbered-steps
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked for a help center article in the Google developer documentation style on restoring a deleted project in Northwind Studio, and gave every step. PASS if this condition holds, FAIL if it does not:
+      The steps are numbered, one action per step, in this order: open Settings, select Trash, select the project, click Restore.
+  - name: ran-style-check
+    type: tool_used
+    tool: Bash
+    input_match: 'check_output\.py|\bcheck\.py'
+    arm: with-only
+    weight: 1
+  - name: sentence-case-present-tense
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked for a help center article in the Google developer documentation style on restoring a deleted project in Northwind Studio, and gave every step. PASS if this condition holds, FAIL if it does not:
+      Headings are in sentence case, and the text addresses the reader in the present tense.
+  - name: writes-the-article
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a help center article in the Google developer documentation style on restoring a deleted project in Northwind Studio, and gave every step. PASS if this condition holds, FAIL if it does not:
+      It contains the full article, not only questions.

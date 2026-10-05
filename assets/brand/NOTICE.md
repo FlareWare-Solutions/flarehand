@@ -21,5 +21,5 @@ ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 ```
 
-The flarehand name, the composed icon and the Flareware flare gradient are Flareware's brand.
+The flarehand name, the composed icon and the Flareware flare gradient belong to FlareWare Solutions.
 The MIT license of this repository covers the code and documentation, not the brand.

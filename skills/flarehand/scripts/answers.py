@@ -46,7 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _text import EVIDENCE_REF, VERIFIED, exact_form, is_local_path, is_self_source  # noqa: E402
 from evidence import keep, keep_refusal, locate, normalize_newlines, staging_dir  # noqa: E402
 from kb import (_pref_days, _utf8_console, atomic_write, dump_frontmatter, kb_lock,  # noqa: E402
-                require_root, sensitive_choice, today)
+                record_write, require_root, sensitive_choice, start_history, today)
 from recall import body_hash, key_for, load_answers  # noqa: E402
 
 REVIEW_DAYS = 180
@@ -520,8 +520,21 @@ def main(argv=None) -> int:
             if reason:
                 print(reason, file=sys.stderr)
                 return 1
-            return args.func(args)
+            start_history(root)
+            rc = args.func(args)
+            if rc == 0:
+                record_write(root, _commit_message(root, args))
+            return rc
     return args.func(args)
+
+
+def _commit_message(root: Path, args) -> str:
+    """Names the answer by its file key, the same one the output prints, never by the question,
+    which can hold anything the person typed."""
+    hit = find(root, args.to if args.cmd == "alias" else args.question)
+    key = hit["path"].stem if hit else key_for(args.question)
+    why = " ".join(str(getattr(args, "why", "") or "").split())
+    return f"answers {args.cmd}: {key}" + (f"\n\n{why}" if why else "")
 
 
 if __name__ == "__main__":

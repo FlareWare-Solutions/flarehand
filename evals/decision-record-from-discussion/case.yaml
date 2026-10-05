@@ -1,0 +1,64 @@
+schema_version: "1.1"
+name: decision-record-from-discussion
+tags: [trigger, product, founder, writeup, template]
+execution:
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Write a decision record from this thread.
+
+    Priya (eng lead): For the event store, Postgres with a partitioned table handles our 3M events a day fine. DynamoDB would mean a new on-call skill set.
+    Tom (CTO): I care about cost more than scale right now. Postgres it is unless the numbers say otherwise.
+    Lee (finance): Before we commit, can someone get me a monthly cost estimate for both? I haven't seen one.
+    Priya: I'll have the estimate by Friday.
+    Tom: OK. Going with Postgres, pending Lee's cost check.
+graders:
+  - name: attributed
+    type: llm
+    weight: 2
+    criteria: |-
+      The user pasted a team thread about choosing an event store and asked for a decision record. PASS if this condition holds, FAIL if it does not:
+      It attributes the views to the people in the thread: Priya (eng lead) on Postgres and on-call, Tom (CTO) on cost over scale, Lee (finance) asking for a cost estimate. It names Tom as the one who made the call.
+  - name: conditional-status
+    type: llm
+    weight: 2
+    criteria: |-
+      The user pasted a team thread about choosing an event store and asked for a decision record. PASS if this condition holds, FAIL if it does not:
+      Its status is conditional or proposed, pending a cost estimate, not plainly final or accepted.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: keeps-the-facts
+    type: llm
+    weight: 2
+    criteria: |-
+      The user pasted a team thread about choosing an event store and asked for a decision record. PASS if this condition holds, FAIL if it does not:
+      It keeps these facts: Postgres with a partitioned table handles 3M events a day, DynamoDB would need a new on-call skill set, and Priya will have a monthly cost estimate for both by Friday.
+  - name: no-invented-facts
+    type: llm
+    weight: 2
+    criteria: |-
+      The user pasted a team thread about choosing an event store and asked for a decision record. PASS if this condition holds, FAIL if it does not:
+      It invents no cost figures, no calendar date for Friday and no option nobody raised, and it does not claim Postgres is cheaper.
+  - name: no-invented-money
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: '\$\s?\d'
+  - name: ran-checks
+    type: tool_used
+    tool: Bash
+    input_match: 'check_output\.py|ground\.py|\bcheck\.py'
+    arm: with-only
+    weight: 1
+  - name: record-shape
+    type: llm
+    weight: 1
+    criteria: |-
+      The user pasted a team thread about choosing an event store and asked for a decision record. PASS if this condition holds, FAIL if it does not:
+      It has decision-record sections: title, status, context, the decision, options considered, consequences, and open items.

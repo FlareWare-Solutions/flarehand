@@ -1,0 +1,86 @@
+schema_version: "1.1"
+name: postmortem-from-notes
+tags: [trigger, engineering, writeup, template]
+execution:
+  max_turns: 30
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Turn my notes into a postmortem for the engineering team.
+
+    - Tue Oct 1, 14:05 UTC: deployed payments-api v2.14.0
+    - 14:12: alerts fired, checkout error rate hit 18%
+    - 14:20: on-call (Mei) paged, saw database connection timeouts
+    - 14:31: rolled back to v2.13.2
+    - 14:40: error rate back under 0.5%
+    - About 2,300 checkouts failed in that window (from the Grafana dashboard)
+    - Cause: Sam's PR changed the connection pool max from 50 to 5. The config change was in a separate file and nobody caught it in review.
+    - Actions: add a config lint to CI (Jordan, Oct 18). Alert on pool saturation (Mei, Oct 25).
+graders:
+  - name: action-items
+    type: llm
+    weight: 2
+    criteria: |-
+      The user gave incident notes and asked for a postmortem for the engineering team. PASS if this condition holds, FAIL if it does not:
+      It lists both action items with owner and due date: add a config lint to CI (Jordan, Oct 18) and alert on pool saturation (Mei, Oct 25).
+  - name: blameless
+    type: llm
+    weight: 2
+    criteria: |-
+      The user gave incident notes and asked for a postmortem for the engineering team. PASS if this condition holds, FAIL if it does not:
+      It describes the config change and the review gap without calling it any person's mistake or fault.
+  - name: extra-actions-proposed
+    type: llm
+    weight: 1
+    criteria: |-
+      The user gave incident notes and asked for a postmortem for the engineering team. PASS if this condition holds, FAIL if it does not:
+      PASS if every action item other than the two from the notes (the CI config lint owned by Jordan, and the pool saturation alert owned by Mei) is marked suggested or proposed, or there are no others.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: keeps-impact-and-cause
+    type: llm
+    weight: 2
+    criteria: |-
+      The user gave incident notes and asked for a postmortem for the engineering team. PASS if this condition holds, FAIL if it does not:
+      It gives about 2,300 failed checkouts as the impact, and the cause as the connection pool maximum changed from 50 to 5 in a separate config file that review did not catch.
+  - name: keeps-the-timeline
+    type: llm
+    weight: 2
+    criteria: |-
+      The user gave incident notes and asked for a postmortem for the engineering team. PASS if this condition holds, FAIL if it does not:
+      It keeps these timeline facts: 14:05 UTC deploy of payments-api v2.14.0; 14:12 alerts with an 18% checkout error rate; 14:20 the on-call engineer Mei paged and saw database connection timeouts; 14:31 rollback to v2.13.2; 14:40 error rate back under 0.5%.
+  - name: no-blame
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: '\bSam(''s)? (mistake|error|fault)|(mistake|error|fault) (by|of) Sam|human error'
+  - name: no-invented-impact
+    type: llm
+    weight: 1
+    criteria: |-
+      The user gave incident notes and asked for a postmortem for the engineering team. PASS if this condition holds, FAIL if it does not:
+      It gives no impact figure beyond the ones above, such as revenue lost, customers affected or an SLA breach. A 35-minute duration worked out from the timestamps is fine.
+  - name: no-invented-money
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: '\$\s?\d'
+  - name: postmortem-shape
+    type: llm
+    weight: 2
+    criteria: |-
+      The user gave incident notes and asked for a postmortem for the engineering team. PASS if this condition holds, FAIL if it does not:
+      It has sections covering a summary, the impact, a timeline, the root cause or contributing factors, and action items.
+  - name: ran-checks
+    type: tool_used
+    tool: Bash
+    input_match: 'check_output\.py|ground\.py|\bcheck\.py'
+    arm: with-only
+    weight: 1

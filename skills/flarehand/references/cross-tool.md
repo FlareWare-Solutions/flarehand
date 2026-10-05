@@ -381,8 +381,8 @@ was read on, so it cannot be the source of a saved answer.
 `assets/redact-patterns.tsv` and look for each by eye. Credentials: cloud keys, private keys, bearer
 and basic auth, tokens, passwords in code or prose, database connect strings. Personal: national id
 numbers, cards, emails, phones, health and reasons for absence. Client: company names with a legal
-suffix, tenant ids, customer and invoice numbers. Also money, IP addresses, user paths, internal
-hostnames and `[opinion]` lines. List every hit and let the person decide.
+suffix, tenant ids, customer, order and invoice numbers (INV-20931, PO-4471). Also money, IP addresses,
+user paths, internal hostnames (build01.corp) and `[opinion]` lines. List every hit and let the person decide.
 
 **`review.py grade`, the verdict.** Per lens: `fail` on any confirmed blocking finding. `concerns` on
 any confirmed should-fix finding, or any plausible blocking finding. `pass` otherwise. A confirmed
@@ -428,7 +428,7 @@ python3 scripts/package.py
 Inside the repository, that builds three archives for each of the five skills, and a plugin folder,
 into `dist/` at the repository root. Same contents in each archive, different wrapper. The plugin
 folder holds every skill, the hooks and every tool's manifest, with the eval cases at its root for
-`claude plugin eval`. Read `evals/consistency.md`.
+`claude plugin eval`. The cases and how to run them are in the repository's `evals/consistency.md`.
 
 | File | Send it to | Why that one |
 |---|---|---|

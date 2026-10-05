@@ -61,7 +61,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _text import tokens  # noqa: E402
 from kb import (_utf8_console, atomic_write, read_config, read_prefs,  # noqa: E402
-                require_root, today)
+                require_root, resolve_root, today)
 
 try:  # built by another part of the skill. Without it, only the knowledge base is read.
     import layers  # noqa: E402
@@ -1236,7 +1236,41 @@ def main(argv=None) -> int:
         args.root = None
     if not hasattr(args, "json"):
         args.json = False
-    return args.func(args)
+    what = _writes(args)
+    root = resolve_root(args.root) if what else None
+    if root is None or not (root / "config.json").is_file():
+        return args.func(args)          # a read, or no knowledge base, which the command explains
+    # the same lock and history every other knowledge base write uses
+    from kb import kb_lock, record_write, session_only_refusal, start_history
+    reason = session_only_refusal(root)
+    if reason:
+        if args.cmd == "used":          # step 9 runs this every time; in session-only it records nothing
+            print("Session-only: nothing recorded.")
+            return 0
+        print(reason, file=sys.stderr)
+        return 1
+    with kb_lock(root):
+        start_history(root)
+        rc = args.func(args)
+        if rc == 0:
+            record_write(root, f"sources {args.cmd}: {what}")
+        return rc
+
+
+def _writes(args) -> str:
+    """What this run changes in the knowledge base, in a few words, or "" for a read."""
+    if args.cmd == "role":
+        for flag in ("set", "add", "remove", "new"):
+            if getattr(args, flag, None):
+                return f"{flag} {' '.join(str(getattr(args, flag)).split())}"
+        return ""
+    if args.cmd == "pin":
+        return f"{'clear' if args.clear else args.tier} {args.source}"
+    if args.cmd == "learning":
+        return next((f for f in ("on", "off", "clear") if getattr(args, f, False)), "")
+    if args.cmd == "used":
+        return "record what helped"
+    return ""
 
 
 if __name__ == "__main__":

@@ -1,0 +1,60 @@
+schema_version: "1.1"
+name: ground-entry-point-fires
+tags: [trigger, entry-point, grounding, outbound]
+execution:
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Check this reply before I send it. Are the numbers right?
+
+    Hi Ana, your Growth plan includes 10,000 API calls a month, and extra calls are billed at $0.002 each. You made 14,500 calls in September, so the overage on your next invoice is $90. Uptime last quarter was 99.98%.
+graders:
+  - name: catches-the-sum
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked to check a customer reply before sending. The reply says the Growth plan includes 10,000 API calls a month, extra calls cost $0.002 each, the customer made 14,500 calls in September so the overage is $90, and uptime last quarter was 99.98%. No source could check these. PASS if this condition holds, FAIL if it does not:
+      It points out that $90 does not follow from the reply's own numbers: 4,500 extra calls at $0.002 is $9.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand-ground"'
+    arm: with-only
+  - name: marks-unconfirmed
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked to check a customer reply before sending. The reply says the Growth plan includes 10,000 API calls a month, extra calls cost $0.002 each, the customer made 14,500 calls in September so the overage is $90, and uptime last quarter was 99.98%. No source could check these. PASS if this condition holds, FAIL if it does not:
+      It marks the allowance, the price, the call count and the uptime as unconfirmed or as the user's input, not as verified or correct.
+  - name: no-invented-url
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: 'https?://|\bwww\.'
+  - name: no-new-figures
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked to check a customer reply before sending. The reply says the Growth plan includes 10,000 API calls a month, extra calls cost $0.002 each, the customer made 14,500 calls in September so the overage is $90, and uptime last quarter was 99.98%. No source could check these. PASS if this condition holds, FAIL if it does not:
+      It invents no different allowance, price or uptime figure.
+  - name: ran-ground
+    type: tool_used
+    tool: Bash
+    input_match: 'ground\.py|\bcheck\.py'
+    arm: with-only
+    weight: 1
+  - name: user-decides
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked to check a customer reply before sending. The reply says the Growth plan includes 10,000 API calls a month, extra calls cost $0.002 each, the customer made 14,500 calls in September so the overage is $90, and uptime last quarter was 99.98%. No source could check these. PASS if this condition holds, FAIL if it does not:
+      It leaves the decision to send with the user.
+  - name: where-to-check
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked to check a customer reply before sending. The reply says the Growth plan includes 10,000 API calls a month, extra calls cost $0.002 each, the customer made 14,500 calls in September so the overage is $90, and uptime last quarter was 99.98%. No source could check these. PASS if this condition holds, FAIL if it does not:
+      It says where to confirm them, such as the billing system or the status page.

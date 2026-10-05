@@ -1,0 +1,39 @@
+schema_version: "1.1"
+name: soften-reply-keeps-facts
+tags: [trigger, retone, outbound]
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Make this reply to the client less blunt: 'Your data was wrong so the import failed. Fix it and resend.'
+graders:
+  - name: adds-nothing
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked to make this reply to a client less blunt: "Your data was wrong so the import failed. Fix it and resend." PASS if this condition holds, FAIL if it does not:
+      It adds no fact the original did not state, such as which field was wrong, a date, or an offer to fix the data for the client.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: keeps-both-facts
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked to make this reply to a client less blunt: "Your data was wrong so the import failed. Fix it and resend." PASS if this condition holds, FAIL if it does not:
+      The rewrite keeps both facts: the import failed because of the data, and the client needs to fix it and resend.
+  - name: shows-what-changed
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked to make this reply to a client less blunt: "Your data was wrong so the import failed. Fix it and resend." PASS if this condition holds, FAIL if it does not:
+      It shows or says which facts it kept or what it changed.
+  - name: softer-tone
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked to make this reply to a client less blunt: "Your data was wrong so the import failed. Fix it and resend." PASS if this condition holds, FAIL if it does not:
+      The rewrite states the problem without blaming the client.

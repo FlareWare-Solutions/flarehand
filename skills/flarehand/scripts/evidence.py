@@ -53,8 +53,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from redact import credential_hits  # noqa: E402  one guard, shared with every writer
-from kb import (_utf8_console, atomic_write, kb_lock, require_root, sensitive_choice,  # noqa: E402
-                session_only_refusal, today)
+from kb import (_utf8_console, atomic_write, kb_lock, record_write, require_root,  # noqa: E402
+                sensitive_choice, session_only_refusal, start_history, today)
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
 HASH_LEN = 12
@@ -345,6 +345,10 @@ def cmd_add(args) -> int:
         if text is None:
             return 2
 
+    reason = session_only_refusal(root) if args.keep else None
+    if reason:
+        print(reason, file=sys.stderr)
+        return 1
     got = stage(root, text, args.source or "", args.kind, args.note or "", args.sensitivity, args.keep)
     if "refused" in got:
         word = "Refused" if got["code"] == 1 else "error"
@@ -710,8 +714,19 @@ def main(argv=None) -> int:
     # add, keep and discard rewrite a ledger whole, so two sessions doing it at once used
     # to lose one side's rows. It is the same lock kb.py takes, and it nests.
     if args.cmd in ("add", "keep", "discard", "compare"):
-        with kb_lock(require_root(args)):
-            return args.func(args)
+        root = require_root(args)
+        with kb_lock(root):
+            kb_write = args.cmd == "keep" or (args.cmd == "add" and args.keep)
+            if not kb_write or session_only_refusal(root):
+                return args.func(args)
+            start_history(root)
+            rc = args.func(args)
+            # rc 1 can still mean some snapshots moved in, and those are agreed changes too
+            named = [str(h)[:12] for h in getattr(args, "hashes", [])]
+            what = ("one snapshot" if args.cmd == "add" else "all staged" if args.all else
+                    ", ".join(named[:3]) + (f" and {len(named) - 3} more" if len(named) > 3 else ""))
+            record_write(root, f"evidence {args.cmd}: {what}")
+            return rc
     return args.func(args)
 
 

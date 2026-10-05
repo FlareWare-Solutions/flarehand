@@ -1,0 +1,52 @@
+schema_version: "1.1"
+name: grill-entry-point-fires
+tags: [trigger, entry-point, interview, support-ops]
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Grill me on this plan before I take it to leadership: we move all 40 support agents from Zendesk to Intercom over one weekend in November, import the last two years of tickets, and switch the help center domain the same weekend.
+graders:
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand-grill"'
+    arm: with-only
+  - name: just-go
+    type: regex
+    target: last_message
+    match: contains
+    flags: i
+    weight: 1
+    pattern: 'just go'
+  - name: no-full-plan
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked to be grilled on a plan: move all 40 support agents from Zendesk to Intercom over one weekend in November, import the last two years of tickets, and switch the help center domain the same weekend. PASS if this condition holds, FAIL if it does not:
+      It does not write the full migration plan before the user answers.
+  - name: no-invented-facts
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked to be grilled on a plan: move all 40 support agents from Zendesk to Intercom over one weekend in November, import the last two years of tickets, and switch the help center domain the same weekend. PASS if this condition holds, FAIL if it does not:
+      It invents no facts about their setup, such as ticket volumes, macro counts or contract dates.
+  - name: probes-real-risks
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked to be grilled on a plan: move all 40 support agents from Zendesk to Intercom over one weekend in November, import the last two years of tickets, and switch the help center domain the same weekend. PASS if this condition holds, FAIL if it does not:
+      Its questions probe at least two real risks, such as a one-weekend cutover with no fallback, checking the imported tickets, the domain switch, agent training, or macros and automations.
+  - name: questions-with-answers
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked to be grilled on a plan: move all 40 support agents from Zendesk to Intercom over one weekend in November, import the last two years of tickets, and switch the help center domain the same weekend. PASS if this condition holds, FAIL if it does not:
+      It asks several questions in one message, each with a recommended answer or default.
+  - name: ran-classifier
+    type: tool_used
+    tool: Bash
+    input_match: 'classify\.py'
+    arm: with-only
+    weight: 1

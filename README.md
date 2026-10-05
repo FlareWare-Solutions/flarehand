@@ -1,132 +1,253 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/brand/mark-on-dark.svg">
-    <img src="assets/brand/mark-on-light.svg" width="112" alt="flarehand: a hand holding a flame">
-  </picture>
-</p>
+<div align="center">
 
-<h1 align="center">flarehand</h1>
+![flarehand: a hand holding a flame](assets/brand/icon-160.png)
 
-<p align="center">
-  <b>Turns a vague ask into the right deliverable, grounded in real sources.<br>Remembers only what you approve.</b>
-</p>
+# flarehand
 
-<p align="center">
-  <a href="LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-F64A68"></a>
-  <a href="https://agentskills.io"><img alt="Agent Skills" src="https://img.shields.io/badge/Agent%20Skills-5%20skills-FC5338"></a>
-  <img alt="Works in Claude Code, Codex, Cursor, Gemini CLI and Copilot" src="https://img.shields.io/badge/works%20in-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20Gemini%20%C2%B7%20Copilot-6B6577">
-  <img alt="Python 3.9+, standard library only" src="https://img.shields.io/badge/python-3.9%2B%2C%20no%20dependencies-6B6577">
-  <a href="docs/evals.md"><img alt="Eval score 0.99 with flarehand, 0.84 without" src="https://img.shields.io/badge/evals-0.99%20vs%200.84%20without-F0399A"></a>
-</p>
+**Turns a vague ask into the right deliverable, every fact sourced.<br>
+Remembers only what you approve, and re-checks it before reuse.**
+
+[![MIT license](https://img.shields.io/badge/license-MIT-F64A68)](LICENSE)
+[![Agent Skills](https://img.shields.io/badge/Agent%20Skills-5%20skills-FC5338)](https://agentskills.io)
+![Works in Claude Code, Codex, Cursor, Gemini CLI and Copilot](https://img.shields.io/badge/works%20in-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20Gemini%20%C2%B7%20Copilot-6B6577)
+![Python 3.9+, standard library only](https://img.shields.io/badge/python-3.9%2B%2C%20no%20dependencies-6B6577)
+[![Eval results](https://img.shields.io/badge/evals-0.99%20vs%200.84%20without-F0399A)](docs/evals.md)
+
+</div>
 
 ---
 
-Most work requests arrive as one vague line. "Customer says the export is broken." "Write up these
-notes." "Is this ready to send?" A capable agent will happily answer. That is the problem. It guesses
-what you meant, fills the gaps with plausible numbers, and forgets everything by tomorrow.
+Most work requests arrive as one vague line, and a capable agent will happily guess. It invents
+plausible numbers and links, adopts whatever theory you mentioned, and forgets everything by
+tomorrow.
 
-**flarehand** is an open-source plugin for your coding agent that does the thinking first. It names
-the deliverable you actually need. It asks only the questions that change it, each with a
-recommended answer. It finds the facts itself, labels every specific with where it came from, and
-checks the draft before you see it. Then it offers to keep what was worth keeping, and keeps nothing
-until you say yes.
-
-It works for engineers, support, product, operations, sales, finance, HR, founders, freelancers
-and students. It works alone, for a team, or across a company.
+**flarehand** is an open-source plugin for Claude Code, Codex, Cursor, Gemini CLI and Copilot that
+does the thinking first. It names the deliverable you need. It looks up what it can, then asks only
+the questions that change the result. It labels every specific with where it came from, and checks
+the draft before you see it. What you choose to keep goes into a plain Markdown knowledge base on
+your machine. Ask the same question next month and you get the same answer, word for word, after it
+re-checks that its sources have not changed.
 
 ## See it work
 
-**A vague one-liner** becomes a named job, three questions and a safe way forward:
+**A weak prompt becomes a clear job.** One vague line, and flarehand works out what is needed
+(reply trimmed):
 
 ```text
-You:        customer says the invoice export is broken
+You:        customer says the export is broken
 
-flarehand:  I think you need a diagnosis: what is actually failing, and why. Then probably a
-            reply to the customer. Say "just go" and I will write it from what we have, with
-            the gaps listed.
+flarehand:  Sounds like you need a diagnosis: what is actually failing, and why. Then probably
+            a reply to the customer. Say "just go" and I will start from what we have.
 
-            Reported cause: "the invoice export is broken" [stated, unverified]
+            Reported cause: "the export is broken" [stated, unverified]
 
-            Possible causes, each with the evidence that confirms or rules it out:
-            1. The export fails for everyone ...
-            2. It fails only for their data or settings ...
-            3. The export works, but the file is not what they expected ...
+            Questions, each with my default:
+            1. What exactly happens? Error text, or a file that looks wrong? (file looks wrong)
+            2. When did it last work? (recently, so check the last release first)
+            3. Every customer, or just this one? (just this one)
 
-            Questions for the customer (my default in brackets):
-            1. What exactly happens? The error text, or does the file look wrong? [file looks wrong]
-            2. When did it last work? [recently]
-            3. Every invoice, or only some? [only some]
+            Possible causes, each with what would confirm or rule it out: ...
 ```
 
-**Notes become a postmortem**, with every fact traced back to you and nothing invented:
+Behind that reply, a lookup table chose the route, the workflow and how many questions to allow. It
+flagged that the customer's theory must stay unverified. The agent searched your knowledge base and
+the sources for your role before asking you anything.
+
+**Memory with receipts.** A saved answer keeps a copy of the source it cites. When the source
+moves, flarehand notices before it repeats itself (output trimmed):
 
 ```text
-| Failed checkouts            | About 2,300             | Grafana dashboard [your input] |
-| Customers affected          | MISSING                 | ask the payments team          |
-| Revenue effect              | MISSING                 | ask finance                    |
+$ recall.py "how many rows can a csv export hold"
+REPLAY: print the saved answer word for word.
 
-Root cause (most probable): the pool max dropped from 50 to 5. [your input]
-Not yet verified: the rollback restored service, but no re-test with the pool at 50 is recorded.
+  (the documentation page changes)
 
-One thing to fix: your notes say "Tue Oct 1", but Oct 1 is a Thursday. Which is right?
+$ ground.py pins check
+drift  csv-export-limit: the expected quote is no longer there.
+       Closest: "CSV exports are limited to 100,000 rows per file."
+
+$ recall.py "how many rows can a csv export hold"
+RECHECK: it rests on a pinned source that changed. Show what changed, then answer again.
 ```
 
-**Every piece of work ends the same way.** Nothing is written until you pick a number:
+**Nothing is kept until you say so.** Every piece of work ends with a menu, never a silent save:
 
 ```text
 Keep any of this? Nothing is saved until you reply with numbers, or "none".
-1. Save log: wf-01, postmortem. First outage write-up for payments-api.
+1. Save log: wf-01, postmortem. First outage write-up for the payments service.
 2. Save note: config changes need a second reviewer (decision)
 3. Next: incident-comms, a customer-facing summary of the same outage
 ```
 
-## Three promises
+## Why flarehand
 
-1. **It never invents a specific.** No name, number, date, version or URL that is not in your words
-   or a source it read. When it cannot confirm something, it says so and asks.
-2. **It checks before it ships.** Quotes must really be in the source. Numbers in a claim must match
-   the source. Every URL must have been seen. A separate checker, which never saw the draft,
-   verifies high-stakes claims. One command, `check.py`, prints `PASS` or a numbered list of fixes.
-3. **It remembers only what you approve.** Your knowledge base is plain Markdown on your machine,
-   with a git history so any change can be undone. Saved answers come back word for word next time.
+1. **One vague line in, the right deliverable out.** It names what you need, looks up what it can,
+   and asks at most three or four questions, each with a recommended answer. "Just go" works any
+   time.
+2. **Every specific shows where it came from.** Claims carry labels like `[verified: S3]` or
+   `[ASSUMPTION, verify]`. Scripts confirm each quote is in the saved source, the numbers match,
+   and every link was actually seen.
+3. **Nothing is remembered until you say yes.** Your knowledge base is plain Markdown in your home
+   folder, with a local git history and no remote. `about-me` shows what it learned, and `forget`
+   takes any of it back.
+4. **Ask again, get the same answer, with receipts.** An approved answer replays word for word with
+   the snapshot it cites. A similar question is shown to you first, and a changed source triggers a
+   re-check.
+5. **It learns how you work, and asks first.** Make the same edit twice and it offers to keep it as
+   your preference or your team's. Run the same chain of steps three times and it offers to turn it
+   into a workflow of your own.
+6. **Rewrites keep every fact exactly as strong.** Tidying or softening starts from a list of the
+   claims. It never adds a promise, and it flags every date or fix commitment for you to confirm.
+7. **It does not adopt the reporter's theory.** "They say it's permissions" stays labelled
+   unverified everywhere, including the customer reply. A diagnosis weighs at least three causes.
+8. **It knows where to stop on legal, finance and HR.** It summarises and compares the source text,
+   never concludes liability or computes what you owe, and says who decides.
+9. **A check before anything leaves your machine.** It scans for credentials, personal data, money,
+   internal hosts and client identifiers, shows what it found, and lets you decide.
+10. **Your team's way, without losing the safety checks.** A `.flarehand/` playbook shares
+    templates, glossary words and house rules. Team rules always apply, and no personal file can
+    switch a check off.
 
-## What you get
+## Everything it does
 
-| Skill | Use it when you say |
-|---|---|
-| `flarehand` | Anything that should end in a deliverable: a reply, a plan, a diagnosis, a write-up |
-| `flarehand-ground` | "Check this before I send it." "Are the numbers right?" |
-| `flarehand-review` | "Review this PR." "What's wrong with this plan?" |
-| `flarehand-grill` | "Grill me on this plan." "Poke holes in it." |
-| `flarehand-remember` | "Remember this." "What did we decide about pricing?" "Forget that." |
+<details>
+<summary><b>Turns a weak prompt into a clear job</b></summary>
 
-Behind them:
+- **A deterministic router.** A table of over 1,600 rows picks the route, the workflow, the
+  template, how much to ask, and which risks apply. The same words always route the same way. When
+  two readings are close, it shows both.
+- **Names the deliverable first**, in your words, before any work.
+- **Looks it up before asking.** Your knowledge base, your files, the git history and the sources
+  that fit your role come first. Finding facts is its job, not yours.
+- **A capped round of questions.** None for a quick lookup, up to three for your own work, up to four
+  a round for anything a customer, an executive or an auditor will read. Each question carries a
+  recommended answer, and "just go" accepts them all.
+- **Drafts first when you already gave the facts.** Notes to write up or a draft to tidy get done
+  straight away. Gaps go on a MISSING list that names who can answer each one, and never suggests
+  an answer.
+- **Asks which meaning you intend**, but only for words you or your team saved in a glossary.
+- **Offers the jobs that fit** when a request is too unclear to route, and stays out of the way for
+  general coding or personal writing.
+- **Grill mode.** `flarehand-grill` stress-tests a plan in rounds, then hands back the decisions,
+  assumptions and open questions.
 
-- **12 workflows** that cover how work actually goes wrong. Diagnose without anchoring on a guess.
-  Hand off so the next team does not bounce it. Compress for a specific reader. Reconcile two things
-  that should match. Find the pattern in many items. Critique before someone else does.
-- **60 templates** in ten groups, most following a public framework they cite. Postmortem,
-  decision record, design doc, product brief, business case, OKRs, runbook, SOP, release notes,
-  customer reply, job description, interview scorecard, investor update and more.
-  [See the catalog.](docs/templates.md)
-- **Graded reviews** with seven lenses, where every finding is checked by someone who did not find
-  it, and anything nobody checked is reported as unchecked.
-- **Redaction before anything goes out**: credentials, personal data, health details, money and
-  internal hosts are flagged before you send.
+</details>
 
-## It grows with you
+<details>
+<summary><b>Gives your agent a method, not just a prompt</b></summary>
 
-flarehand starts useful on the first request and gets more useful the more you work with it.
+- **Standing rules that hold every turn.** Never invent a specific. Keep every fact and never
+  strengthen one. Lead with the artifact. They sit at the top of the skill so they survive a long
+  session.
+- **A nine-step pipeline**: orient, classify, name, recall, ground, interview, run, check, record.
+- **12 workflows** for how work goes wrong: diagnose without anchoring, hand off so the next team
+  does not bounce it, compress for a reader, translate across expertise, reconcile two things that
+  should match, find themes, plan, critique, list exhaustively, re-tone, and more.
+- **60 templates** in ten groups, from postmortems and decision records to OKRs, job descriptions,
+  release notes and investor updates. Each has required sections, cites the framework it follows,
+  and says whether its shape is sourced or general practice. [See the catalog.](docs/templates.md)
+- **One check before anything ships.** `check.py` runs the grounding, link, style, citation and
+  section checks, plus redaction for outbound text. It prints `PASS` or a numbered fix list, and the
+  agent repeats until it passes.
+- **Survives long sessions.** Before your agent compacts the conversation, a hook saves where the
+  work stood: the job, the claims and their labels, the sources, the MISSING list, the unanswered
+  save menu and the latest draft. Afterwards the agent is pointed back to it. It is deleted when the
+  session ends.
+- **Works without a shell, too.** Every script step has a written by-hand method.
 
-- **Do the work first.** No setup form. It detects your name, time zone and tools, and does the job.
-  Only then does it ask three optional questions, and whether it may keep a knowledge base.
-- **It notices, then asks.** Say you cut the risks section from two status reports in a row. It
-  offers: save as a) mine b) team playbook c) not now d) never ask.
-- **Your team's way, shared.** A `.flarehand/` folder in a repository holds your team's templates,
-  glossary and house rules. Your own preferences shape the output. Team rules always apply.
-  [How playbooks work.](docs/teams-and-playbooks.md)
-- **Nothing hidden.** `kb.py about-me` lists everything it learned, where it came from, and the
-  command that undoes it.
+</details>
+
+<details>
+<summary><b>Grounds every claim in a source</b></summary>
+
+- **Nine labels**, from `[verified: S3]` and `[your input]` to `[stated, unverified]`,
+  `[conflict: S2 vs S5]`, `[stale]` and `[ASSUMPTION, verify]`. Text you will send stays clean, with
+  the labels listed in the notes after it.
+- **Raw snapshots, checked by script.** A quote must really be in the saved copy of its source. Every
+  number, date and version in a claim must appear in its quote. A near miss is shown but never
+  passes.
+- **Links must have been seen.** A URL in the draft must come from your words or a tool result.
+- **A second opinion for anything that matters.** A claim earns `verified` only after a checker that
+  never saw the draft records its verdict. High-stakes claims go to a vote.
+- **Source tiers and freshness.** Numbers, versions, security and legal claims need a primary or
+  official source. Fast-changing facts go stale after a week, docs after three months.
+- **Conflicts are shown, never averaged**, with each source's tier and date.
+- **No web? It says so.** It grounds in your files, git and connected tools, and lists what to
+  confirm.
+- **Guardrails** for a stated cause, for outbound text, for legal, finance and HR questions, and
+  for anything that would write to production.
+
+</details>
+
+<details>
+<summary><b>Keeps a knowledge base you can read, trust and undo</b></summary>
+
+- **Plain Markdown on your machine**, at `~/.flareware/flarehand`, with a local git history and no
+  remote. It opens as an Obsidian graph if you like.
+- **A save menu, never a silent save.** A yes covers only the numbers you pick.
+- **Provenance on every line**: where it came from, how, when, and whether it is confirmed or only
+  suspected. A guess can never be stored as confirmed.
+- **Freshness.** Notes carry a review-by date, and a note that is due is never presented as settled.
+- **Linked notes.** When a note comes due, everything that depends on it is flagged too. Old facts
+  are retired with an end date, never deleted.
+- **Saved answers replay word for word**, with their evidence kept beside them. A hand edit or a
+  changed source forces a re-check. A question that only looks similar is shown to you first.
+- **Pinned sources.** Name the page a recurring answer rests on and the quote it must still hold.
+  flarehand reports when it drifts.
+- **A work log with the reason**, and an undo for the last entry.
+
+</details>
+
+<details>
+<summary><b>Learns about you, with permission</b></summary>
+
+- **Detects instead of asking.** Name, time zone, locale and tools come from your system. It never
+  guesses your employer.
+- **Does the work first.** On a first run you get the deliverable, then three optional questions and
+  a choice: keep a knowledge base, or just this session.
+- **Learns from your edits.** Cut the risks section twice and it offers to make that your default.
+  At most one offer per session, answered mine, team, later or never.
+- **Turns loops into your own workflows.** A chain of steps you repeat becomes a note, then a
+  routed workflow with its own template and checks.
+- **Reads your existing setup, if you let it**: CLAUDE.md, AGENTS.md, a style guide, or a pasted
+  memory export. It shows what it would keep before keeping it.
+- **A voice card** from one sample of your writing, used as rough guidance.
+- **Roles in your own words.** The order it tries sources in learns from what you actually cite.
+  New to a job? Thirty days of extra explanation, on request.
+- **Always shows its working.** `about-me` lists every learned item, the layer it came from, and the
+  command that undoes it. Every so often it checks in: keep, edit or forget?
+
+</details>
+
+<details>
+<summary><b>Works for a team, not just for you</b></summary>
+
+- **Playbooks.** A `.flarehand/` folder in a repository holds your team's templates, glossary, house
+  rules, pinned sources and workflows. A company playbook can sit above team ones.
+- **Shapes and rules layer differently.** Your template beats the team's, which beats the shipped
+  one. Rules add up: a team rule always applies, and nothing can remove it.
+- **Reviews use your standards.** Seven review lenses read your house rules and your repository's
+  own linter settings. Each finding is confirmed by a second pass, and grades follow a fixed rule.
+- **Nothing personal is shared.** Playbooks hold shapes and rules only, never notes, logs, answers
+  or anything about a person. flarehand never pushes them for you.
+
+</details>
+
+<details>
+<summary><b>Private, careful and portable</b></summary>
+
+- **No telemetry.** The network is used only to fetch a source you are checking, or when you ask it
+  to test your connection.
+- **Sensitive data is your call, asked once.** A password, an id number or someone's health detail
+  stops a save until you decide, and it tells you each time it applies that choice.
+- **Fair notes about people.** It records behaviour, not character. Inferences and opinions stay
+  marked as suspected. It keeps that someone is away, never why.
+- **Hooks that stay out of the way.** They run in Python, always exit cleanly, and never write
+  inside the plugin folder.
+- **Runs in many agents.** Claude Code, Codex, Cursor, Gemini CLI, Copilot, and any tool that reads
+  Agent Skills. Python 3.9 or later, standard library only.
+
+</details>
 
 ## Install
 
@@ -162,46 +283,47 @@ gemini extensions install https://github.com/FlareWare-Solutions/flarehand
 npx skills add FlareWare-Solutions/flarehand
 ```
 
-Then try: *"Turn these notes into a status update for my manager"*, followed by your notes.
+Then try *"Turn these notes into a status update for my manager"*, followed by your notes.
 [Getting started](docs/getting-started.md) walks through the first session.
 
 ## What it stores, and what it sends
 
 - **Your knowledge base** is a folder of plain Markdown at `~/.flareware/flarehand`
   (`%USERPROFILE%\.flareware\flarehand` on Windows). It is written only after you say yes, kept in a
-  local git history so any change can be undone, and never pushed anywhere.
-- **Session files** go to your system temp folder: snapshots of sources you cite, and a checkpoint
-  saved before your agent compacts the conversation. The checkpoint is deleted when the session
-  ends, and anything left is pruned after 7 days.
+  local git history, and never pushed anywhere.
+- **Session files** go to your system temp folder: snapshots of sources you cite, and the
+  checkpoint saved before a compaction. The checkpoint is deleted when the session ends, and
+  anything left is pruned after 7 days.
 - **Team playbooks** are read from a `.flarehand/` folder in your repository, or a folder you name.
-  They hold templates and rules only, never anything about a person.
-- **Network.** flarehand sends no telemetry. When it checks a claim it fetches only pages that
-  already appeared in your session. Your agent sends your conversation to its own model provider,
-  as it always does.
-- **Hooks** run on your machine, in Python, and print a line or two of context for your agent. They
-  never block, and they never write inside the plugin folder.
+- **Network.** No telemetry. Your agent sends your conversation to its own model provider, as it
+  always does.
 
 The full detail is in [privacy and data](docs/privacy-and-data.md).
 
 ## Measured, not claimed
 
 flarehand is tested with `claude plugin eval` on 37 realistic cases across roles. Each case runs
-three times with the plugin and three times without, scored by an independent judge model.
+three times with the plugin and three times without, scored by a separate judge model.
 
 | | With flarehand | Without |
 |---|---|---|
 | Mean score, all 37 cases | **0.99** | 0.84 |
 | Work requests (28 cases) | **0.99** | 0.79 |
-| Fired on requests it should ignore (haiku, React, cover letter...) | 0 of 27 runs | |
+| Fired on requests it should ignore | 0 of 27 runs | |
 
-Some of the biggest differences:
+The biggest differences show where it helps most:
 
-- Not inventing documentation links: 1.00 vs 0.56.
-- Softening a blunt reply without losing a fact: 1.00 vs 0.56.
-- Keeping a legal question to the facts: 1.00 vs 0.44.
-- Doing the work first on a first run: 0.98 vs 0.48.
- How the suite works, and the honest
-caveats, are in [evals](docs/evals.md). The scripts behind it have 809 unit tests.
+| Case | With | Without |
+|---|---|---|
+| Doing the work first on a first run | 0.98 | 0.48 |
+| Stress-testing a plan with grill mode | 0.95 | 0.48 |
+| Keeping a legal question to the facts | 1.00 | 0.44 |
+| Not inventing documentation links | 1.00 | 0.56 |
+| Softening a blunt reply without losing a fact | 1.00 | 0.56 |
+
+These cases are our own, and a model does the judging, so read them as a guide rather than a
+benchmark. How the suite works, and its caveats, are in [evals](docs/evals.md). The scripts behind
+flarehand also have over 800 unit tests.
 
 ## Documentation
 
@@ -237,10 +359,12 @@ flarehand stands on good ideas from others:
 ## Contributing
 
 Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first: flarehand has
-to pass its own writing rules, and every change runs the unit tests and the validator.
+to pass its own writing rules, and every change runs the unit tests and the validator. Please follow
+the [code of conduct](CODE_OF_CONDUCT.md), and report security problems as [SECURITY.md](SECURITY.md)
+describes.
 
 ## License
 
-MIT. See [LICENSE](LICENSE). The flarehand name and mark belong to Flareware.
+MIT. See [LICENSE](LICENSE). The flarehand name and mark belong to FlareWare Solutions.
 
-<p align="center"><sub>Made by <a href="https://github.com/FlareWare-Solutions">Flareware</a></sub></p>
+<div align="center"><sub>Made by <a href="https://github.com/FlareWare-Solutions">FlareWare Solutions</a></sub></div>

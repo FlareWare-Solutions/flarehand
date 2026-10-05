@@ -1,0 +1,67 @@
+schema_version: "1.1"
+name: review-entry-point-fires
+tags: [trigger, entry-point, review, engineering, security]
+execution:
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Do a security review of this endpoint before I ship it.
+
+    ```python
+    @app.route("/invoices")
+    def invoices():
+        customer = request.args.get("customer")
+        sql = f"SELECT * FROM invoices WHERE customer_name = '{customer}'"
+        rows = db.execute(sql).fetchall()
+        return jsonify([dict(r) for r in rows])
+    ```
+graders:
+  - name: access-check
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a security review of a Flask /invoices endpoint that reads "customer" from the query string, builds SQL with an f-string, runs it and returns every row as JSON, with no authentication check. PASS if this condition holds, FAIL if it does not:
+      It flags that any caller can read any customer's invoices because there is no authentication or authorisation check.
+  - name: finding-detail
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked for a security review of a Flask /invoices endpoint that reads "customer" from the query string, builds SQL with an f-string, runs it and returns every row as JSON, with no authentication check. PASS if this condition holds, FAIL if it does not:
+      Each finding has a location, a severity and a fix, and it grades the lenses it used.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand-review"'
+    arm: with-only
+  - name: no-rubber-stamp
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: 'looks good to me|lgtm|ready to (ship|merge)'
+  - name: not-approved
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a security review of a Flask /invoices endpoint that reads "customer" from the query string, builds SQL with an f-string, runs it and returns every row as JSON, with no authentication check. PASS if this condition holds, FAIL if it does not:
+      It does not approve the endpoint for shipping.
+  - name: ran-review
+    type: tool_used
+    tool: Bash
+    input_match: 'review\.py'
+    arm: with-only
+    weight: 1
+  - name: says-what-it-could-not-check
+    type: llm
+    weight: 1
+    criteria: |-
+      The user asked for a security review of a Flask /invoices endpoint that reads "customer" from the query string, builds SQL with an f-string, runs it and returns every row as JSON, with no authentication check. PASS if this condition holds, FAIL if it does not:
+      It says what it could not check, such as how the rest of the app handles authentication.
+  - name: sql-injection
+    type: llm
+    weight: 2
+    criteria: |-
+      The user asked for a security review of a Flask /invoices endpoint that reads "customer" from the query string, builds SQL with an f-string, runs it and returns every row as JSON, with no authentication check. PASS if this condition holds, FAIL if it does not:
+      It flags SQL injection in the f-string query and gives a parameterised-query fix as code.

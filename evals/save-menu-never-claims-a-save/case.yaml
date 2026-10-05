@@ -1,0 +1,65 @@
+schema_version: "1.1"
+name: save-menu-never-claims-a-save
+tags: [trigger, memory, save-menu, scaffold, customer-success]
+context:
+  scaffold_script: seed.sh
+execution:
+  max_turns: 25
+  timeout_seconds: 900
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Summarise this for my VP in five bullets.
+
+    Account: Acme Logistics. Renewal date: November 30. Usage is down 22% since July, mostly because their ops team moved shipments to a new warehouse tool. Our champion Dana Lee left in September; the new contact, Raj Patel, has not logged in yet. Three support tickets are open, one of them a P1 about failed CSV imports, open since Sept 28. They asked for a 15% discount to renew.
+graders:
+  - name: ends-with-save-menu
+    type: regex
+    target: last_message
+    match: contains
+    flags: i
+    weight: 2
+    pattern: 'Keep any of this\?'
+  - name: ends-with-the-menu
+    type: llm
+    weight: 2
+    criteria: |-
+      The user, who already has a knowledge base, asked for a summary of an account update for their VP in five bullets. PASS if this condition holds, FAIL if it does not:
+      It ends with a numbered menu that starts "Keep any of this?", whose first line is a work log entry. The numbers may skip or be consecutive.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: five-bullets
+    type: llm
+    weight: 1
+    criteria: |-
+      The user, who already has a knowledge base, asked for a summary of an account update for their VP in five bullets. PASS if this condition holds, FAIL if it does not:
+      It gives the summary as five bullets.
+  - name: keeps-the-facts
+    type: llm
+    weight: 2
+    criteria: |-
+      The user, who already has a knowledge base, asked for a summary of an account update for their VP in five bullets. PASS if this condition holds, FAIL if it does not:
+      The bullets keep: Acme Logistics renews November 30; usage is down 22% since July because their ops team moved shipments to a new warehouse tool; champion Dana Lee left in September; new contact Raj Patel has not logged in; three support tickets are open, one a P1 about failed CSV imports open since Sept 28; they asked for a 15% discount to renew.
+  - name: no-invented-facts
+    type: llm
+    weight: 1
+    criteria: |-
+      The user, who already has a knowledge base, asked for a summary of an account update for their VP in five bullets. PASS if this condition holds, FAIL if it does not:
+      It adds no churn risk score, revenue figure, or recommendation presented as fact.
+  - name: no-kb-write
+    type: tool_used
+    tool: Bash
+    input_match: 'kb\.py[\\"]*\s+(?:init|note|log\s+workflow|template\s+save|glossary\s+add|rule\s+add|choice)\b|answers\.py[\\"]*\s+write\b'
+    min: 0
+    max: 0
+    arm: both
+    weight: 2
+  - name: no-save-claimed
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: '\bI(?:''ve| have)? (?:saved|logged|stored|remembered|noted)\b|(?<!nothing )(?<!not )\b(?:has|have) been (?:saved|logged|stored)\b'

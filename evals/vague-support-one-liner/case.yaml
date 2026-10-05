@@ -1,0 +1,51 @@
+schema_version: "1.1"
+name: vague-support-one-liner
+tags: [trigger, support, diagnose]
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    customer says the invoice export is broken
+graders:
+  - name: asks-focused-questions
+    type: llm
+    weight: 2
+    criteria: |-
+      A support analyst typed only "customer says the invoice export is broken", with no logs, account or error text. PASS if this condition holds, FAIL if it does not:
+      It asks a small number of focused questions about the problem in one message (about two to four), or lists exactly which evidence it needs.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand(?:-(?:remember|ground|grill|review))?"'
+    arm: with-only
+  - name: names-the-need
+    type: llm
+    weight: 1
+    criteria: |-
+      A support analyst typed only "customer says the invoice export is broken", with no logs, account or error text. PASS if this condition holds, FAIL if it does not:
+      Before doing any work, it says what it thinks the user needs, such as finding out why the export fails or packaging the problem for engineering.
+  - name: no-diagnosis
+    type: llm
+    weight: 2
+    criteria: |-
+      A support analyst typed only "customer says the invoice export is broken", with no logs, account or error text. PASS if this condition holds, FAIL if it does not:
+      It does not present any cause as found and gives no finished diagnosis. Listing possible causes to check is fine.
+  - name: no-job-title
+    type: llm
+    weight: 1
+    criteria: |-
+      A support analyst typed only "customer says the invoice export is broken", with no logs, account or error text. PASS if this condition holds, FAIL if it does not:
+      It does not ask the user for their own job title. Asking what they work on, or asking for a client contact's name or title, is fine.
+  - name: offers-a-default
+    type: llm
+    weight: 1
+    criteria: |-
+      A support analyst typed only "customer says the invoice export is broken", with no logs, account or error text. PASS if this condition holds, FAIL if it does not:
+      It offers a way to go ahead on stated assumptions, such as replying "just go" or accepting its recommended answers.
+  - name: ran-classifier
+    type: tool_used
+    tool: Bash
+    input_match: 'classify\.py'
+    arm: with-only
+    weight: 1

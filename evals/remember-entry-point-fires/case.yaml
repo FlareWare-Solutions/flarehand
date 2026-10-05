@@ -1,0 +1,42 @@
+schema_version: "1.1"
+name: remember-entry-point-fires
+tags: [trigger, entry-point, memory]
+execution:
+  max_turns: 20
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |-
+    Remember that our holiday code freeze starts December 12 and ends January 5, and only P1 fixes ship during it.
+graders:
+  - name: asks-consent
+    type: llm
+    weight: 2
+    criteria: |-
+      In their first session, with no knowledge base yet, the user asked the tool to remember a fact about their holiday code freeze. PASS if this condition holds, FAIL if it does not:
+      It asks permission to keep a private knowledge base (or offers "just this session"), or says plainly that nothing is kept yet.
+  - name: fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?flarehand-remember"'
+    arm: with-only
+  - name: no-kb-write
+    type: tool_used
+    tool: Bash
+    input_match: 'kb\.py[\\"]*\s+(?:init|note|log\s+workflow|template\s+save|glossary\s+add|rule\s+add|choice)\b|answers\.py[\\"]*\s+write\b'
+    min: 0
+    max: 0
+    arm: both
+    weight: 2
+  - name: no-save-claimed
+    type: regex
+    target: last_message
+    match: not_contains
+    flags: i
+    weight: 2
+    pattern: '\bI(?:''ve| have)? (?:saved|logged|stored|remembered|noted)\b|(?<!nothing )(?<!not )\b(?:has|have) been (?:saved|logged|stored)\b'
+  - name: restates-exactly
+    type: llm
+    weight: 2
+    criteria: |-
+      In their first session, with no knowledge base yet, the user asked the tool to remember a fact about their holiday code freeze. PASS if this condition holds, FAIL if it does not:
+      It restates the fact exactly: the freeze starts December 12, ends January 5, and only P1 fixes ship during it.

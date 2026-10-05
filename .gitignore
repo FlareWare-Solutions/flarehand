@@ -6,3 +6,13 @@ dist/
 .claude/settings.local.json
 .release-guard
 internal/
+evals/results/
+.idea/
+.vscode/
+.venv/
+venv/
+.ruff_cache/
+.pytest_cache/
+Thumbs.db
+desktop.ini
+__MACOSX/
