@@ -54,7 +54,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from redact import credential_hits  # noqa: E402  one guard, shared with every writer
 from kb import (_utf8_console, atomic_write, kb_lock, record_write, require_root,  # noqa: E402
-                sensitive_choice, session_only_refusal, start_history, today)
+                sensitive_choice, session_only_refusal, start_history, today, write_lf)
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
 HASH_LEN = 12
@@ -214,8 +214,7 @@ def append_ledger(folder: Path, row: dict) -> None:
         _write_private(folder / LEDGER, json.dumps(row) + "\n", append=True)
         return
     folder.mkdir(parents=True, exist_ok=True)
-    with (folder / LEDGER).open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps(row) + "\n")
+    write_lf(folder / LEDGER, json.dumps(row) + "\n", "a")
 
 
 def _write_ledger(folder: Path, rows: list[dict]) -> None:
@@ -563,8 +562,7 @@ def record_compare(root: Path, h: str, verdict: str) -> None:
     is known to have changed" had no answer the next day."""
     path = compare_log(root)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "a", encoding="utf-8") as f:
-        f.write(json.dumps({"hash": h, "verdict": verdict, "on": today()}) + "\n")
+    write_lf(path, json.dumps({"hash": h, "verdict": verdict, "on": today()}) + "\n", "a")
 
 
 def last_compares(root: Path) -> dict:

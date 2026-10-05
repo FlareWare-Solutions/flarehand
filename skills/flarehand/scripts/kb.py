@@ -101,7 +101,8 @@ NOTE_REVIEW_DAYS = 365       # a note's default review horizon, config prefs.rev
 PERSON_REVIEW_DAYS = 180     # a person note is reviewed sooner, and never later than this
 SUBGROUP_THRESHOLD = 20  # split a group by tag once it passes this
 MAX_DEPTH = 2            # never nest deeper than notes/<group>/<subgroup>/
-LOCK_TIMEOUT_SECONDS = 10    # how long a writing command waits for another one to finish
+LOCK_TIMEOUT_SECONDS = 10    # how long a writing command waits on one holder that never lets go
+LOCK_MAX_WAIT_SECONDS = 180  # the longest wait in all, while other writers keep taking turns
 LOCK_STALE_SECONDS = 60      # a lock older than this belongs to a process that died
 # notes at these levels are listed in index.md by title only, so the hub never leaks their content
 INDEX_TITLE_ONLY = ("restricted", "personal-data", "customer-data")
@@ -557,11 +558,19 @@ def _process_alive(pid: str) -> bool:
     if os.name == "nt":
         try:
             import ctypes
-            kernel32 = ctypes.windll.kernel32
+            from ctypes import wintypes
+            # Its own handle on kernel32 with typed calls: a HANDLE is pointer sized, and the
+            # shared windll default would cut it to 32 bits and lose the real last error.
+            kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+            kernel32.OpenProcess.argtypes = (wintypes.DWORD, wintypes.BOOL, wintypes.DWORD)
+            kernel32.OpenProcess.restype = wintypes.HANDLE
+            kernel32.GetExitCodeProcess.argtypes = (wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD))
+            kernel32.GetExitCodeProcess.restype = wintypes.BOOL
+            kernel32.CloseHandle.argtypes = (wintypes.HANDLE,)
             handle = kernel32.OpenProcess(0x1000, False, n)   # PROCESS_QUERY_LIMITED_INFORMATION
             if not handle:
-                return kernel32.GetLastError() == 5            # access denied means it exists
-            code = ctypes.c_ulong()
+                return ctypes.get_last_error() == 5            # access denied means it exists
+            code = wintypes.DWORD()
             ok = kernel32.GetExitCodeProcess(handle, ctypes.byref(code))
             kernel32.CloseHandle(handle)
             return bool(ok) and code.value == 259              # STILL_ACTIVE
@@ -697,6 +706,11 @@ class kb_lock:
     LOCK_STALE_SECONDS. The owner refreshes it every few seconds from a background
     thread, so a slow command that is still alive is never broken into. The owner removes
     only the lock it created. The wait is bounded, so a command never hangs.
+
+    The bound is on a holder that never lets go, not on the queue. While the lock keeps
+    changing hands the wait goes on, up to LOCK_MAX_WAIT_SECONDS, because a busy queue on a
+    slow machine is not a stuck one. Windows runs each commit noticeably slower, and forty
+    writers in a row there took longer than one fixed timeout.
     """
 
     # Re-entrant within one thread. A read command can rebuild the index, and that rebuild
@@ -711,13 +725,15 @@ class kb_lock:
         self.key = (str(self.path), _thread_id())
         self.nested = False
         self._stop = None
+        self.seen = None       # the lock text last read, so a change of holder can be told apart
 
     def _stale(self) -> bool:
         """Read under the guard. An unreadable or half-written lock counts as alive until
         it is old, because its owner may be between creating it and writing its pid."""
         try:
             info = self.path.stat()
-            held_by = self.path.read_text(encoding="utf-8", errors="replace").split(" ", 1)[0].strip()
+            self.seen = self.path.read_text(encoding="utf-8", errors="replace")
+            held_by = self.seen.split(" ", 1)[0].strip()
         except FileNotFoundError:
             return False
         except OSError:
@@ -733,7 +749,9 @@ class kb_lock:
             kb_lock._held[self.key] += 1
             return self
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        deadline = time.monotonic() + LOCK_TIMEOUT_SECONDS
+        started = time.monotonic()
+        deadline = started + LOCK_TIMEOUT_SECONDS
+        holder = None
         while True:
             with _guard(self.path.parent, deadline):
                 try:
@@ -763,6 +781,10 @@ class kb_lock:
                     kb_lock._held[self.key] = 1
                     self._start_heartbeat()
                     return self
+            if self.seen is not None and self.seen != holder:
+                # Someone else took a turn since the last look: the queue moves, so wait on.
+                holder = self.seen
+                deadline = min(time.monotonic() + LOCK_TIMEOUT_SECONDS, started + LOCK_MAX_WAIT_SECONDS)
             if time.monotonic() > deadline:
                 die(f"another kb.py command is still writing to {self.path.parent.parent}. "
                     f"Wait for it to finish, then try again. If none is running, delete {self.path}.")
@@ -794,6 +816,7 @@ class kb_lock:
         t = threading.Thread(target=beat, name="kb-lock-heartbeat", daemon=True)
         t.start()
         self._stop = stop
+        self._beat = t
 
     def __exit__(self, *exc):
         if self.nested:
@@ -802,6 +825,9 @@ class kb_lock:
         kb_lock._held.pop(self.key, None)
         if self._stop is not None:
             self._stop.set()
+            # Windows cannot delete a file another handle has open, and the heartbeat may be
+            # reading the lock this very moment. Let it finish before the lock goes.
+            self._beat.join(timeout=5)
         # Remove the lock only if it is still the one this command created. If it was
         # judged stale and someone else holds a new one, theirs stays.
         with _guard(self.path.parent, time.monotonic() + LOCK_TIMEOUT_SECONDS):
@@ -923,15 +949,15 @@ def git_init(root: Path) -> str:
                     "history alone. Nothing here commits for you.")
         for name, body in ((".gitignore", GITIGNORE), (".gitattributes", GITATTRIBUTES)):
             if not (root / name).is_file():
-                (root / name).write_text(body, encoding="utf-8")
+                write_lf(root / name, body)
         return ""
     if _git(root, "init", "--quiet") is None:
         return ""
-    (root / ".gitignore").write_text(GITIGNORE, encoding="utf-8")
-    (root / ".gitattributes").write_text(GITATTRIBUTES, encoding="utf-8")
-    (root / GIT_MARKER).write_text(
-        "This repository was started by the flarehand skill, which commits after each write.\n"
-        "Delete this file to take the history over yourself.\n", encoding="utf-8")
+    write_lf(root / ".gitignore", GITIGNORE)
+    write_lf(root / ".gitattributes", GITATTRIBUTES)
+    write_lf(root / GIT_MARKER,
+             "This repository was started by the flarehand skill, which commits after each write.\n"
+             "Delete this file to take the history over yourself.\n")
     # Fall back to a local identity only when the person has not set a global one,
     # because `git commit` refuses without it.
     who = _git(root, "config", "user.email")
@@ -955,8 +981,7 @@ def _gitignore_current(root: Path) -> None:
     missing = [l for l in GITIGNORE.splitlines() if l and l not in have]
     if missing:
         try:
-            with path.open("a", encoding="utf-8") as f:
-                f.write(("" if not have or have[-1] == "" else "\n") + "\n".join(missing) + "\n")
+            write_lf(path, ("" if not have or have[-1] == "" else "\n") + "\n".join(missing) + "\n", "a")
         except OSError:
             pass
 
@@ -1077,13 +1102,21 @@ class Note:
         return True
 
 
+def write_lf(path: Path, text: str, mode: str = "w") -> None:
+    """Write UTF-8 text with `\n` line ends on every platform. Text mode on Windows turns
+    each one into `\r\n`, so a knowledge base written there differed byte for byte from
+    the same one written anywhere else, and from what git checks out with eol=lf."""
+    with open(path, mode, encoding="utf-8", newline="\n") as f:
+        f.write(text)
+
+
 def atomic_write(path: Path, text: str) -> None:
     """Write to a sibling temp file, then swap it in. A crash, a full disk or a
     killed process leaves the old file intact instead of half a new one."""
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_name(f".{path.name}.tmp-{os.getpid()}-{_thread_id()}")
     try:
-        tmp.write_text(text, encoding="utf-8")
+        write_lf(tmp, text)
         os.replace(tmp, path)
     except OSError as e:
         tmp.unlink(missing_ok=True)
@@ -1421,7 +1454,7 @@ def cmd_init(args) -> int:
     if started_on:
         cfg["started_on"] = started_on
     try:
-        cfg_path.write_text(json.dumps(cfg, indent=2) + "\n", encoding="utf-8")
+        write_lf(cfg_path, json.dumps(cfg, indent=2) + "\n")
     except OSError as e:
         die(f"cannot write {cfg_path}: {e}")
 
@@ -1430,18 +1463,16 @@ def cmd_init(args) -> int:
     # Without it, a test or a second store cannot take over someone's real memory.
     if root != anchor and args.set_default:
         anchor.mkdir(parents=True, exist_ok=True)
-        (anchor / "config.json").write_text(
-            json.dumps({"schema_version": SCHEMA_VERSION, "root": str(root)}, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        write_lf(anchor / "config.json",
+                 json.dumps({"schema_version": SCHEMA_VERSION, "root": str(root)}, indent=2) + "\n")
 
     if not (root / "log.md").is_file():
-        (root / "log.md").write_text(
+        write_lf(
+            root / "log.md",
             dump_frontmatter({"title": "Work log", "type": "log", "permalink": "log",
                               "tags": ["meta"], "created": today(), "updated": today()})
             + "\n\n# Work log\n\nWhat happened, newest first. Each month is its own file.\n\n"
               "**Current:** none yet\n\n## Months\n\n",
-            encoding="utf-8",
         )
     rebuild_index(root)
     tracked = ensure_history(root) if prefs.get("git", True) is not False else ""
@@ -1981,6 +2012,21 @@ def cmd_log(args) -> int:
     return 0
 
 
+def _change_stamp(path: Path, st: os.stat_result) -> str:
+    """What moves when a file's content changes, beyond its size and mtime.
+
+    On POSIX that is ctime, which every write moves, even one that keeps the size and puts
+    the mtime back. On Windows st_ctime is the creation time and never moves on an edit,
+    so there the content itself is hashed. Notes are small, so this stays cheap.
+    """
+    if os.name != "nt":
+        return str(st.st_ctime_ns)
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()[:16]
+    except OSError:
+        return ""
+
+
 def notes_fingerprint(root: Path) -> str:
     """Changes whenever any note is added, removed or edited, by the skill or by hand."""
     h = hashlib.sha256()
@@ -1992,9 +2038,8 @@ def notes_fingerprint(root: Path) -> str:
                 st = path.stat()
             except OSError:
                 continue
-            # ctime moves on every write, even one that keeps the size and the mtime
-            h.update(f"{path.relative_to(root).as_posix()}|{st.st_mtime_ns}|{st.st_ctime_ns}|{st.st_size}\n"
-                     .encode())
+            h.update(f"{path.relative_to(root).as_posix()}|{st.st_mtime_ns}|{_change_stamp(path, st)}"
+                     f"|{st.st_size}\n".encode())
     return h.hexdigest()[:20]
 
 
@@ -2009,8 +2054,8 @@ def sources_fingerprint(root: Path) -> str:
             st = path.stat()
         except OSError:
             continue
-        h.update(f"{path.relative_to(root).as_posix()}|{st.st_mtime_ns}|{st.st_ctime_ns}|{st.st_size}\n"
-                 .encode())
+        h.update(f"{path.relative_to(root).as_posix()}|{st.st_mtime_ns}|{_change_stamp(path, st)}"
+                 f"|{st.st_size}\n".encode())
     return h.hexdigest()[:20]
 
 

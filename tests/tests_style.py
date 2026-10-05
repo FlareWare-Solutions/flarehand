@@ -214,7 +214,7 @@ class TestVoiceHooks(unittest.TestCase):
         cls.home_off = cls.tmp / "home-off"
         cls.home_on = cls.tmp / "home-on"
         for home, gate in ((cls.home_off, None), (cls.home_on, True)):
-            env = dict(os.environ, HOME=str(home))
+            env = dict(os.environ, HOME=str(home), USERPROFILE=str(home))   # Windows reads USERPROFILE
             subprocess.run([sys.executable, str(SKILL / "scripts" / "kb.py"), "init"], env=env, capture_output=True,
                            text=True, timeout=180)
             if gate:
@@ -228,7 +228,8 @@ class TestVoiceHooks(unittest.TestCase):
 
     def hook(self, payload: dict, *args: str, home=None) -> str:
         import os
-        env = dict(os.environ, HOME=str(home or self.home_off))
+        home = str(home or self.home_off)
+        env = dict(os.environ, HOME=home, USERPROFILE=home)
         r = subprocess.run([sys.executable, str(SKILL / "scripts" / "voice_gate.py"), *args], input=json.dumps(payload),
                            capture_output=True, text=True, timeout=180, env=env)
         self.assertEqual(r.returncode, 0, r.stderr)
@@ -255,8 +256,10 @@ class TestVoiceHooks(unittest.TestCase):
 
     def test_garbage_input_does_nothing(self):
         import os
+        home = str(self.home_on)
         r = subprocess.run([sys.executable, str(SKILL / "scripts" / "voice_gate.py")], input="not json",
-                           capture_output=True, text=True, timeout=180, env=dict(os.environ, HOME=str(self.home_on)))
+                           capture_output=True, text=True, timeout=180,
+                           env=dict(os.environ, HOME=home, USERPROFILE=home))
         self.assertEqual((r.returncode, r.stdout), (0, ""))
 
     def test_the_plugin_hooks_match_the_shipped_copy(self):

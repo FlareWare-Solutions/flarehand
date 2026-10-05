@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import http.server
 import json
+import re
 import os
 import shutil
 import subprocess
@@ -461,9 +462,11 @@ class TestChecker(Session):
         r = self.g("checker-brief", self.cid)
         self.assertEqual(r.returncode, 0, r.stderr)
         for want in ("The limit is 5 per day.", "According to this source, the limit is 5 per day.",
-                     "SUPPORTED", "PARTIAL", "NOT_SUPPORTED", "CONTRADICTED", "Snapshot: /", "have not seen the draft",
+                     "SUPPORTED", "PARTIAL", "NOT_SUPPORTED", "CONTRADICTED", "have not seen the draft",
                      f"ground.py verdict {self.cid}"):
             self.assertIn(want, r.stdout)
+        named = re.search(r"^Snapshot: (.+)$", r.stdout, re.M)
+        self.assertTrue(named and Path(named.group(1)).is_absolute(), "the snapshot is named by its full path")
         brief = self.gj("checker-brief", self.cid)
         self.assertTrue(Path(brief["items"][0]["snapshot"]).is_file())
 

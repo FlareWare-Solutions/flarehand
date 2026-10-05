@@ -4,10 +4,12 @@ Loaded by tests/test_scripts.py. Every test uses its own temporary root and neve
 touches ~/.flareware/flarehand.
 """
 
+import contextlib
 import json
 import re
 import os
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -30,6 +32,39 @@ def run(script: str, *args: str) -> subprocess.CompletedProcess:
                           capture_output=True, text=True, timeout=60, env=ENV)
 
 
+def remove_tree(path: Path) -> None:
+    """shutil.rmtree that also removes read-only files. Git makes its objects read-only, and
+    Windows refuses to delete a read-only file where POSIX only asks for a writable folder."""
+    def retry(func, name, _exc):
+        os.chmod(name, stat.S_IWRITE)
+        func(name)
+    if sys.version_info >= (3, 12):
+        shutil.rmtree(path, onexc=retry)
+    else:
+        shutil.rmtree(path, onerror=retry)
+
+
+@contextlib.contextmanager
+def writes_refused(folder: Path):
+    """No new file can be made in `folder` while this is open. On POSIX the folder's mode
+    does it. Windows ignores a folder's mode bits, so there an access rule denies this user
+    the right to add a file or a subfolder, which is what a sandbox refusal looks like."""
+    if os.name != "nt":
+        folder.chmod(0o500)
+        try:
+            yield
+        finally:
+            folder.chmod(0o700)
+        return
+    sid = subprocess.run(["whoami", "/user", "/fo", "csv", "/nh"], capture_output=True, text=True,
+                         check=True).stdout.strip().split(",")[-1].strip('"')
+    subprocess.run(["icacls", str(folder), "/deny", f"*{sid}:(WD,AD)"], capture_output=True, check=True)
+    try:
+        yield
+    finally:
+        subprocess.run(["icacls", str(folder), "/remove:d", f"*{sid}"], capture_output=True, check=True)
+
+
 HEADER = "---\ntitle: {title}\ntype: concept\npermalink: {permalink}\ncreated: 2026-01-01\nupdated: 2026-01-01\nstatus: active\n{extra}---\n\n"
 
 
@@ -41,7 +76,10 @@ class KBCase(unittest.TestCase):
         self.assertEqual(r.returncode, 0, r.stderr)
 
     def tearDown(self):
-        shutil.rmtree(self.tmp, ignore_errors=True)
+        try:
+            remove_tree(self.tmp)
+        except OSError:
+            pass
 
     def kb(self, *args):
         return run("kb.py", "--root", str(self.root), *args)
@@ -190,7 +228,9 @@ class TestNoteWrites(KBCase):
         os.utime(lock, (old, old))
         r = self.kb("observe", "locked", "--text", "after stale", "--source", "s")
         self.assertEqual(r.returncode, 0, r.stderr)
-        lock.write_text("1 x\n", encoding="utf-8")
+        # Held by a process that is alive on every platform: this test's own. Pid 1 is
+        # always alive on POSIX, but Windows has no such process, so its lock was stale.
+        lock.write_text(f"{os.getpid()} x\n", encoding="utf-8")
         r = self.kb("observe", "locked", "--text", "held", "--source", "s")
         self.assertEqual(r.returncode, 2)
         self.assertIn("still writing", r.stderr)
@@ -487,7 +527,7 @@ class TestHistory(KBCase):
         self.assertNotIn("wrong", self.note_path("keepme").read_text(encoding="utf-8"))
 
     def test_a_dry_run_or_a_listing_starts_no_history(self):
-        shutil.rmtree(self.root / ".git")
+        remove_tree(self.root / ".git")
         for args in (("tidy",), ("migrate",), ("organize",), ("workflow", "list"),
                      ("template", "list"), ("choice",)):
             self.kb(*args)
@@ -508,7 +548,7 @@ class TestHistory(KBCase):
         self.assertIn("## Relations", path.read_text(encoding="utf-8"))
 
     def test_inside_the_codex_sandbox_history_is_not_started_and_the_miss_is_said_once(self):
-        shutil.rmtree(self.root / ".git")
+        remove_tree(self.root / ".git")
         env = dict(os.environ, CODEX_SANDBOX="seatbelt")
         r = subprocess.run([sys.executable, str(SKILL / "scripts" / "kb.py"), "--root", str(self.root),
                             "note", "Sandboxed", "--type", "guide"], capture_output=True, text=True,
@@ -517,15 +557,12 @@ class TestHistory(KBCase):
         self.assertFalse((self.root / ".git").exists(), "no half-made repository inside a sandbox")
 
     def test_a_blocked_write_is_a_sentence_not_a_traceback(self):
-        (self.root / "notes").chmod(0o500)
         (self.root / ".lock").unlink(missing_ok=True)
-        try:
+        with writes_refused(self.root / "notes"):
             env = dict(os.environ, CODEX_SANDBOX="seatbelt")
             r = subprocess.run([sys.executable, str(SKILL / "scripts" / "kb.py"), "--root", str(self.root),
                                 "note", "Blocked", "--type", "guide"], capture_output=True, text=True,
                                timeout=60, env=env)
-        finally:
-            (self.root / "notes").chmod(0o700)
         self.assertNotIn("Traceback", r.stderr)
         self.assertIn("writable_roots", r.stderr)
 
@@ -550,7 +587,7 @@ class TestHistory(KBCase):
         self.assertIn("remote", r.stderr)
 
     def test_a_missing_repository_never_blocks_a_write(self):
-        shutil.rmtree(self.root / ".git")
+        remove_tree(self.root / ".git")
         self.assertEqual(self.kb("note", "Still works", "--type", "guide").returncode, 0)
 
 
@@ -615,7 +652,7 @@ class TestEveryWriterCommits(KBCase):
         self.assertEqual(self.git("rev-list", "--count", "HEAD").stdout, before)
 
     def test_inside_the_codex_sandbox_no_history_is_started(self):
-        shutil.rmtree(self.root / ".git")
+        remove_tree(self.root / ".git")
         env = dict(ENV, CODEX_SANDBOX="seatbelt")
         r = self.tool("answers.py", "write", "Sandboxed?", "--body", "Yes.", "--no-sources", env=env)
         self.assertEqual(r.returncode, 0, r.stderr)
