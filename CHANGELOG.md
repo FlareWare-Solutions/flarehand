@@ -20,7 +20,8 @@ The first public release.
   record.
 - Four entry points that hand into the same pipeline:
   - `flarehand-ground` checks a draft's facts and numbers before it goes out.
-  - `flarehand-review` gives a graded review of code, a pull request, a document or a plan.
+  - `flarehand-review` gives a graded review of code, a pull request, a document or a plan. Its
+    perspectives lens reads the change as the people it will actually meet.
   - `flarehand-grill` stress-tests a plan or a vague ask in rounds of questions.
   - `flarehand-remember` saves, recalls and forgets.
 
