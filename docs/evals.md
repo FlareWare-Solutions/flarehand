@@ -79,7 +79,7 @@ The suite has 131 `llm` graders. Each gets three judge calls per run.
 
 The 1.0.0 confirmation run was one full run of the whole suite on a single commit:
 
-- **When:** 2026-10-04, flarehand 1.0.0 at commit `b4b9628`, Claude Code 2.1.289.
+- **When:** 2026-10-04, flarehand 1.0.0 at commit `8802a56`, Claude Code 2.1.289.
 - **Models:** agent `claude-opus-5-5`, judge Sonnet (`--judge-model sonnet`).
 - **Shape:** 37 cases, 3 runs each with the plugin and 3 without, 222 agent runs in about 29 minutes.
 
