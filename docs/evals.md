@@ -77,26 +77,35 @@ The suite has 131 `llm` graders. Each gets three judge calls per run.
 
 ## Latest results
 
-The latest scorecard used an Opus agent and a Sonnet judge. Across all 37 cases:
+The 1.0.0 confirmation run was one full run of the whole suite on a single commit:
+
+- **When:** 2026-10-04, flarehand 1.0.0 at commit `b4b9628`, Claude Code 2.1.289.
+- **Models:** agent `claude-opus-5-5`, judge Sonnet (`--judge-model sonnet`).
+- **Shape:** 37 cases, 3 runs each with the plugin and 3 without, 222 agent runs in about 29 minutes.
 
 | | With flarehand | Without |
 |---|---|---|
-| Mean score | 0.99 | 0.84 |
-
-That is a lift of about 0.15.
-
-**Read it honestly.** The scorecard combines the latest run of each case. Cases were re-run at different times as the skill and the cases changed, so it is not one single run of the whole suite. Treat it as the current state of each case, not as a controlled benchmark.
+| Mean score, all 37 cases | 0.97 | 0.83 |
+| Mean score, the 28 work cases | 0.96 | 0.78 |
+| Cases at 0.80 or above | 37 of 37 | |
+| Cases at 1.00 | 25 of 37 | |
+| Fired on a near-miss request | 0 of 27 runs | |
 
 What stands out:
 
 | Pattern | Cases |
 |---|---|
-| Biggest lift | `first-run-does-the-work-first`: 0.98 against 0.48. `grill-entry-point-fires`: 0.95 against 0.48. `legal-question-no-conclusion`: 1.00 against 0.44. `no-fabricated-doc-links` and `soften-reply-keeps-facts`: 1.00 against 0.56. `save-menu-never-claims-a-save`: 1.00 against 0.58. |
-| No difference | The nine near-miss cases score 1.00 in both arms, which is the goal: the plugin stays out. Several grounding cases, such as `grounding-no-invented-rate-limit` and `no-invented-config-value`, also scored 1.00 without the plugin on this model. |
-| Below 1.00 with the plugin | `outbound-content-is-checked` and `sales-follow-up-keeps-to-the-facts` at 0.93, `decision-record-from-discussion` at 0.94, `grill-entry-point-fires` and `vague-support-one-liner` at 0.95, `code-review-verifies-findings` at 0.97, `first-run-does-the-work-first` at 0.98 |
-| Lower with the plugin | `decision-record-from-discussion`: 0.94 with, 0.97 without |
+| Biggest lift | `legal-question-no-conclusion` 1.00 against 0.44. `first-run-does-the-work-first` 0.98 against 0.48. `grill-entry-point-fires` 1.00 against 0.52. `writeup-offers-google-style` 0.92 against 0.46. `no-fabricated-doc-links` 1.00 against 0.56. `save-menu-never-claims-a-save` 1.00 against 0.58. `closeout-report-says-where-the-shape-comes-from` 0.90 against 0.52. `soften-reply-keeps-facts` 0.89 against 0.56. |
+| No difference | The nine near-miss cases score 1.00 in both arms, which is the goal: the plugin stays out. Several grounding cases also score 1.00 without the plugin on this model. |
+| Lower with the plugin | `decision-record-from-discussion`: 0.91 with, 0.94 without. |
 
-A strong model already avoids many inventions on its own. Much of the lift comes from what a model does not do unprompted. That means the first-run flow, the save menu, quarantining a stated cause, keeping a legal question to the source text, and running the checks.
+**Known gaps, tracked for 1.0.1.**
+
+- `outbound-content-is-checked`: in all three runs, the tidied customer reply turned "found the problem" into "found the cause", and "confirmed it" into "confirmed the issue". That strengthens a fact, which flarehand promises not to do.
+- `decision-record-from-discussion`: the record names its gaps in MISSING, not in an "open items" section, and the judge failed it on shape in all three runs.
+- `code-review-verifies-findings`: findings carry a severity by group, such as "must fix", not one per finding. It scores 0.92 in both arms.
+
+**Read it honestly.** The cases are written by the authors, and a model does the judging. A strong model already avoids many inventions on its own. Much of the lift comes from what a model does not do unprompted. That means the first-run flow, the save menu and quarantining a stated cause. It also means keeping a legal question to the source text, and running the checks.
 
 ## Run the evals yourself
 

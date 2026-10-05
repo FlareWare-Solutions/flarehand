@@ -11,7 +11,7 @@ Remembers only what you approve, and re-checks it before reuse.**
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-5%20skills-FC5338)](https://agentskills.io)
 ![Works in Claude Code, Codex, Cursor, Gemini CLI and Copilot](https://img.shields.io/badge/works%20in-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20Gemini%20%C2%B7%20Copilot-6B6577)
 ![Python 3.9+, standard library only](https://img.shields.io/badge/python-3.9%2B%2C%20no%20dependencies-6B6577)
-[![Eval results](https://img.shields.io/badge/evals-0.99%20vs%200.84%20without-F0399A)](docs/evals.md)
+[![Eval results](https://img.shields.io/badge/evals-0.97%20vs%200.83%20without-F0399A)](docs/evals.md)
 
 </div>
 
@@ -96,8 +96,9 @@ Keep any of this? Nothing is saved until you reply with numbers, or "none".
 5. **It learns how you work, and asks first.** Make the same edit twice and it offers to keep it as
    your preference or your team's. Run the same chain of steps three times and it offers to turn it
    into a workflow of your own.
-6. **Rewrites keep every fact exactly as strong.** Tidying or softening starts from a list of the
-   claims. It never adds a promise, and it flags every date or fix commitment for you to confirm.
+6. **Rewrites are built to keep every fact as strong as you wrote it.** Tidying or softening starts
+   from a list of the claims, adds no promise, and flags every date or fix commitment for you to
+   confirm.
 7. **It does not adopt the reporter's theory.** "They say it's permissions" stays labelled
    unverified everywhere, including the customer reply. A diagnosis weighs at least three causes.
 8. **It knows where to stop on legal, finance and HR.** It summarises and compares the source text,
@@ -303,12 +304,14 @@ The full detail is in [privacy and data](docs/privacy-and-data.md).
 ## Measured, not claimed
 
 flarehand is tested with `claude plugin eval` on 37 realistic cases across roles. Each case runs
-three times with the plugin and three times without, scored by a separate judge model.
+three times with the plugin and three times without, scored by a separate judge model. The numbers
+below are the 1.0.0 confirmation run: one full run on the release commit, with an Opus agent and a
+Sonnet judge.
 
 | | With flarehand | Without |
 |---|---|---|
-| Mean score, all 37 cases | **0.99** | 0.84 |
-| Work requests (28 cases) | **0.99** | 0.79 |
+| Mean score, all 37 cases | **0.97** | 0.83 |
+| Work requests (28 cases) | **0.96** | 0.78 |
 | Fired on requests it should ignore | 0 of 27 runs | |
 
 The biggest differences show where it helps most:
@@ -316,13 +319,13 @@ The biggest differences show where it helps most:
 | Case | With | Without |
 |---|---|---|
 | Doing the work first on a first run | 0.98 | 0.48 |
-| Stress-testing a plan with grill mode | 0.95 | 0.48 |
+| Stress-testing a plan with grill mode | 1.00 | 0.52 |
 | Keeping a legal question to the facts | 1.00 | 0.44 |
 | Not inventing documentation links | 1.00 | 0.56 |
-| Softening a blunt reply without losing a fact | 1.00 | 0.56 |
+| Offering the right style for a runbook | 0.92 | 0.46 |
 
 These cases are our own, and a model does the judging, so read them as a guide rather than a
-benchmark. How the suite works, and its caveats, are in [evals](docs/evals.md). The scripts behind
+benchmark. How the suite works, its caveats and the known gaps are in [evals](docs/evals.md). The scripts behind
 flarehand also have over 800 unit tests.
 
 ## Documentation
