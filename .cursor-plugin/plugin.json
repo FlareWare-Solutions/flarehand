@@ -22,5 +22,6 @@
     "productivity"
   ],
   "skills": "./skills/",
-  "hooks": "./hooks/hooks-cursor.json"
+  "hooks": "./hooks/hooks-cursor.json",
+  "logo": "./assets/brand/icon.png"
 }

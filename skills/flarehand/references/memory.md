@@ -229,8 +229,10 @@ python3 scripts/checkpoint.py save < precompact-event.json
 python3 scripts/checkpoint.py show --session <session id>
 ```
 
-Copilot, Codex and claude.ai have no hooks, so nothing is kept there. After a compaction in one of
-those, ask the person to say again what matters.
+Claude Code, Codex and Copilot CLI run these hooks when the plugin is installed. claude.ai chat,
+skills-only installs and tools without plugin hooks keep no checkpoint. After a compaction in one of
+those, ask the person to say again what matters. `references/cross-tool.md` lists which tool runs
+which hook.
 
 ## What a note looks like
 

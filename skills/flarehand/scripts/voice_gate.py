@@ -177,24 +177,42 @@ def last_reply(data: dict) -> str:
     return ""
 
 
-def gate_is_on() -> bool:
-    """Only for someone who turned it on. Everyone else gets the reminder instead."""
+def _prefs() -> dict:
     try:
         from kb import read_prefs, resolve_root  # noqa: E402
         root = resolve_root(None)
-        return root is not None and read_prefs(root).get("voice_gate") is True
+        return read_prefs(root) if root is not None else {}
     except Exception:
-        return False
+        return {}
+
+
+def voice_profile(prefs: dict | None = None) -> str:
+    """plain (the default), google or none, from the person's own setting."""
+    prefs = _prefs() if prefs is None else prefs
+    value = prefs.get("voice") or prefs.get("style") or "plain"
+    value = {"natural": "plain"}.get(value, value)
+    return value if value in ("plain", "google", "none") else "plain"
+
+
+def gate_is_on(prefs: dict | None = None) -> bool:
+    """Only for someone who turned it on, and never when they chose the none profile."""
+    prefs = _prefs() if prefs is None else prefs
+    return prefs.get("voice_gate") is True and voice_profile(prefs) != "none"
 
 
 REMINDER = ("flarehand is active in this session. Write the reply in its house voice: plain words, short "
             "sentences, and no em dashes. Put the artifact itself in the reply, and end a workflow reply with "
             "the save menu.")
+REMINDER_NONE = ("flarehand is active in this session. Put the artifact itself in the reply, and end a "
+                 "workflow reply with the save menu.")
 
 
-def remind(data: dict) -> str | None:
-    """The context line for a prompt-submit hook, or None outside a session where the skill ran."""
-    return REMINDER if skill_ran(data.get("transcript_path")) else None
+def remind(data: dict, prefs: dict | None = None) -> str | None:
+    """The context line for a prompt-submit hook, or None outside a session where the skill ran.
+    The none profile drops the voice rules from it, because the person chose no house style."""
+    if not skill_ran(data.get("transcript_path")):
+        return None
+    return REMINDER_NONE if voice_profile(prefs) == "none" else REMINDER
 
 
 def dashes_in_prose(text: str) -> int:

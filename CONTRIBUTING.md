@@ -15,7 +15,7 @@ hooks/                         hooks.json (Claude format), hooks-cursor.json, ru
 skills/flarehand/              the router skill: SKILL.md, references, scripts, assets, evals
 skills/flarehand-*/            entry points that hand over to the router with a fixed route
 tools/bump_version.py          keeps every manifest version in lockstep
-docs/                          design notes, not shipped
+docs/                          user documentation
 ```
 
 ## Rules
@@ -44,7 +44,7 @@ docs/                          design notes, not shipped
 Run all of these before you open a pull request:
 
 ```bash
-python3 skills/flarehand/evals/test_scripts.py          # every unit test, a few seconds
+python3 skills/flarehand/evals/test_scripts.py          # every unit test, about four minutes
 python3 skills/flarehand/scripts/validate_skill.py     # every skill, manifest and hook
 claude plugin validate .                               # Claude Code's own check, if you have it
 python3 skills/flarehand/scripts/package.py --check    # will it package

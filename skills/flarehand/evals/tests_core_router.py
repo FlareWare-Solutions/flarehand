@@ -586,5 +586,25 @@ class TestLiveEvalPrompts(unittest.TestCase):
             self.skipTest("no live eval folders in this checkout")
 
 
+class TestWritingUpNotesIsWork(unittest.TestCase):
+    """"My notes" is a memory phrase, but turning notes into an artifact is work."""
+
+    def route(self, text):
+        r = run("classify.py", text, "--json")
+        return json.loads(r.stdout)
+
+    def test_turning_notes_into_an_artifact_is_a_workflow(self):
+        for text in ("Turn my notes from today's 1:1 with Sam into one-on-one notes",
+                     "Turn these notes into a status update for my manager",
+                     "Write up my notes from the vendor call as a decision record"):
+            with self.subTest(text=text):
+                self.assertEqual(self.route(text)["route"], "workflow")
+
+    def test_saving_and_recalling_notes_is_still_memory(self):
+        for text in ("save this to my notes", "what's in my notes about pricing"):
+            with self.subTest(text=text):
+                self.assertEqual(self.route(text)["route"], "memory")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

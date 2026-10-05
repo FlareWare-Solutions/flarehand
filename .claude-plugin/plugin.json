@@ -20,5 +20,7 @@
     "writing",
     "templates",
     "productivity"
-  ]
+  ],
+  "displayName": "flarehand",
+  "icon": "./assets/brand/icon.png"
 }

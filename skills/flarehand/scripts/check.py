@@ -174,6 +174,18 @@ def render(result: dict) -> str:
     return "\n".join(lines)
 
 
+def saved_profile(root) -> str:
+    """The person's saved voice profile, or plain when there is none."""
+    try:
+        from kb import read_prefs  # noqa: E402
+        prefs = read_prefs(root)
+    except Exception:
+        return "plain"
+    value = prefs.get("voice") or prefs.get("style") or "plain"
+    value = {"natural": "plain"}.get(value, value)
+    return value if value in ("plain", "google", "none") else "plain"
+
+
 def main(argv=None) -> int:
     for stream in (sys.stdout, sys.stderr):
         if hasattr(stream, "reconfigure"):
@@ -185,7 +197,8 @@ def main(argv=None) -> int:
     p.add_argument("file", help="the draft, or - for standard input")
     p.add_argument("--contract", metavar="ID", help="required sections for a workflow, such as wf-03")
     p.add_argument("--template", metavar="PATH", help="the template the draft follows")
-    p.add_argument("--profile", choices=("plain", "google", "none"), default="plain")
+    p.add_argument("--profile", choices=("plain", "google", "none"), default=None,
+                   help="writing style to check. Default: your saved voice, else plain")
     p.add_argument("--outbound", action="store_true", help="it will leave the machine: run the redaction scan too")
     p.add_argument("--seen-url", action="append", default=[], metavar="URL",
                    help="a URL you saw in a tool result or the person's words (repeatable)")
@@ -205,7 +218,8 @@ def main(argv=None) -> int:
         print(f"error: no template at {args.template}", file=sys.stderr)
         return 2
     root = resolve_root(args.root)
-    result = run_checks(text, root, args.contract, args.template, args.profile, args.outbound, args.seen_url,
+    profile = args.profile or saved_profile(root)
+    result = run_checks(text, root, args.contract, args.template, profile, args.outbound, args.seen_url,
                         Path(args.repo_root).expanduser() if args.repo_root else None)
     print(json.dumps(result, indent=2) if args.json else render(result))
     return 0 if result["pass"] else 1

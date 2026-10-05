@@ -65,7 +65,7 @@ those under "Without a shell".
 **Claude Code** gets the full behaviour: hooks, the knowledge base and every script.
 
 **claude.ai** has no local files and no knowledge base. `classify.py`, `check_output.py`, `redact.py`
-and `review.py grade` still run in its sandbox. Say early what is missing there.
+and `review.py` (`lenses`, `brief` and `grade`) still run in its sandbox. Say early what is missing there.
 
 **Skills-only installers**, such as `npx skills add` or `gh skill install`, copy the skills without
 hooks. Everything still works. The voice reminder and the compaction checkpoint do not run.

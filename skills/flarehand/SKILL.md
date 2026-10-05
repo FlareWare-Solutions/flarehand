@@ -288,8 +288,8 @@ an answer.
 
 **8. Label and check.** Mark every claim. Then run one command on the draft, with the draft on
 standard input: `python3 scripts/check.py - --contract wf-NN`. Add `--template <path from kb.py
-template get --path-only>`, `--outbound` for anything leaving the machine, `--profile google` when
-that style applies, and `--seen-url <url>` for each link you saw this session. It runs the grounding
+template get --path-only>`, `--outbound` for anything leaving the machine, `--profile` only to
+override their saved voice, and `--seen-url <url>` for each link you saw this session. It runs the grounding
 checks, the URL check, the style and citation checks and, with `--outbound`, the redaction scan.
 It prints `PASS` or a numbered list of fixes.
 

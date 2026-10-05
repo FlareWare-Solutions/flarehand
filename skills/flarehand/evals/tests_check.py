@@ -180,5 +180,47 @@ class TestDoctorFoldsInDetect(unittest.TestCase):
         self.assertEqual(run("kb.py", "detect").returncode, 0)
 
 
+class TestTheVoiceProfileIsTheirs(unittest.TestCase):
+    """The none profile means no house style: check.py, the reminder and the gate all follow it."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="fh-voice-"))
+        self.root = self.tmp / "kb"
+        self.root.mkdir()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def prefs(self, **prefs):
+        (self.root / "config.json").write_text(json.dumps({"prefs": prefs}), encoding="utf-8")
+
+    def check(self, text, *extra):
+        return subprocess.run([sys.executable, str(SKILL / "scripts" / "check.py"), "-", "--root", str(self.root),
+                               "--json", *extra], input=text, capture_output=True, text=True, timeout=60)
+
+    def test_check_uses_the_saved_profile(self):
+        text = "The rollout went well \u2014 nobody noticed.\n"
+        self.prefs(voice="none", style="none")
+        self.assertEqual(json.loads(self.check(text).stdout)["checked"]["style"], "none")
+        self.prefs(voice="google", style="google")
+        self.assertEqual(json.loads(self.check(text).stdout)["checked"]["style"], "google")
+        self.prefs()
+        self.assertEqual(json.loads(self.check(text).stdout)["checked"]["style"], "plain")
+        self.prefs(voice="none", style="none")
+        self.assertEqual(json.loads(self.check(text, "--profile", "plain").stdout)["checked"]["style"], "plain")
+
+    def test_reminder_and_gate_follow_the_profile(self):
+        sys.path.insert(0, str(SKILL / "scripts"))
+        import voice_gate
+        transcript = self.tmp / "t.jsonl"
+        transcript.write_text(json.dumps({"message": {"role": "assistant", "content": [
+            {"type": "tool_use", "name": "Skill", "input": {"skill": "flarehand"}}]}}) + "\n", encoding="utf-8")
+        data = {"transcript_path": str(transcript)}
+        self.assertIn("no em dashes", voice_gate.remind(data, {}))
+        self.assertNotIn("em dash", voice_gate.remind(data, {"voice": "none"}))
+        self.assertTrue(voice_gate.gate_is_on({"voice_gate": True}))
+        self.assertFalse(voice_gate.gate_is_on({"voice_gate": True, "voice": "none"}))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

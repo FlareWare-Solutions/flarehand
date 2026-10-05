@@ -187,7 +187,7 @@ does not.
 
 ```bash
 python3 scripts/package.py             # build the archives for every skill, and the plugin folder
-python3 evals/test_scripts.py          # no model, about two minutes
+python3 evals/test_scripts.py          # no model, about four minutes
 python3 scripts/validate_skill.py      # will it load in every tool
 python3 scripts/check_output.py --style SKILL.md references/*.md
 ```
