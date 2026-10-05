@@ -227,5 +227,20 @@ class TestReviewHouseRulesAndStandards(unittest.TestCase):
         self.assertNotIn("--jira", run("review.py", "grade", "--help").stdout)
 
 
+class TestPerspectivesComeFromTheChange(unittest.TestCase):
+    """The perspectives lens picks the people this change will meet. The examples are not a fixed list."""
+
+    def test_the_brief_asks_who_this_change_will_meet(self):
+        out = run("review.py", "brief", "perspectives").stdout
+        self.assertIn("Who will meet this change", out)
+        self.assertIn("three to five", out)
+        self.assertIn("not a fixed list", out)
+
+    def test_the_reference_shows_perspectives_vary_by_change(self):
+        text = (SKILL / "references" / "review-code.md").read_text(encoding="utf-8")
+        self.assertIn("Perspectives come from the change, not from a fixed list.", text)
+        self.assertIn("## Perspectives", text)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

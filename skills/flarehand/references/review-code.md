@@ -83,7 +83,7 @@ The full wording lives in `assets/review-lenses.tsv`. Run `python3 scripts/revie
 | Code quality | Would the team accept it, by the team's own standard for that language? |
 | References and docs | Do the links, citations and docs hold up when you read them? |
 | Dynamic or hardcoded | Will a hardcoded value go stale, or suit only one OS, role or tool? |
-| Perspectives | What would a new starter, a Windows user or the on-call engineer notice? |
+| Perspectives | Who will meet this change, and what would each of them notice? |
 
 **Regressions need the base.** Find the callers of anything changed or removed. Grep finds the
 callers in this repo. The history finds what used to depend on it: the moves are in
@@ -92,6 +92,23 @@ callers in this repo. The history finds what used to depend on it: the moves are
 here. Say so, and ask, or read it through an MCP server when one is connected. For a database or
 API change, check the public contract: what other systems read, and the published spec. Run the tests
 on the base and on the change when you can, and compare.
+
+**Perspectives come from the change, not from a fixed list.** Before reading as anyone, name who
+and what this change will meet. Take them from the diff, the ticket and the repository. Think of
+the people who use it, run it, support it, integrate with it, audit it or maintain it. Add where it
+runs: the operating system, browser or device, the locale and language, the scale, accessibility
+needs, and other AI tools. Pick the three to five that matter most, and say in one line why each
+matters here. A team can name standing perspectives in its house rules, under a heading such as
+`## Perspectives`, and every brief carries them.
+
+| The change | Perspectives that usually matter |
+|---|---|
+| A database migration | The DBA, the on-call engineer, every system that reads those tables |
+| A checkout or signup page | A customer on a phone, a screen-reader user, support answering the tickets |
+| A command-line tool | A Windows user, a first-time installer, the CI job that runs it |
+| A public API change | The client developer, the mobile app on an older version, the docs reader |
+| A billing or pricing change | The customer, finance reconciling the invoice, sales explaining it |
+| A skill or a prompt | The least experienced person who installs it, someone on a different AI tool |
 
 **Dynamic or hardcoded is the lens people skip.** A version number, a count, a model name or a URL
 written into code or docs is true on the day someone wrote it. Look each one up when someone uses it,
