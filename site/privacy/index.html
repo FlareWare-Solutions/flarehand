@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>flarehand privacy policy</title>
+<meta name="description" content="What the flarehand plugin stores, what it sends, and what FlareWare Solutions receives: nothing.">
+<link rel="canonical" href="https://flarehand.flareware.app/privacy/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="flarehand privacy policy">
+<meta property="og:description" content="No server, no account, no telemetry. Your notes stay on your computer.">
+<meta property="og:url" content="https://flarehand.flareware.app/privacy/">
+<meta property="og:image" content="https://raw.githubusercontent.com/FlareWare-Solutions/flarehand/main/assets/brand/social-preview.png">
+<meta name="theme-color" content="#0A0A0C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FC5338'/%3E%3Cstop offset='1' stop-color='%23F0399A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='116' fill='%230A0A0C'/%3E%3Cg transform='translate(66 60) scale(16)'%3E%3Cg fill='none' stroke='%23F4F1F7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' transform='translate(0 3.4)'%3E%3Cpath d='M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14'/%3E%3Cpath d='m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9'/%3E%3Cpath d='m2 13 6 6'/%3E%3C/g%3E%3Cg transform='translate(7.1 -2.6) scale(0.58)'%3E%3Cpath fill='url(%23f)' fill-rule='evenodd' d='M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E">
+<style>
+/* Layout: one reading column, the same tokens as the home page. Self-contained, nothing loaded from
+   other sites. */
+:root {
+  --paper: #FFFFFF;
+  --paper-2: #F7F5FA;
+  --ink: #15121A;
+  --ink-2: #4B4655;
+  --ink-3: #6B6577;
+  --rule: #E7E3EE;
+  --link: #C21F4B;
+  --flare-1: #FC5338;
+  --flare-2: #F0399A;
+  --flare-ink: #D62A55;
+  --code-bg: #F3F0F7;
+  --code-ink: #2A2530;
+  --display: "Space Grotesk", "Avenir Next", Avenir, "Segoe UI Variable Display", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --body: Manrope, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, "Liberation Mono", monospace;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0B0A0D;
+    --paper-2: #141318;
+    --ink: #F4F1F7;
+    --ink-2: #C9C4D2;
+    --ink-3: #9C95A8;
+    --rule: #28252E;
+    --link: #FF7D97;
+    --flare-ink: #FF6A86;
+    --code-bg: #1B1921;
+    --code-ink: #ECE8F2;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0B0A0D;
+  --paper-2: #141318;
+  --ink: #F4F1F7;
+  --ink-2: #C9C4D2;
+  --ink-3: #9C95A8;
+  --rule: #28252E;
+  --link: #FF7D97;
+  --flare-ink: #FF6A86;
+  --code-bg: #1B1921;
+  --code-ink: #ECE8F2;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--link); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--flare-ink); outline-offset: 3px; border-radius: 4px; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--code-bg); color: var(--code-ink); padding: 0.1em 0.35em; border-radius: 5px; overflow-wrap: anywhere; }
+.wrap { width: 100%; max-width: 46rem; margin-inline: auto; padding-inline: var(--gutter); }
+.site-header { border-bottom: 1px solid var(--rule); }
+.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 0.9rem; max-width: 72rem; }
+.brand { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; }
+.mark { width: 1.9rem; height: 2rem; color: var(--ink); flex: none; }
+.wordmark { font-family: var(--display); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.03em; color: var(--ink); }
+.wordmark span { background: linear-gradient(120deg, var(--flare-1), var(--flare-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.back { font-size: 0.9375rem; color: var(--ink-2); text-decoration: none; }
+.back:hover { color: var(--ink); }
+main { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+h1, h2 { font-family: var(--display); color: var(--ink); text-wrap: balance; letter-spacing: -0.02em; line-height: 1.15; }
+h1 { font-size: clamp(2.2rem, 1.6rem + 2.4vw, 3.2rem); margin: 0 0 0.6rem; letter-spacing: -0.03em; }
+h2 { font-size: 1.45rem; margin: 2.6rem 0 0.7rem; padding-top: 1.6rem; border-top: 1px solid var(--rule); }
+p, ul { margin: 0 0 1rem; }
+ul { padding-left: 1.2rem; }
+li { margin-bottom: 0.45rem; }
+li::marker { color: var(--flare-ink); }
+.updated { font-family: var(--mono); font-size: 0.8125rem; color: var(--ink-3); letter-spacing: 0.02em; }
+.lede { font-size: 1.2rem; color: var(--ink-2); line-height: 1.55; }
+.summary { background: var(--paper-2); border: 1px solid var(--rule); border-radius: 14px; padding: 1.2rem 1.4rem 0.4rem; margin: 1.8rem 0 0; }
+.summary h2 { margin-top: 0; padding-top: 0; border-top: 0; font-size: 1.1rem; }
+.site-footer { border-top: 1px solid var(--rule); padding-block: 2rem; font-size: 0.9375rem; color: var(--ink-3); }
+.site-footer .wrap { max-width: 72rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.3rem; justify-content: space-between; }
+.site-footer a { color: var(--ink-2); }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../" aria-label="flarehand home">
+      <svg class="mark" viewBox="60 32 392 412" aria-hidden="true">
+        <defs><linearGradient id="fh-flare" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FC5338"/><stop offset="1" stop-color="#F0399A"/></linearGradient></defs>
+        <g transform="translate(66 60) scale(16)">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 3.4)">
+            <path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14"/>
+            <path d="m7 18 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/>
+            <path d="m2 13 6 6"/>
+          </g>
+          <g transform="translate(7.1 -2.6) scale(0.58)">
+            <path fill="url(#fh-flare)" fill-rule="evenodd" d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+          </g>
+        </g>
+      </svg>
+      <span class="wordmark">flare<span>hand</span></span>
+    </a>
+    <a class="back" href="../">Back to the home page</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>Privacy policy</h1>
+  <p class="updated">Last updated 10 October 2026</p>
+  <p class="lede">flarehand is a free, open-source plugin made by FlareWare Solutions. It runs inside the AI tool you already use. This page says what it stores, what it sends, and what we receive. We receive nothing.</p>
+
+  <section class="summary" aria-labelledby="short">
+    <h2 id="short">The short version</h2>
+    <ul>
+      <li>flarehand has no server, no account, no telemetry and no analytics. It sends nothing to FlareWare Solutions.</li>
+      <li>It keeps a private knowledge base on your computer, and only after you say yes.</li>
+      <li>Its scripts go online only in the few cases listed below, and never send your notes or drafts.</li>
+      <li>Before text leaves your computer, it checks for credentials and personal data, and lets you decide.</li>
+      <li>You can delete everything it keeps, at any time.</li>
+    </ul>
+  </section>
+
+  <h2 id="what-we-receive">What we receive</h2>
+  <p>Nothing. FlareWare Solutions runs no service for flarehand. The plugin sends us no data, so we cannot see your knowledge base, your drafts or how you use it.</p>
+
+  <h2 id="your-ai-tool">Your AI tool is separate</h2>
+  <p>flarehand runs inside an agent such as Claude Code, Codex, Copilot, Cursor or Gemini CLI. That tool sends your conversation, and whatever the agent reads, to its model provider under its own terms. flarehand does not change that.</p>
+  <p>It only decides what the agent reads from your knowledge base. It reads only what the current request needs.</p>
+
+  <h2 id="what-it-stores">What flarehand stores, and where</h2>
+  <ul>
+    <li><strong>Your knowledge base.</strong> A folder of plain text notes at <code>~/.flareware/flarehand</code>, or <code>%USERPROFILE%\.flareware\flarehand</code> on Windows. flarehand creates it only after you agree. After that, it saves only what you agree to, usually the items you pick from the menu at the end of each job. It keeps a local history and never uploads or syncs anything.</li>
+    <li><strong>What the knowledge base can hold.</strong> Your name, your role in your own words, and your settings. Also the notes, saved answers and copies of sources you chose to keep. That can include personal data, such as notes about colleagues, when you choose to save it.</li>
+    <li><strong>Session files.</strong> Copies of the sources read in a session, and a checkpoint saved before your tool shortens a long conversation. They go to your system's temporary folder. flarehand deletes them after the session, or after 7 days at most.</li>
+    <li><strong>Team playbooks.</strong> Shared templates and rules in a <code>.flarehand</code> folder in your repository, written only when you ask. They never hold notes or anything about a person.</li>
+  </ul>
+
+  <h2 id="when-it-goes-online">When it goes online</h2>
+  <p>flarehand's scripts make a network request only in these cases:</p>
+  <ul>
+    <li>To fetch a web page that you or a tool named, when the agent uses it as a source.</li>
+    <li>To check again whether a source you pinned has changed.</li>
+    <li>When you ask, to check whether the links in a draft still work, or whether the Internet Archive has a copy of a dead link.</li>
+    <li>When you ask, to test whether your computer can reach the web.</li>
+  </ul>
+  <p>Each request goes to the site in question, to archive.org for the Internet Archive check, or to example.com for the web test. It carries the web address and standard request headers. It never carries your notes, your drafts or your settings. The hooks and every other script make no network request.</p>
+
+  <h2 id="personal-data">Personal data</h2>
+  <ul>
+    <li>It may read personal data in your work, such as names and email addresses, because your work contains them.</li>
+    <li>It stores personal data only in your knowledge base, on your computer, and only after your yes.</li>
+    <li>It asks once before it keeps a password, an id number or someone's health details. It tells you each time it applies your answer.</li>
+    <li>By default, notes about people record what someone did, not their character. When someone is away, they keep the dates, not the reason.</li>
+    <li>Before text leaves your computer, it scans for credentials, id and card numbers, email addresses, phone numbers and health words. It shows what it found and waits for your decision.</li>
+  </ul>
+
+  <h2 id="deleting">Deleting your data</h2>
+  <p>Everything flarehand keeps is on your computer, so you control it.</p>
+  <ul>
+    <li>To remove one item, ask flarehand to forget it.</li>
+    <li>To remove everything, uninstall the plugin and delete the <code>~/.flareware/flarehand</code> folder. Session files clear themselves within 7 days.</li>
+    <li>Uninstalling the plugin alone does not delete your knowledge base.</li>
+  </ul>
+  <p>The exact commands are in <a href="https://github.com/FlareWare-Solutions/flarehand/blob/main/docs/privacy-and-data.md#deleting-everything">Privacy and data</a>, which also gives the technical detail behind this page.</p>
+
+  <h2 id="this-website">This website</h2>
+  <p>This website is a set of static pages with no cookies, no trackers and no analytics. GitHub hosts it on GitHub Pages. GitHub logs the IP address of every visit for security purposes, under the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub General Privacy Statement</a>.</p>
+
+  <h2 id="changes">Changes to this policy</h2>
+  <p>When the way flarehand handles data changes, we update this page and the date at the top. Every change is in the <a href="https://github.com/FlareWare-Solutions/flarehand/commits/main/site/privacy/index.html">history of this page</a>.</p>
+
+  <h2 id="contact">Contact</h2>
+  <p>For a question about this policy, <a href="https://github.com/FlareWare-Solutions/flarehand/issues">open an issue on GitHub</a>. Anything you post there is public. For a security problem, follow <a href="https://github.com/FlareWare-Solutions/flarehand/blob/main/SECURITY.md">SECURITY.md</a> instead, and do not post it in an issue.</p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>Made by <a href="https://github.com/FlareWare-Solutions">FlareWare Solutions</a>. MIT license.</span>
+    <span><a href="../">Home</a> &middot; <a href="https://github.com/FlareWare-Solutions/flarehand">GitHub</a> &middot; <a href="https://github.com/FlareWare-Solutions/flarehand/blob/main/LICENSE">Terms (MIT license)</a></span>
+  </div>
+</footer>
+</body>
+</html>

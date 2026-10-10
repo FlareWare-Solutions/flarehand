@@ -8,6 +8,10 @@
   },
   "homepage": "https://flarehand.flareware.app",
   "repository": "https://github.com/FlareWare-Solutions/flarehand",
+  "documentationUrl": "https://github.com/FlareWare-Solutions/flarehand/tree/main/docs",
+  "supportUrl": "https://github.com/FlareWare-Solutions/flarehand/issues",
+  "privacyPolicyUrl": "https://flarehand.flareware.app/privacy/",
+  "termsOfServiceUrl": "https://github.com/FlareWare-Solutions/flarehand/blob/main/LICENSE",
   "license": "MIT",
   "keywords": [
     "skills",

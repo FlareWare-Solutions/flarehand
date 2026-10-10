@@ -26,6 +26,10 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills" / "flarehand"
 PAGE_PATH = ROOT / "site" / "index.html"
 PAGE = PAGE_PATH.read_text(encoding="utf-8")
+PRIVACY_PATH = ROOT / "site" / "privacy" / "index.html"
+PRIVACY = PRIVACY_PATH.read_text(encoding="utf-8")
+# Every page on the site, so the hygiene checks cover each one.
+PAGES = {PAGE_PATH: PAGE, PRIVACY_PATH: PRIVACY}
 README = (ROOT / "README.md").read_text(encoding="utf-8")
 EVALS = (ROOT / "docs" / "evals.md").read_text(encoding="utf-8")
 INSTALL = (ROOT / "docs" / "install.md").read_text(encoding="utf-8")
@@ -133,9 +137,9 @@ class _Page(HTMLParser):
             self.buffer.append(data)
 
 
-def read_page() -> _Page:
+def read_page(text: str = PAGE) -> _Page:
     parser = _Page()
-    parser.feed(PAGE)
+    parser.feed(text)
     parser.close()
     return parser
 
@@ -230,47 +234,65 @@ class SiteInstall(unittest.TestCase):
 
 
 class SiteHygiene(unittest.TestCase):
-    """The page keeps the house style and the privacy promise it makes."""
+    """Every page keeps the house style and the privacy promise it makes."""
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.page = read_page()
+        cls.pages = {path: (text, read_page(text)) for path, text in PAGES.items()}
 
     def test_house_style(self) -> None:
-        self.assertNotIn("\u2014", PAGE, "no em dashes anywhere in the page")
-        with tempfile.TemporaryDirectory() as tmp:
-            prose = Path(tmp) / "site-text.md"
-            prose.write_text("\n\n".join(self.page.paragraphs) + "\n", encoding="utf-8")
-            r = subprocess.run([sys.executable, str(SKILL / "scripts" / "check_output.py"), "--style", "--json",
-                                "--max", "500", str(prose)], capture_output=True, text=True, timeout=60)
-        findings = json.loads(r.stdout)
-        errors = [f for f in findings.get("findings", findings.get("issues", [])) if f.get("severity") == "error"]
-        self.assertEqual(errors, [], "the page text passes check_output.py --style")
+        for path, (text, page) in self.pages.items():
+            with self.subTest(page=path.relative_to(ROOT).as_posix()):
+                self.assertNotIn("\u2014", text, "no em dashes anywhere in the page")
+                with tempfile.TemporaryDirectory() as tmp:
+                    prose = Path(tmp) / "site-text.md"
+                    prose.write_text("\n\n".join(page.paragraphs) + "\n", encoding="utf-8")
+                    r = subprocess.run([sys.executable, str(SKILL / "scripts" / "check_output.py"), "--style",
+                                        "--json", "--max", "500", str(prose)], capture_output=True, text=True,
+                                       timeout=60)
+                findings = json.loads(r.stdout)
+                errors = [f for f in findings.get("findings", findings.get("issues", []))
+                          if f.get("severity") == "error"]
+                self.assertEqual(errors, [], "the page text passes check_output.py --style")
 
     def test_nothing_loads_from_another_site(self) -> None:
-        self.assertEqual(self.page.loads, [], "no external scripts, styles, images or fonts")
-        css = "".join(re.findall(r"<style>(.*?)</style>", PAGE, re.DOTALL))
-        self.assertNotIn("@import", css)
-        for url in re.findall(r"url\(([^)]*)\)", css):
-            self.assertTrue(url.strip("'\" ").startswith(("#", "data:")), f"CSS url({url}) stays on the page")
+        for path, (text, page) in self.pages.items():
+            with self.subTest(page=path.relative_to(ROOT).as_posix()):
+                self.assertEqual(page.loads, [], "no external scripts, styles, images or fonts")
+                css = "".join(re.findall(r"<style>(.*?)</style>", text, re.DOTALL))
+                self.assertNotIn("@import", css)
+                for url in re.findall(r"url\(([^)]*)\)", css):
+                    self.assertTrue(url.strip("'\" ").startswith(("#", "data:")), f"CSS url({url}) stays on the page")
 
     def test_repository_links_resolve(self) -> None:
-        for href in self.page.links:
-            m = re.match(re.escape(REPO_URL) + r"/(?:blob|tree)/main/([^#]+)(?:#(.+))?$", href)
-            if not m:
-                continue
-            target = ROOT / m.group(1)
-            self.assertTrue(target.exists(), f"{href}: {m.group(1)} exists")
-            if m.group(2):
-                headings = [ln.lstrip("#").strip() for ln in target.read_text(encoding="utf-8").splitlines()
-                            if ln.startswith("#")]
-                self.assertIn(m.group(2), {github_slug(h) for h in headings}, f"{href}: the anchor exists")
+        for path, (_, page) in self.pages.items():
+            for href in page.links:
+                m = re.match(re.escape(REPO_URL) + r"/(?:blob|tree)/main/([^#]+)(?:#(.+))?$", href)
+                if not m:
+                    continue
+                target = ROOT / m.group(1)
+                self.assertTrue(target.exists(), f"{path.name}: {href}: {m.group(1)} exists")
+                if m.group(2):
+                    headings = [ln.lstrip("#").strip() for ln in target.read_text(encoding="utf-8").splitlines()
+                                if ln.startswith("#")]
+                    self.assertIn(m.group(2), {github_slug(h) for h in headings}, f"{href}: the anchor exists")
+
+    def test_links_between_pages_resolve(self) -> None:
+        for path, (_, page) in self.pages.items():
+            for href in page.links:
+                if href.startswith(("http:", "https:", "#", "data:", "mailto:")):
+                    continue
+                target = (path.parent / href.split("#")[0]).resolve()
+                if href.endswith("/") or target.is_dir():
+                    target = target / "index.html"
+                self.assertTrue(target.is_file(), f"{path.relative_to(ROOT).as_posix()}: {href} is a page on the site")
 
     def test_in_page_anchors_exist(self) -> None:
-        ids = set(re.findall(r'\bid="([^"]+)"', PAGE))
-        for href in self.page.links:
-            if href.startswith("#"):
-                self.assertIn(href[1:], ids, f"{href} points at an element on the page")
+        for path, (text, page) in self.pages.items():
+            ids = set(re.findall(r'\bid="([^"]+)"', text))
+            for href in page.links:
+                if href.startswith("#"):
+                    self.assertIn(href[1:], ids, f"{path.name}: {href} points at an element on the page")
 
 
 class SiteAddress(unittest.TestCase):
@@ -292,6 +314,21 @@ class SiteAddress(unittest.TestCase):
             data = json.loads((ROOT / rel).read_text(encoding="utf-8"))
             for value in read(data):
                 self.assertEqual(value, site, f"{rel} points at the website")
+
+    def test_directory_listing_links(self) -> None:
+        """The Claude plugin directory shows these four links on the listing."""
+        site = re.search(r'<link rel="canonical" href="([^"]+)">', PAGE).group(1)
+        privacy = re.search(r'<link rel="canonical" href="([^"]+)">', PRIVACY).group(1)
+        self.assertEqual(privacy, site + "privacy/", "the privacy page lives at /privacy/")
+        data = json.loads((ROOT / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8"))
+        self.assertEqual(data["privacyPolicyUrl"], privacy)
+        self.assertEqual(data["supportUrl"], REPO_URL + "/issues")
+        self.assertEqual(data["termsOfServiceUrl"], REPO_URL + "/blob/main/LICENSE")
+        self.assertTrue((ROOT / "LICENSE").is_file())
+        self.assertEqual(data["documentationUrl"], REPO_URL + "/tree/main/docs")
+        self.assertTrue((ROOT / "docs" / "README.md").is_file())
+        self.assertIn('href="privacy/"', PAGE, "the home page links to the privacy page")
+        self.assertIn(f"({privacy})", README, "the README links to the privacy page")
 
 
 if __name__ == "__main__":

@@ -298,10 +298,13 @@ Then try *"Turn these notes into a status update for my manager"*, followed by y
   checkpoint saved before a compaction. The checkpoint is deleted when the session ends, and
   anything left is pruned after 7 days.
 - **Team playbooks** are read from a `.flarehand/` folder in your repository, or a folder you name.
-- **Network.** No telemetry. Your agent sends your conversation to its own model provider, as it
-  always does.
+- **Network.** No telemetry, and flarehand sends nothing to FlareWare Solutions. Its scripts go
+  online only to fetch a web page you or a tool named, or to re-check a pinned source. They also
+  check links or the web connection when you ask. Your agent sends your conversation to its own
+  model provider, as it always does.
 
-The full detail is in [privacy and data](docs/privacy-and-data.md).
+The full detail is in [privacy and data](docs/privacy-and-data.md). The
+[privacy policy](https://flarehand.flareware.app/privacy/) sums it up.
 
 ## Measured, not claimed
 
