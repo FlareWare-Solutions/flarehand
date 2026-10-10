@@ -9,7 +9,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
-- A landing page in `site/index.html`, published to GitHub Pages by `.github/workflows/pages.yml`.
+- A website at https://flarehand.flareware.app: one page, `site/index.html`, published to GitHub
+  Pages by `.github/workflows/pages.yml`.
   It explains flarehand for any role, gives every supported tool the same install card, and loads
   nothing from other sites.
 - `tests/tests_site.py` checks the page's numbers, install commands and links against the
@@ -19,6 +20,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - The install guide gives the Copilot CLI marketplace commands, and a local-plugin install for Cursor
   until flarehand is in the Cursor Marketplace.
+- `homepage` in every manifest points at the website instead of the repository, and the README
+  links to it.
 
 ## [1.0.0] - 2026-10-05
 

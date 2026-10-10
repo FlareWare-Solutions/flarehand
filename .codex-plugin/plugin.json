@@ -6,7 +6,7 @@
     "name": "FlareWare Solutions",
     "url": "https://github.com/FlareWare-Solutions"
   },
-  "homepage": "https://github.com/FlareWare-Solutions/flarehand",
+  "homepage": "https://flarehand.flareware.app",
   "repository": "https://github.com/FlareWare-Solutions/flarehand",
   "license": "MIT",
   "keywords": [
@@ -39,7 +39,7 @@
       "Review this pull request before I merge it.",
       "What did we decide about the release date?"
     ],
-    "websiteURL": "https://github.com/FlareWare-Solutions/flarehand",
+    "websiteURL": "https://flarehand.flareware.app",
     "logo": "./assets/brand/icon.png",
     "composerIcon": "./assets/brand/icon.png",
     "brandColor": "#F64A68"
