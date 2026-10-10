@@ -22,11 +22,20 @@ import redact  # noqa: E402
 
 
 # Credential-shaped samples are put together at run time, so no string in the repository looks like
-# a real key to a secret scanner. They are made up, and the redaction rules see the joined text.
+# a real key, password or login to a secret scanner. The Claude plugin directory scans every file
+# and blocks a submission that holds one. They are made up, and the redaction rules see the joined text.
 STRIPE_LIVE = "sk_" + "live_" + "4eC39HqLyjWDarjtT1zdp7dc"
 STRIPE_TEST = "sk_" + "test_" + "4eC39HqLyjWDarjtT1zdp7dc"
 GOOGLE_KEY = "AI" + "zaSyA1234567890abcdefghijklmnopqrstuv"
 AWS_KEY = "AK" + "IAIOSFODNN7EXAMPLE"
+AWS_SECRET = "aws_secret_" + "access_key = " + "wJalrXUtnFEMI/K7MDENG/" + "bPxRfiCYEXAMPLEKEY"
+BASIC_AUTH = "Authorization: " + "Basic " + "c2NvdHQ6" + "dGlnZXI="
+TOKEN_EXPORT = "export TO" + "KEN=" + "abc123def456" + "ghi789"
+API_KEY_SET = "API_" + "KEY=" + "abcd1234"
+PASSWORD_COLON = "pass" + "word: " + "Welcome123!"
+PASSWORD_SET = "pass" + "word=" + "Hunter2Hunter2"
+ORACLE_LOGIN = "scott/" + "tiger@ORCL"
+SQLPLUS_LOGIN = "sqlplus scott/" + "tiger@host:1521/db"
 
 
 def run_redact(*args: str, stdin: str | None = None) -> subprocess.CompletedProcess:
@@ -73,29 +82,28 @@ class TestCredentials(RedactBase):
         self.assert_rule("github" + "_pat_11ABCDEFG0123456789abcdefgh", "github-token")
 
     def test_basic_auth_header(self):
-        self.assert_rule("Authorization: Basic c2NvdHQ6dGlnZXI=", "basic-auth")
+        self.assert_rule(BASIC_AUTH, "basic-auth")
         self.assert_clean("Basic Configuration Settings")
 
     def test_env_style_assignments(self):
-        self.assert_rule("aws_secret_access_key = " + "wJalrXUtnFEMI/K7MDENG/" + "bPxRfiCYEXAMPLEKEY",
-                         "password-assign")
-        self.assert_rule("export TOKEN=abc123def456ghi789", "password-assign")
-        self.assert_rule("API_KEY=abcd1234", "password-assign")
-        self.assert_rule("password: Welcome123!", "password-assign")
-        self.assert_rule("password=Hunter2Hunter2", "password-assign")
+        self.assert_rule(AWS_SECRET, "password-assign")
+        self.assert_rule(TOKEN_EXPORT, "password-assign")
+        self.assert_rule(API_KEY_SET, "password-assign")
+        self.assert_rule(PASSWORD_COLON, "password-assign")
+        self.assert_rule(PASSWORD_SET, "password-assign")
 
     def test_oracle_connect_string_without_a_port(self):
-        self.assert_rule("scott/tiger@ORCL", "oracle-connect")
-        self.assert_rule("sqlplus scott/tiger@host:1521/db", "oracle-connect")
+        self.assert_rule(ORACLE_LOGIN, "oracle-connect")
+        self.assert_rule(SQLPLUS_LOGIN, "oracle-connect")
         self.assert_clean("and/or the config@home")
 
     def test_every_credential_rule_triggers_the_rotation_note(self):
         samples = {
-            "password-assign": "password=Hunter2Hunter2",
+            "password-assign": PASSWORD_SET,
             "password-prose": "the password is Welcome123!",
             "key-prefix": STRIPE_LIVE,
-            "basic-auth": "Authorization: Basic c2NvdHQ6dGlnZXI=",
-            "oracle-connect": "scott/tiger@ORCL",
+            "basic-auth": BASIC_AUTH,
+            "oracle-connect": ORACLE_LOGIN,
             "aws-key": AWS_KEY,
         }
         for rule, sample in samples.items():
@@ -233,7 +241,7 @@ class TestOpinionLines(RedactBase):
 
 class TestContract(RedactBase):
     def test_scan_dicts_keep_the_agreed_keys(self):
-        f = redact.scan("password=Hunter2Hunter2", self.patterns, "low")[0]
+        f = redact.scan(PASSWORD_SET, self.patterns, "low")[0]
         for key in ("name", "severity", "line", "means"):
             self.assertIn(key, f)
 
