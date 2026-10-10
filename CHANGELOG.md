@@ -15,6 +15,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   nothing from other sites.
 - `tests/tests_site.py` checks the page's numbers, install commands and links against the
   repository. The Pages deploy runs it first.
+- A privacy policy at https://flarehand.flareware.app/privacy/, written from
+  `docs/privacy-and-data.md`.
 
 ### Changed
 
@@ -22,6 +24,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
   until flarehand is in the Cursor Marketplace.
 - `homepage` in every manifest points at the website instead of the repository, and the README
   links to it.
+- `plugin.json` gives the Claude plugin directory a documentation, support, privacy policy and
+  terms link. The terms are the MIT license. The README now says when the scripts go online.
 
 ## [1.0.0] - 2026-10-05
 
