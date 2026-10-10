@@ -37,6 +37,9 @@ site/                          the landing page: one self-contained index.html, 
   key. Keep each description under 1,024 characters with its trigger words first, and each
   `SKILL.md` under 500 lines.
 - **No PowerShell files, no binaries, no top-level `bin/`, no `.DS_Store`.**
+- **No credential-shaped text in any file, tests included.** The Claude plugin directory scans the
+  whole repository and blocks a submission that holds a key, a password assignment or a login.
+  Build a test sample from pieces at run time, as `tests/tests_redact.py` does.
 - **Plain voice in every file a person reads.** Short sentences, no em dashes. Check prose with
   `python3 skills/flarehand/scripts/check_output.py --style <file>`.
 - **The landing page says only what the repository backs up.** `site/index.html` is one file that
