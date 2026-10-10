@@ -273,5 +273,26 @@ class SiteHygiene(unittest.TestCase):
                 self.assertIn(href[1:], ids, f"{href} points at an element on the page")
 
 
+class SiteAddress(unittest.TestCase):
+    """The page, the README and every manifest agree on where the website lives."""
+
+    def test_one_address_everywhere(self) -> None:
+        canonical = re.search(r'<link rel="canonical" href="([^"]+)">', PAGE).group(1)
+        self.assertTrue(canonical.startswith("https://") and canonical.endswith("/"), canonical)
+        self.assertIn(f'<meta property="og:url" content="{canonical}">', PAGE)
+        site = canonical.rstrip("/")
+        self.assertIn(f"({site})", README, "the README links to the website")
+        manifests = {
+            ".claude-plugin/plugin.json": lambda d: [d["homepage"]],
+            ".claude-plugin/marketplace.json": lambda d: [p["homepage"] for p in d["plugins"]],
+            ".codex-plugin/plugin.json": lambda d: [d["homepage"], d["interface"]["websiteURL"]],
+            ".cursor-plugin/plugin.json": lambda d: [d["homepage"]],
+        }
+        for rel, read in manifests.items():
+            data = json.loads((ROOT / rel).read_text(encoding="utf-8"))
+            for value in read(data):
+                self.assertEqual(value, site, f"{rel} points at the website")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

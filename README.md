@@ -7,6 +7,8 @@
 **Turns a vague ask into the right deliverable, every fact sourced.<br>
 Remembers only what you approve, and re-checks it before reuse.**
 
+**[flarehand.flareware.app](https://flarehand.flareware.app)**
+
 [![MIT license](https://img.shields.io/badge/license-MIT-F64A68)](LICENSE)
 [![Agent Skills](https://img.shields.io/badge/Agent%20Skills-5%20skills-FC5338)](https://agentskills.io)
 ![Works in Claude Code, Codex, Cursor, Gemini CLI and Copilot](https://img.shields.io/badge/works%20in-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20Gemini%20%C2%B7%20Copilot-6B6577)
