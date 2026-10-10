@@ -87,7 +87,14 @@ Codex tends to act without asking. flarehand's two gates still hold there: nothi
 
 ## GitHub Copilot, in the CLI and in VS Code
 
-The Copilot CLI reads `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` and the Claude-format hooks. Its marketplace commands follow Claude Code's form, under `copilot plugin`. Check your tool's docs for the current form.
+The Copilot CLI reads `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` and the Claude-format hooks. Add the marketplace, then install the plugin from it:
+
+```bash
+copilot plugin marketplace add FlareWare-Solutions/flarehand
+copilot plugin install flarehand@flareware
+```
+
+Start a new session afterwards. A session that is already running does not pick up a new plugin.
 
 As skills only, Copilot reads these folders:
 
@@ -105,7 +112,21 @@ It has not been confirmed that Copilot sets `CLAUDE_PLUGIN_ROOT` for a Claude-fo
 
 ## Cursor
 
-Cursor reads `.cursor-plugin/plugin.json`, which points at `skills/` and at `hooks/hooks-cursor.json`. Install it from the Cursor marketplace once it is listed there. Until then, check your tool's docs for installing a plugin from a GitHub repository.
+Cursor reads `.cursor-plugin/plugin.json`, which points at `skills/` and at `hooks/hooks-cursor.json`. Install it from the Cursor marketplace once it is listed there. Until then, add it as a local plugin. Cursor loads local plugins from `~/.cursor/plugins/local/`.
+
+**macOS and Linux:**
+
+```bash
+git clone https://github.com/FlareWare-Solutions/flarehand ~/.cursor/plugins/local/flarehand
+```
+
+**Windows**, in PowerShell:
+
+```powershell
+git clone https://github.com/FlareWare-Solutions/flarehand "$env:USERPROFILE\.cursor\plugins\local\flarehand"
+```
+
+Then run **Developer: Reload Window** from the command palette. Keep a real folder there, not a link, because Cursor may skip a linked plugin. On a Team or Enterprise plan, an admin may need to allow local plugins first. To update, run `git pull` in that folder.
 
 Cursor runs `./hooks/run-hook.cmd` directly from the plugin folder. The em-dash gate does not run in Cursor, because its stop hook has no way to hold a reply once.
 

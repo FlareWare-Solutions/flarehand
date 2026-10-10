@@ -18,6 +18,7 @@ tests/                         the unit tests: test_scripts.py runs every tests_
 evals/                         the live eval cases for `claude plugin eval`, and consistency.md
 tools/bump_version.py          keeps every manifest version in lockstep
 docs/                          user documentation
+site/                          the landing page: one self-contained index.html, published to GitHub Pages
 ```
 
 ## Rules
@@ -38,6 +39,9 @@ docs/                          user documentation
 - **No PowerShell files, no binaries, no top-level `bin/`, no `.DS_Store`.**
 - **Plain voice in every file a person reads.** Short sentences, no em dashes. Check prose with
   `python3 skills/flarehand/scripts/check_output.py --style <file>`.
+- **The landing page says only what the repository backs up.** `site/index.html` is one file that
+  loads nothing from other sites. `tests/tests_site.py` checks its numbers and install commands
+  against the README, the docs and the evals, so change the page in the same pull request.
 - **Nothing written without a yes.** A change that saves anything to the knowledge base must go
   through the save menu, or be one of the bookkeeping writes `SKILL.md` lists.
 
